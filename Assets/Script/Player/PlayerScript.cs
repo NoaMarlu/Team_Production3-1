@@ -65,7 +65,7 @@ public class PlayerScript : MonoBehaviour
     public float startDistance = 1.0f;//小屋からスポーン距離までの長さ
 
     /*OnTrigger*/
-    List<PlayerScript> triggerPlayer=new List<PlayerScript>();
+    List<GameObject> triggerPlayer=new List<GameObject>();
 
 
     void Start()
@@ -194,6 +194,21 @@ public class PlayerScript : MonoBehaviour
         AddList(0);
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
+
+        foreach(GameObject p in triggerPlayer){
+            Rigidbody2D prb= p.GetComponent<Rigidbody2D>();
+            float prbNum = prb.linearVelocity.x;
+            prb.linearVelocityY = jumpForce;
+
+            if (isDirection)//右向き
+            {
+                prb.linearVelocity = new Vector2(moveSpeed, prb.linearVelocity.y);
+            }
+            else
+            {
+                prb.linearVelocity = new Vector2(-1 * moveSpeed, prb.linearVelocity.y);
+            }
+        }
 
 
         //移動
@@ -352,14 +367,14 @@ public class PlayerScript : MonoBehaviour
     {
         if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
         {  
-             triggerPlayer.Add(collider.gameObject.GetComponent<PlayerScript>());
+             triggerPlayer.Add(collider.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
         { 
-            triggerPlayer.Remove(collider.gameObject.GetComponent<PlayerScript>());
+            triggerPlayer.Remove(collider.gameObject.GetComponent<GameObject>());
         }
     }
 
