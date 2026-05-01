@@ -67,10 +67,20 @@ public class PlayerScript : MonoBehaviour
     /*OnTrigger*/
     List<GameObject> triggerPlayer=new List<GameObject>();
 
+    /*SE*/
+    private AudioSource audioSource;//0=ジャンプ,1=スポーン、3=踏みつけ
+    public AudioClip[] audioClip;
+    public float[] SEVolume;
+
+    /*MountOnLoopSheep*/
+    public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
+    private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
+
 
     void Start()
     {
 
+        audioSource = GetComponent<AudioSource>();
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
         rb = GetComponent<Rigidbody2D>();
@@ -140,7 +150,10 @@ public class PlayerScript : MonoBehaviour
             {
                 if(isGrounded)Jump();
             }
-
+            if (Input.GetKeyDown(KeyCode.JoystickButton0) ||Input.GetKeyDown(KeyCode.C))
+            {
+                MountOnNearestLoopSheep();
+            }
         }
 
         if (isSpawn == false)
@@ -172,6 +185,7 @@ public class PlayerScript : MonoBehaviour
             transform.position = startPos;//位置
         if (isDie)
         {
+            audioSource.PlayOneShot(audioClip[1], SEVolume[1]);
             Instantiate(E_Spawn, transform.position, transform.rotation);
         }
     }
@@ -192,6 +206,10 @@ public class PlayerScript : MonoBehaviour
     void Jump()
     {
         AddList(0);
+
+        //ジャンプSE
+        audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
+
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
@@ -346,12 +364,42 @@ public class PlayerScript : MonoBehaviour
             collider.forceSendLayers |= (1 << LayerMask.NameToLayer("Player"));
         }
     }
+    void MountOnNearestLoopSheep()//近くのループ羊に乗る関数やつぁ
+    {
+        PlayerScript nearest = null;
+        float nearestDist = float.MaxValue;
+
+        foreach (GameObject sheep in sheepSpawner.sheeps)
+        {
+            PlayerScript ps = sheep.GetComponent<PlayerScript>();
+            if (ps == null  ||ps == this.GetComponent<PlayerScript>()) continue;
+            if (!ps.isRemind) continue; // ループ羊のみ対象
+
+            float dist = Vector2.Distance(transform.position, sheep.transform.position);
+            if (dist <= mountRadius && dist < nearestDist)
+            {
+                nearestDist = dist;
+                nearest = ps;
+            }
+        }
+
+        if (nearest != null)
+        {
+            // 最も近いループ羊の真上に位置をセット
+            transform.position = new Vector2(
+                nearest.transform.position.x,
+                nearest.transform.position.y + mountOffset
+            );
+        }
+    }
+
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
+            audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
             isGrounded = true;
         }
     }
