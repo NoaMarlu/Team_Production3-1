@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 7232798093288124599}
   - component: {fileID: 3104374664562586459}
   - component: {fileID: 4633745599034889793}
-  - component: {fileID: 8165400744974268846}
+  - component: {fileID: 2664610666487629759}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -195,6 +195,15 @@ MonoBehaviour:
   SpawnTiming: 0
   isloopSpawn: 0
   startDistance: 1
+  audioClip:
+  - {fileID: 8300000, guid: e58b97546adb74d4fa5d8196349d13ed, type: 3}
+  - {fileID: 8300000, guid: 6eebee77fa2ec9d439ad3cea6a05b5fb, type: 3}
+  - {fileID: 8300000, guid: 2ab584d12e5d6394198a60e59fe5d3af, type: 3}
+  SEVolume:
+  - 0.5
+  - 0.3
+  - 1
+  mountRadius: 3
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -241,7 +250,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.41, y: 1.01}
   m_EdgeRadius: 0
---- !u!82 &8165400744974268846
+--- !u!82 &2664610666487629759
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
