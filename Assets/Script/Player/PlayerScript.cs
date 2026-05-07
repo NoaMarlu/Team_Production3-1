@@ -276,7 +276,7 @@ public class PlayerScript : MonoBehaviour
         {
             switch (actionList[num])
             {
-                case 0:
+                 case 0:
                     rb.gravityScale = 1;
                     Jump();
                     num++;
