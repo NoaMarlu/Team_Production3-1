@@ -5,7 +5,7 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.InputSystem;
 
-public class PlayerScript : MonoBehaviour
+public class PlayerScript1 : MonoBehaviour
 {
 
     /*Move*/
