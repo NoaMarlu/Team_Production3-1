@@ -93,11 +93,13 @@ public class PlayerScript : MonoBehaviour
         SetSprite();
 
         //StartAnimation
-        spr.sprite = S_Dash;
+        //spr.sprite = S_Dash;
         startPos = transform.position;
+        AddList(2);
 
         //Debug
         SpawnTiming = manager.GetGameTimer();
+
 
     }
     void Update()
@@ -105,18 +107,19 @@ public class PlayerScript : MonoBehaviour
 
         ///StartAnimation///
 
-        if (isAnimation)
-        {
-            transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
-            if (transform.position.x >= startPos.x + startDistance)
-            {
-                isAnimation = false;
-                startPos=transform.position;
-                SheepIsLive();
-                AddList(2);
-            }
-            return;
-        }
+        //       if (isAnimation)
+        //       {
+        //           transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
+        //           if (transform.position.x >= startPos.x + startDistance)
+        //           {
+        //               isAnimation = false;
+        //               startPos=transform.position;
+        //               SheepIsLive();
+        //               AddList(2);
+        //           }
+        //           return;
+        //       }
+        isAnimation = false;
 
         //////////////////////
 
@@ -198,7 +201,6 @@ public class PlayerScript : MonoBehaviour
          {
              gameObject.tag = "ground";
              loopDie = true;
-            rb.gravityScale = 0;
              if(DieTime==0)DieTime = manager.GetGameTimer();
              if (isRemind == false|| isDie == false) 
             { 
@@ -265,7 +267,7 @@ public class PlayerScript : MonoBehaviour
         {
             if(sheepSpawner.isNotDieSheep()==false){
                 SheepIsLive();
-                num = 1;
+                num = 0;
                 return;
             }
         }
@@ -277,7 +279,6 @@ public class PlayerScript : MonoBehaviour
             switch (actionList[num])
             {
                  case 0:
-                    rb.gravityScale = 1;
                     Jump();
                     num++;
                     break;
@@ -290,7 +291,7 @@ public class PlayerScript : MonoBehaviour
                     num++;
                     break;
                 case 4:
-                    rb.gravityScale = 0;
+                    rb.linearVelocityY = 0;
                     num++;
                     break;
             }
@@ -436,8 +437,10 @@ public class PlayerScript : MonoBehaviour
     {
         if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
         { 
-            triggerPlayer.Remove(collider.gameObject.GetComponent<GameObject>());
+            triggerPlayer.Remove(collider.gameObject);
         }
     }
+
+
 
 }
