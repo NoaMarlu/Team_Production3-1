@@ -24,7 +24,7 @@ public class PlayerScript : MonoBehaviour
 
     /*AddPos*/
     public List<float> timeList = new List<float>();
-    public List<int> actionList = new List<int>();//0をジャンプ、1を方向転換、2を生成タイミング
+    public List<int> actionList = new List<int>();//0をジャンプ、1を方向転換、2を生成タイミング、3で羊に接着、4でgroundに着地
 
     /*Spawn*/
     public bool isSpawn = false;
@@ -63,6 +63,7 @@ public class PlayerScript : MonoBehaviour
     private bool isAnimation = true;
     private Sprite S_Dash;
     public float startDistance = 1.0f;//小屋からスポーン距離までの長さ
+    public float startMoveSpeed = 0.3f;
 
     /*OnTrigger*/
     List<GameObject> triggerPlayer=new List<GameObject>();
@@ -76,7 +77,6 @@ public class PlayerScript : MonoBehaviour
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
     private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
 
-
     void Start()
     {
 
@@ -88,16 +88,13 @@ public class PlayerScript : MonoBehaviour
         spr = GetComponent<SpriteRenderer>();
         E_Spawn = Resources.Load<GameObject>("E_Spawn");
 
-        //StartAnimation
-        spr.sprite = S_Dash;
-
-        startPos = transform.position;
-        AddList(2);
         SheepIsLive();
-
         SetSprite();
 
-        spr.sprite= S_Dash;
+        //StartAnimation
+        spr.sprite = S_Dash;
+        startPos = transform.position;
+
         //Debug
         SpawnTiming = manager.GetGameTimer();
 
@@ -105,19 +102,24 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
 
-        /*
         ///StartAnimation///
-        
-        transform.position = new Vector2(transform.position.y+0.1f, transform.position.y);
-        if (transform.position.x >= startPos.x + startDistance)
+
+        if (isAnimation)
         {
-            SheepIsLive();
-            isAnimation = false;
+            transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
+            if (transform.position.x >= startPos.x + startDistance)
+            {
+                isAnimation = false;
+                startPos=transform.position;
+                SheepIsLive();
+                AddList(2);
+            }
+            return;
         }
 
-        if (isAnimation) return;
         //////////////////////
-        ///*/
+
+
         GameTimerDayo = manager.GetGameTimer();
 
         ChangeSprite();
@@ -182,7 +184,7 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocity = Vector2.zero;//落下の力をリセット
             spr.flipX = false;
             isDirection = true;
-            transform.position = startPos;//位置
+            if(isAnimation!=true)transform.position = startPos;//位置
         if (isDie)
         {
             audioSource.PlayOneShot(audioClip[1], SEVolume[1]);
@@ -191,14 +193,16 @@ public class PlayerScript : MonoBehaviour
     }
     void SheepIsDie()
     {
-        if (this.transform.position.y <= -5.47f)
-        {
-            gameObject.tag = "ground";
-            loopDie = true;
-            if(DieTime==0)DieTime = manager.GetGameTimer();
-            if (isRemind == false|| isDie == false) { 
-            isDie = true;
-            isRemind = true;
+         if (this.transform.position.y <= -5.47f)
+         {
+             gameObject.tag = "ground";
+             loopDie = true;
+            rb.gravityScale = 0;
+             if(DieTime==0)DieTime = manager.GetGameTimer();
+             if (isRemind == false|| isDie == false) 
+            { 
+             isDie = true;
+             isRemind = true;
             }
         }
     }
@@ -272,11 +276,20 @@ public class PlayerScript : MonoBehaviour
             switch (actionList[num])
             {
                 case 0:
+                    rb.gravityScale = 1;
                     Jump();
                     num++;
                     break;
                 case 1:
                     ChangeDirection();
+                    num++;
+                    break;
+                case 3:
+                    MountOnNearestLoopSheep();
+                    num++;
+                    break;
+                case 4:
+                    rb.gravityScale = 0;
                     num++;
                     break;
             }
@@ -393,13 +406,13 @@ public class PlayerScript : MonoBehaviour
         }
     }
 
-
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
             audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
+            if (isAnimation!=true)AddList(4);
             isGrounded = true;
         }
     }
