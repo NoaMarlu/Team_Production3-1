@@ -112,7 +112,7 @@ public class PlayerScript1 : MonoBehaviour
         GameTimerDayo = manager.GetGameTimer();
 
         ChangeSprite();
-        FouceSendLayer();
+        FouceReceiveLayer();
 
         if (isRemind)
         {
@@ -196,6 +196,8 @@ public class PlayerScript1 : MonoBehaviour
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
+
+        //上に乗っている羊がいる場合、上の羊に下の羊の力を加える
         foreach (GameObject p in triggerPlayer){
             Rigidbody2D prb= p.GetComponent<Rigidbody2D>();
             float prbNum = prb.linearVelocity.x;
@@ -337,14 +339,14 @@ public class PlayerScript1 : MonoBehaviour
 
     }
     //当たり判定処理
-    void FouceSendLayer()
+    void FouceReceiveLayer()
     {
         //死亡しているなら
         if (isDie)
         {
             Collider2D collider = GetComponent<BoxCollider2D>();
-            collider.forceSendLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
-            collider.forceSendLayers |= (1 << LayerMask.NameToLayer("Player"));
+            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
+            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
         }
     }
 

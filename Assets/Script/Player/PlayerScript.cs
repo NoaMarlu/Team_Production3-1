@@ -26,6 +26,8 @@ public class PlayerScript : MonoBehaviour
     /*AddPos*/
     public List<float> timeList = new List<float>();
     public List<int> actionList = new List<int>();//0をジャンプ、1を方向転換、2を生成タイミング、3で羊に接着、4でgroundに着地
+    public List<Vector2> positionList = new List<Vector2>();
+
 
     /*Spawn*/
     public bool isSpawn = false;
@@ -78,6 +80,9 @@ public class PlayerScript : MonoBehaviour
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
     private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
 
+    /*当たり判定処理*/
+    public bool isOverRaped=false;
+
     void Start()
     {
 
@@ -105,6 +110,7 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
 
+        Debug.Log(rb.linearVelocityX+" "+rb.linearVelocityY);
         ///StartAnimation///
 
         //       if (isAnimation)
@@ -127,14 +133,14 @@ public class PlayerScript : MonoBehaviour
         GameTimerDayo = manager.GetGameTimer();
 
         ChangeSprite();
-        FouceSendLayer();
+        FouceReceiveLayer();
 
         if (isRemind)
         {
-            if (isGrounded)
-            { 
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            }
+            //if (isGrounded)
+            //{ 
+            //    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            //}
             SheepIsDie();
             RemindAction();
         }
@@ -143,10 +149,10 @@ public class PlayerScript : MonoBehaviour
 
             SheepIsDie();
 
-            if(isGrounded)
-            {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            }
+            //if(isGrounded)
+            //{
+            //    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            //}
 
             //死亡済みなら操作を取りやめる
             if (isDie) return;
@@ -171,6 +177,10 @@ public class PlayerScript : MonoBehaviour
         Velocity = rb.linearVelocityY;
 
     }
+    void FixedUpdate()
+    {
+
+    }
     //Xでの方向転換処理
     void ChangeDirection()
     {
@@ -187,7 +197,7 @@ public class PlayerScript : MonoBehaviour
             loopDie = false;
             rb.linearVelocity = Vector2.zero;//落下の力をリセット
             spr.flipX = false;
-            isDirection = true;
+        isDirection = true;
             if(isAnimation!=true)transform.position = startPos;//位置
         if (isDie)
         {
@@ -254,12 +264,18 @@ public class PlayerScript : MonoBehaviour
         isGrounded = false;
 
     }
+    //ジャンプ
+    void PlayJump()
+    {
+
+    }
     //プレイヤーの位置を記録
     void AddList(int num) //0をジャンプ、1を方向転換とする
     {
         if (isRemind) return;
         timeList.Add(manager.GetGameTimer());
         actionList.Add(num);
+        positionList.Add(transform.position);
     }
     //記録された位置を再生する
     void RemindAction()
@@ -270,7 +286,7 @@ public class PlayerScript : MonoBehaviour
         {
             if(sheepSpawner.isNotDieSheep()==false){
                 SheepIsLive();
-                num = 0;
+                num = 1;
                 return;
             }
         }
@@ -282,19 +298,24 @@ public class PlayerScript : MonoBehaviour
             switch (actionList[num])
             {
                  case 0:
+                    rb.gravityScale = 1;
+                    transform.position= positionList[num];
                     Jump();
                     num++;
                     break;
                 case 1:
                     ChangeDirection();
+                    transform.position = positionList[num];
                     num++;
                     break;
                 case 3:
                     MountOnNearestLoopSheep();
+                    transform.position = positionList[num];
                     num++;
                     break;
                 case 4:
-                    rb.linearVelocityY = 0;
+                    rb.gravityScale = 0;
+                    rb.linearVelocity = new Vector2(0,0);
                     num++;
                     break;
             }
@@ -372,18 +393,20 @@ public class PlayerScript : MonoBehaviour
 
     }
     //当たり判定処理
-    void FouceSendLayer()
+    void FouceReceiveLayer()
     {
         //死亡しているなら
         if (isDie)
         {
             Collider2D collider = GetComponent<BoxCollider2D>();
-            collider.forceSendLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
-            collider.forceSendLayers |= (1 << LayerMask.NameToLayer("Player"));
+            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
+            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
         }
     }
-    void MountOnNearestLoopSheep()//近くのループ羊に乗る関数やつぁ
+    //近くのループ羊に乗る関数やつぁ
+    void MountOnNearestLoopSheep()
     {
+        AddList(3);
         PlayerScript nearest = null;
         float nearestDist = float.MaxValue;
 
@@ -416,6 +439,8 @@ public class PlayerScript : MonoBehaviour
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
+            Debug.Log("地面とプレイヤーが衝突");
+            AddList(4);
             audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
             if (isAnimation!=true)AddList(4);
             isGrounded = true;
@@ -443,7 +468,5 @@ public class PlayerScript : MonoBehaviour
     //        triggerPlayer.Remove(collider.gameObject);
     //    }
     //}
-
-
 
 }
