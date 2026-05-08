@@ -19,7 +19,6 @@ public class PlayerScript : MonoBehaviour
     public float jumpForce = 5.0f;
     private bool isGrounded;//地面に触れているか
 
-
     /*SheepIsDie*/
     private SheepSpawner sheepSpawner;
     public bool isDie = false;//trueで一度死亡している判定
@@ -27,6 +26,8 @@ public class PlayerScript : MonoBehaviour
     /*AddPos*/
     public List<float> timeList = new List<float>();
     public List<int> actionList = new List<int>();//0をジャンプ、1を方向転換、2を生成タイミング、3で羊に接着、4でgroundに着地
+    public List<Vector2> positionList = new List<Vector2>();
+
 
     /*Spawn*/
     public bool isSpawn = false;
@@ -271,6 +272,7 @@ public class PlayerScript : MonoBehaviour
         if (isRemind) return;
         timeList.Add(manager.GetGameTimer());
         actionList.Add(num);
+        positionList.Add(transform.position);
     }
     //記録された位置を再生する
     void RemindAction()
@@ -294,15 +296,18 @@ public class PlayerScript : MonoBehaviour
             {
                  case 0:
                     rb.gravityScale = 1;
+                    transform.position= positionList[num];
                     Jump();
                     num++;
                     break;
                 case 1:
                     ChangeDirection();
+                    transform.position = positionList[num];
                     num++;
                     break;
                 case 3:
                     MountOnNearestLoopSheep();
+                    transform.position = positionList[num];
                     num++;
                     break;
                 case 4:
@@ -391,13 +396,14 @@ public class PlayerScript : MonoBehaviour
         if (isDie)
         {
             Collider2D collider = GetComponent<BoxCollider2D>();
-            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
-            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
+            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
+            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
         }
     }
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
+        AddList(3);
         PlayerScript nearest = null;
         float nearestDist = float.MaxValue;
 
@@ -459,10 +465,5 @@ public class PlayerScript : MonoBehaviour
             triggerPlayer.Remove(collider.gameObject);
         }
     }
-    private void OnTriggerStay2D(Collider2D collision)
-    {
-        
-    }
-
 
 }
