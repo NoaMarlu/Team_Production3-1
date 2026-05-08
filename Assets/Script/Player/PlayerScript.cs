@@ -78,6 +78,9 @@ public class PlayerScript : MonoBehaviour
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
     private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
 
+    /*当たり判定処理*/
+    public bool isOverRaped=false;
+
     void Start()
     {
 
@@ -267,7 +270,7 @@ public class PlayerScript : MonoBehaviour
         {
             if(sheepSpawner.isNotDieSheep()==false){
                 SheepIsLive();
-                num = 0;
+                num = 1;
                 return;
             }
         }
@@ -413,6 +416,7 @@ public class PlayerScript : MonoBehaviour
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
+            Debug.Log("地面とプレイヤーが衝突");
             audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
             if (isAnimation!=true)AddList(4);
             isGrounded = true;
@@ -440,7 +444,10 @@ public class PlayerScript : MonoBehaviour
             triggerPlayer.Remove(collider.gameObject);
         }
     }
-
+    private void OnTriggerStay2D(Collider2D collision)
+    {
+        
+    }
 
 
 }
