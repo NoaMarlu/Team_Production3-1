@@ -81,9 +81,9 @@ public class SheepSpawner : MonoBehaviour
         {
             //全羊から死亡時間を取得
             PlayerScript player=sheep.GetComponent<PlayerScript>();
-            if (maxTime < player.DieTime)
+            if ( player.DieTime> maxTime&& player.DieTime != 0)
             {
-                if(player.DieTime!=0)maxTime = player.DieTime;
+                maxTime = player.DieTime;
             }
         }
     }

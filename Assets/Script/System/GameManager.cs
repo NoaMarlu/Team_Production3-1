@@ -18,6 +18,7 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
+
         FastForward();
 
         GameTimer += Time.deltaTime;
@@ -39,7 +40,6 @@ public class GameManager : MonoBehaviour
         if (Input.GetKey(KeyCode.JoystickButton5)||Input.GetKey(KeyCode.LeftShift)){ Time.timeScale = fastForwardNum;  }
         if (Input.GetKeyUp(KeyCode.JoystickButton5)|| Input.GetKeyUp(KeyCode.LeftShift)) { Time.timeScale = 1; }
     }
-
     public float GetGameTimer() {  return GameTimer; }
     public void GameTimerReset() { GameTimer=0; }
     public float GetGameTime() { return GameTime; }

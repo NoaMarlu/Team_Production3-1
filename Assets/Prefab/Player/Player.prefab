@@ -193,7 +193,8 @@ MonoBehaviour:
   GameTimerDayo: 0
   SpawnTiming: 0
   isloopSpawn: 0
-  startDistance: 1
+  startDistance: 3
+  startMoveSpeed: 3
   audioClip:
   - {fileID: 8300000, guid: e58b97546adb74d4fa5d8196349d13ed, type: 3}
   - {fileID: 8300000, guid: 6eebee77fa2ec9d439ad3cea6a05b5fb, type: 3}
