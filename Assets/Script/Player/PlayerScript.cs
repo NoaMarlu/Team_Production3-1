@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -230,21 +226,23 @@ public class PlayerScript : MonoBehaviour
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
+        //Triggerで当たり判定を取っている羊も同じ動きをさせる
         foreach (GameObject p in triggerPlayer){
-            //PlayerScript ps = p.GetComponent<PlayerScript>();
-            //if (ps != null && ps.isRemind == false) continue; // 操作中の羊には力を加えない
-
-            Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
-            float prbNum = prb.linearVelocity.x;
-            prb.linearVelocityY = jumpForce;
-
-            if (isDirection)//右向き
+            if (p.transform.position.y > transform.position.y)
             {
-                prb.linearVelocity = new Vector2(moveSpeed, prb.linearVelocity.y);
-            }
-            else
-            {
-                prb.linearVelocity = new Vector2(-1 * moveSpeed, prb.linearVelocity.y);
+                Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
+                rb.gravityScale = 1;
+                float prbNum = prb.linearVelocity.x;
+                prb.linearVelocityY = jumpForce;
+
+                if (isDirection)//右向き
+                {
+                    prb.linearVelocity = new Vector2(moveSpeed, prb.linearVelocity.y);
+                }
+                else
+                {
+                    prb.linearVelocity = new Vector2(-1 * moveSpeed, prb.linearVelocity.y);
+                }
             }
         }
 
@@ -282,13 +280,11 @@ public class PlayerScript : MonoBehaviour
     {
         if (gameObject.layer == 3) gameObject.layer = 6;
 
-        if (loopDie && manager.GetGameTimer() >= timeList[0])
+        if (loopDie && (manager.GetGameTimer() >= timeList[0]))
         {
-            if(sheepSpawner.isNotDieSheep()==false){
-                SheepIsLive();
-                num = 1;
-                return;
-            }
+            SheepIsLive();
+            num = 1;
+            return;
         }
 
         
@@ -299,22 +295,20 @@ public class PlayerScript : MonoBehaviour
             {
                  case 0:
                     rb.gravityScale = 1;
-                    transform.position= positionList[num];
                     Jump();
                     num++;
                     break;
                 case 1:
                     ChangeDirection();
-                    transform.position = positionList[num];
                     num++;
                     break;
                 case 3:
                     MountOnNearestLoopSheep();
-                    transform.position = positionList[num];
                     num++;
                     break;
                 case 4:
                     rb.gravityScale = 0;
+                    transform.position = positionList[num];
                     rb.linearVelocity = new Vector2(0,0);
                     num++;
                     break;
@@ -399,8 +393,8 @@ public class PlayerScript : MonoBehaviour
         if (isDie)
         {
             Collider2D collider = GetComponent<BoxCollider2D>();
-            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
-            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
+            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
+            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
         }
     }
     //近くのループ羊に乗る関数やつぁ
@@ -441,8 +435,8 @@ public class PlayerScript : MonoBehaviour
         {
             Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
+            rb.linearVelocity= Vector2.zero;
             audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
-            if (isAnimation!=true)AddList(4);
             isGrounded = true;
         }
     }
@@ -454,19 +448,19 @@ public class PlayerScript : MonoBehaviour
             isGrounded = false;
         }
     }
-    //private void OnTriggerEnter2D(Collider2D collider)
-    //{
-    //    if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-    //    {  
-    //         triggerPlayer.Add(collider.gameObject);
-    //    }
-    //}
-    //private void OnTriggerExit2D(Collider2D collider)
-    //{
-    //    if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-    //    { 
-    //        triggerPlayer.Remove(collider.gameObject);
-    //    }
-    //}
+    private void OnTriggerEnter2D(Collider2D collider)
+    {
+        if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+        {  
+             triggerPlayer.Add(collider.gameObject);
+        }
+    }
+    private void OnTriggerExit2D(Collider2D collider)
+    {
+        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+        { 
+            triggerPlayer.Remove(collider.gameObject);
+        }
+    }
 
 }

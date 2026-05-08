@@ -21,7 +21,7 @@ public class SheepSpawner : MonoBehaviour
 
     /*MaxTime*/
     private GameManager manager;
-    public float maxTime= float.MaxValue;
+    public float maxTime= 0;
 
     void Start()
     {
@@ -75,19 +75,21 @@ public class SheepSpawner : MonoBehaviour
         return true;
     }
 
+    //羊のMaxTimeを取得
     void MaxTime()
     {
         foreach(GameObject sheep in sheeps)
         {
             //全羊から死亡時間を取得
             PlayerScript player=sheep.GetComponent<PlayerScript>();
-            if ( player.DieTime> maxTime&& player.DieTime != 0)
+            if ( player.DieTime> maxTime && player.DieTime != 0)
             {
                 maxTime = player.DieTime;
             }
         }
     }
 
+    //現状で死んでいない羊がいるかどうか
     public bool isNotDieSheep()
     {
         foreach (GameObject sheep in sheeps)
