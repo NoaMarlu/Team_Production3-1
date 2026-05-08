@@ -5,10 +5,8 @@ public class GameManager : MonoBehaviour
 {
 
     public float fastForwardNum = 2;
-
     public float GameTimer = 0;
-    public float GameTime=float.MaxValue;
-
+    public float GameTime=0;
 
     private SheepSpawner sheepSpawner;
 
@@ -22,7 +20,7 @@ public class GameManager : MonoBehaviour
         FastForward();
 
         GameTimer += Time.deltaTime;
-        if (GameTimer >= GameTime)
+        if (GameTimer > GameTime)
         {
             if(GameTime!=0 && sheepSpawner.isNotDieSheep()==false)
             {
