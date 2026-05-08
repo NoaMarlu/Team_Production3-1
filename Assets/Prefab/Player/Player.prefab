@@ -193,7 +193,17 @@ MonoBehaviour:
   GameTimerDayo: 0
   SpawnTiming: 0
   isloopSpawn: 0
-  startDistance: 1
+  startDistance: 3
+  startMoveSpeed: 3
+  audioClip:
+  - {fileID: 8300000, guid: e58b97546adb74d4fa5d8196349d13ed, type: 3}
+  - {fileID: 8300000, guid: 6eebee77fa2ec9d439ad3cea6a05b5fb, type: 3}
+  - {fileID: 8300000, guid: 2ab584d12e5d6394198a60e59fe5d3af, type: 3}
+  SEVolume:
+  - 0.5
+  - 0.3
+  - 1
+  mountRadius: 3
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0
