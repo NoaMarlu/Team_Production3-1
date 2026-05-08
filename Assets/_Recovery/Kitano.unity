@@ -971,10 +971,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 1026952554}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b4165b1de8f5ff24dba58d9bf04409c6, type: 3}
+  m_Script: {fileID: 11500000, guid: 8ae4b41c8b4ccda499dada7a688e4a06, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::SheepSpawner
-  sheepPrefab: {fileID: 4874309050968122548, guid: 5833f682299689241a2be2073a45c67b, type: 3}
+  m_EditorClassIdentifier: Assembly-CSharp::SheepSpawnerKitano
+  sheepPrefab: {fileID: 4874309050968122548, guid: 0d1f3512a6597ad49a8e342b40e6b343, type: 3}
   sheepCount: 0
   speechBubble: {fileID: 1365226366}
   sheeps: []
@@ -1082,9 +1082,9 @@ MonoBehaviour:
   m_GameObject: {fileID: 1131935458}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f01e5fae87e997447905856fe3423a6a, type: 3}
+  m_Script: {fileID: 11500000, guid: b7053e460852a3149987f2dab0862ec8, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  m_EditorClassIdentifier: Assembly-CSharp::GameManagerKitano
   fastForwardNum: 2
   GameTimer: 0
   GameTime: 3.4028235e+38
