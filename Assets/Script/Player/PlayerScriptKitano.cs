@@ -33,6 +33,10 @@ public class PlayerScriptKitano : MonoBehaviour
     public bool isRemind = false;
     public int num = 0;
 
+    /*MountOnLoopSheep*/
+    public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
+    private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
+
     /*Start*/
     private Vector2 startPos;
 
@@ -45,7 +49,7 @@ public class PlayerScriptKitano : MonoBehaviour
     public bool loopDie = false;
     public float GameTimerDayo;
     public float SpawnTiming;
-    public bool isloopSpawn=false;
+    public bool isloopSpawn = false;
     private GameObject E_Spawn;//煙エフェクト
 
     /*ChangeSprite*/
@@ -54,7 +58,7 @@ public class PlayerScriptKitano : MonoBehaviour
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
     private float Velocity;
-    private float standbyTime=0.1f;
+    private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
     float x = 5.8f;
@@ -65,7 +69,7 @@ public class PlayerScriptKitano : MonoBehaviour
     public float startDistance = 1.0f;//小屋からスポーン距離までの長さ
 
     /*OnTrigger*/
-    List<PlayerScript> triggerPlayer=new List<PlayerScript>();
+    List<PlayerScript> triggerPlayer = new List<PlayerScript>();
 
 
     void Start()
@@ -87,7 +91,7 @@ public class PlayerScriptKitano : MonoBehaviour
 
         SetSprite();
 
-        spr.sprite= S_Dash;
+        spr.sprite = S_Dash;
         //Debug
         SpawnTiming = manager.GetGameTimer();
 
@@ -116,7 +120,7 @@ public class PlayerScriptKitano : MonoBehaviour
         if (isRemind)
         {
             if (isGrounded)
-            { 
+            {
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             }
             SheepIsDie();
@@ -127,7 +131,7 @@ public class PlayerScriptKitano : MonoBehaviour
 
             SheepIsDie();
 
-            if(isGrounded)
+            if (isGrounded)
             {
                 rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
             }
@@ -135,10 +139,10 @@ public class PlayerScriptKitano : MonoBehaviour
             //死亡済みなら操作を取りやめる
             if (isDie) return;
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton2)||Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
-            if (Input.GetButtonDown("Submit")||Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
+            if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
             {
-                if(isGrounded)Jump();
+                if (isGrounded) Jump();
             }
 
         }
@@ -151,6 +155,11 @@ public class PlayerScriptKitano : MonoBehaviour
         //Prototype
         Velocity = rb.linearVelocityY;
 
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.C))
+        {
+            MountOnNearestLoopSheep();
+        }
     }
     //Xでの方向転換処理
     void ChangeDirection()
@@ -164,12 +173,12 @@ public class PlayerScriptKitano : MonoBehaviour
     void SheepIsLive()
     {
         if (isloopSpawn) return;
-            isloopSpawn = true;
-            loopDie = false;
-            rb.linearVelocity = Vector2.zero;//落下の力をリセット
-            spr.flipX = false;
-            isDirection = true;
-            transform.position = startPos;//位置
+        isloopSpawn = true;
+        loopDie = false;
+        rb.linearVelocity = Vector2.zero;//落下の力をリセット
+        spr.flipX = false;
+        isDirection = true;
+        transform.position = startPos;//位置
         if (isDie)
         {
             Instantiate(E_Spawn, transform.position, transform.rotation);
@@ -181,10 +190,11 @@ public class PlayerScriptKitano : MonoBehaviour
         {
             gameObject.tag = "ground";
             loopDie = true;
-            if(DieTime==0)DieTime = manager.GetGameTimer();
-            if (isRemind == false|| isDie == false) { 
-            isDie = true;
-            isRemind = true;
+            if (DieTime == 0) DieTime = manager.GetGameTimer();
+            if (isRemind == false || isDie == false)
+            {
+                isDie = true;
+                isRemind = true;
             }
         }
     }
@@ -197,14 +207,14 @@ public class PlayerScriptKitano : MonoBehaviour
 
 
         //移動
-       if (isDirection)//右向き
-       {
-           rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
-       }
-       else
-       {
-           rb.linearVelocity = new Vector2(-1 * moveSpeed, rb.linearVelocity.y);
-       }
+        if (isDirection)//右向き
+        {
+            rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(-1 * moveSpeed, rb.linearVelocity.y);
+        }
 
 
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
@@ -225,16 +235,17 @@ public class PlayerScriptKitano : MonoBehaviour
 
         if (loopDie && manager.GetGameTimer() >= timeList[0])
         {
-            if(sheepSpawner.isNotDieSheep()==false){
+            if (sheepSpawner.isNotDieSheep() == false)
+            {
                 SheepIsLive();
                 num = 1;
                 return;
             }
         }
 
-        
+
         if (num >= timeList.Count) return;
-            if (manager.GetGameTimer() >= timeList[num])
+        if (manager.GetGameTimer() >= timeList[num])
         {
             switch (actionList[num])
             {
@@ -246,6 +257,10 @@ public class PlayerScriptKitano : MonoBehaviour
                     ChangeDirection();
                     num++;
                     break;
+                case 3:
+                    MountOnNearestLoopSheep();
+                    num++;
+                    break;
             }
         }
 
@@ -253,11 +268,41 @@ public class PlayerScriptKitano : MonoBehaviour
     //LBでスポーン
     void Spawn()
     {
-        if (Input.GetKeyDown(KeyCode.JoystickButton4)||Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
             isSpawn = sheepSpawner.Spawn();
+        }
+    }
+
+    void MountOnNearestLoopSheep()//近くのループ羊に乗る関数やつぁ
+    {
+        AddList(3);
+        PlayerScript nearest = null;
+        float nearestDist = float.MaxValue;
+
+        foreach (GameObject sheep in sheepSpawner.sheeps)
+        {
+            PlayerScript ps = sheep.GetComponent<PlayerScript>();
+            if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
+            if (!ps.isRemind) continue; // ループ羊のみ対象
+
+            float dist = Vector2.Distance(transform.position, sheep.transform.position);
+            if (dist <= mountRadius && dist < nearestDist)
+            {
+                nearestDist = dist;
+                nearest = ps;
+            }
+        }
+
+        if (nearest != null)
+        {
+            // 最も近いループ羊の真上に位置をセット
+            transform.position = new Vector2(
+                nearest.transform.position.x,
+                nearest.transform.position.y + mountOffset
+            );
         }
     }
     //Spriteの変更
@@ -270,19 +315,20 @@ public class PlayerScriptKitano : MonoBehaviour
             if (standbyTimer > standbyTime)
             {
                 isStandby = !isStandby;
-                standbyTimer = 0 ;
+                standbyTimer = 0;
             }
             if (isStandby)
             {
                 if (isDie == false) spr.sprite = S_Standby[0];
                 else { spr.sprite = S_Standby_Death[0]; }
             }
-            else {
+            else
+            {
                 if (isDie == false) spr.sprite = S_Standby[1];
                 else { spr.sprite = S_Standby_Death[1]; }
             }
-        } 
-        else if (rb.linearVelocityY>0 && rb.linearVelocityY < x)//ジャンプ
+        }
+        else if (rb.linearVelocityY > 0 && rb.linearVelocityY < x)//ジャンプ
         {
             if (isDie == false) spr.sprite = S_Jump[2];
             else { spr.sprite = S_Jump_Death[2]; }
@@ -292,7 +338,7 @@ public class PlayerScriptKitano : MonoBehaviour
             if (isDie == false) spr.sprite = S_Jump[1];
             else { spr.sprite = S_Jump_Death[1]; }
         }
-        else if (rb.linearVelocityY < 0&&rb.linearVelocityY>-x)//滞空
+        else if (rb.linearVelocityY < 0 && rb.linearVelocityY > -x)//滞空
         {
             if (isDie == false) spr.sprite = S_Jump[3];
             else { spr.sprite = S_Jump_Death[3]; }
@@ -309,10 +355,10 @@ public class PlayerScriptKitano : MonoBehaviour
     {
 
         S_Standby = Resources.LoadAll<Sprite>("S_Standby");
-        S_Standby_Death= Resources.LoadAll<Sprite>("S_Standby_Death");
+        S_Standby_Death = Resources.LoadAll<Sprite>("S_Standby_Death");
         S_Jump = Resources.LoadAll<Sprite>("S_Jump");
         S_Jump_Death = Resources.LoadAll<Sprite>("S_Jump_Death");
-        S_Dash= Resources.Load<Sprite>("S_Dash");
+        S_Dash = Resources.Load<Sprite>("S_Dash");
 
     }
     //クリア処理
@@ -350,15 +396,15 @@ public class PlayerScriptKitano : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        {  
-             triggerPlayer.Add(collider.gameObject.GetComponent<PlayerScript>());
+        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+        {
+            triggerPlayer.Add(collider.gameObject.GetComponent<PlayerScript>());
         }
     }
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        { 
+        {
             triggerPlayer.Remove(collider.gameObject.GetComponent<PlayerScript>());
         }
     }
