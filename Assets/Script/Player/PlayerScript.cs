@@ -221,7 +221,10 @@ public class PlayerScript : MonoBehaviour
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
         foreach (GameObject p in triggerPlayer){
-            Rigidbody2D prb= p.GetComponent<Rigidbody2D>();
+            //PlayerScript ps = p.GetComponent<PlayerScript>();
+            //if (ps != null && ps.isRemind == false) continue; // 操作中の羊には力を加えない
+
+            Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
             float prbNum = prb.linearVelocity.x;
             prb.linearVelocityY = jumpForce;
 
@@ -426,20 +429,20 @@ public class PlayerScript : MonoBehaviour
             isGrounded = false;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        {  
-             triggerPlayer.Add(collider.gameObject);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        { 
-            triggerPlayer.Remove(collider.gameObject);
-        }
-    }
+    //private void OnTriggerEnter2D(Collider2D collider)
+    //{
+    //    if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+    //    {  
+    //         triggerPlayer.Add(collider.gameObject);
+    //    }
+    //}
+    //private void OnTriggerExit2D(Collider2D collider)
+    //{
+    //    if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+    //    { 
+    //        triggerPlayer.Remove(collider.gameObject);
+    //    }
+    //}
 
 
 
