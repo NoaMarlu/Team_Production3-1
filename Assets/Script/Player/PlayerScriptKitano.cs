@@ -119,10 +119,10 @@ public class PlayerScriptKitano : MonoBehaviour
 
         if (isRemind)
         {
-            if (isGrounded)
-            {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            }
+            //if (isGrounded)
+            //{
+            //    rb.linearVelocity = new Vector2(0, 0);
+            //}
             SheepIsDie();
             RemindAction();
         }
@@ -131,10 +131,10 @@ public class PlayerScriptKitano : MonoBehaviour
 
             SheepIsDie();
 
-            if (isGrounded)
-            {
-                rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            }
+            //if (isGrounded)
+            //{
+            //    rb.linearVelocity = new Vector2(0, 0);
+            //}
 
             //死亡済みなら操作を取りやめる
             if (isDie) return;
@@ -275,7 +275,6 @@ public class PlayerScriptKitano : MonoBehaviour
             isSpawn = sheepSpawner.Spawn();
         }
     }
-
     void MountOnNearestLoopSheep()//近くのループ羊に乗る関数やつぁ
     {
         AddList(3);
