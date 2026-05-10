@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Audio;
 
 public class GameManager : MonoBehaviour
 {
@@ -9,6 +10,9 @@ public class GameManager : MonoBehaviour
     public float GameTime=0;
 
     private SheepSpawner sheepSpawner;
+    private AudioSource audioSource;
+    public AudioClip[] audioClip;
+    public float[] SEVolume;
 
     void Start()
     {
@@ -36,6 +40,7 @@ public class GameManager : MonoBehaviour
     {
         //R1を押している間のみ早送り
         if (Input.GetKey(KeyCode.JoystickButton5)||Input.GetKey(KeyCode.LeftShift)){ Time.timeScale = fastForwardNum;  }
+        audioSource.PlayOneShot(audioClip[4], SEVolume[0]);
         if (Input.GetKeyUp(KeyCode.JoystickButton5)|| Input.GetKeyUp(KeyCode.LeftShift)) { Time.timeScale = 1; }
     }
     public float GetGameTimer() {  return GameTimer; }
