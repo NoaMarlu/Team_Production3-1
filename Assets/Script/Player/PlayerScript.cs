@@ -44,7 +44,7 @@ public class PlayerScript : MonoBehaviour
     public bool loopDie = false;
     public float GameTimerDayo;
     public float SpawnTiming;
-    public bool isloopSpawn=false;
+    public bool isloopSpawn = false;
     private GameObject E_Spawn;//煙エフェクト
 
     /*ChangeSprite*/
@@ -53,7 +53,7 @@ public class PlayerScript : MonoBehaviour
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
     private float Velocity;
-    private float standbyTime=0.1f;
+    private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
     float x = 5.8f;
@@ -65,7 +65,7 @@ public class PlayerScript : MonoBehaviour
     public float startMoveSpeed = 0.3f;
 
     /*OnTrigger*/
-    List<GameObject> triggerPlayer=new List<GameObject>();
+    List<GameObject> triggerPlayer = new List<GameObject>();
 
     /*SE*/
     private AudioSource audioSource;//0=ジャンプ,1=スポーン、3=踏みつけ
@@ -77,7 +77,7 @@ public class PlayerScript : MonoBehaviour
     private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
 
     /*当たり判定処理*/
-    public bool isOverRaped=false;
+    public bool isOverRaped = false;
 
     void Start()
     {
@@ -106,7 +106,7 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
 
-        Debug.Log(rb.linearVelocityX+" "+rb.linearVelocityY);
+        Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
         ///StartAnimation///
 
         //       if (isAnimation)
@@ -153,12 +153,12 @@ public class PlayerScript : MonoBehaviour
             //死亡済みなら操作を取りやめる
             if (isDie) return;
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton2)||Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
-            if (Input.GetButtonDown("Submit")||Input.GetKeyDown(KeyCode.Space))
+            if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
+            if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
             {
-                if(isGrounded)Jump();
+                if (isGrounded) Jump();
             }
-            if (Input.GetKeyDown(KeyCode.JoystickButton0) ||Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.C))
             {
                 MountOnNearestLoopSheep();
             }
@@ -189,12 +189,12 @@ public class PlayerScript : MonoBehaviour
     void SheepIsLive()
     {
         if (isloopSpawn) return;
-            isloopSpawn = true;
-            loopDie = false;
-            rb.linearVelocity = Vector2.zero;//落下の力をリセット
-            spr.flipX = false;
+        isloopSpawn = true;
+        loopDie = false;
+        rb.linearVelocity = Vector2.zero;//落下の力をリセット
+        spr.flipX = false;
         isDirection = true;
-            if(isAnimation!=true)transform.position = startPos;//位置
+        if (isAnimation != true) transform.position = startPos;//位置
         if (isDie)
         {
             audioSource.PlayOneShot(audioClip[1], SEVolume[1]);
@@ -203,15 +203,15 @@ public class PlayerScript : MonoBehaviour
     }
     void SheepIsDie()
     {
-         if (this.transform.position.y <= -5.47f)
-         {
-             gameObject.tag = "ground";
-             loopDie = true;
-             if(DieTime==0)DieTime = manager.GetGameTimer();
-             if (isRemind == false|| isDie == false) 
-            { 
-             isDie = true;
-             isRemind = true;
+        if (this.transform.position.y <= -5.47f)
+        {
+            gameObject.tag = "ground";
+            loopDie = true;
+            if (DieTime == 0) DieTime = manager.GetGameTimer();
+            if (isRemind == false || isDie == false)
+            {
+                isDie = true;
+                isRemind = true;
             }
         }
     }
@@ -226,36 +226,34 @@ public class PlayerScript : MonoBehaviour
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
+        //移動
+        if (isDirection)//右向き
+        {
+            rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector2(-1 * moveSpeed, rb.linearVelocity.y);
+        }
+
         //Triggerで当たり判定を取っている羊も同じ動きをさせる
-        foreach (GameObject p in triggerPlayer){
+        foreach (GameObject p in triggerPlayer)
+        {
             if (p.transform.position.y > transform.position.y)
             {
                 Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
-                rb.gravityScale = 1;
-                float prbNum = prb.linearVelocity.x;
-                prb.linearVelocityY = jumpForce;
+                prb.gravityScale = 1;
 
                 if (isDirection)//右向き
                 {
-                    prb.linearVelocity = new Vector2(moveSpeed, prb.linearVelocity.y);
+                    prb.linearVelocity = rb.linearVelocity;
                 }
                 else
                 {
-                    prb.linearVelocity = new Vector2(-1 * moveSpeed, prb.linearVelocity.y);
+                    prb.linearVelocity = rb.linearVelocity;
                 }
             }
         }
-
-
-        //移動
-       if (isDirection)//右向き
-       {
-           rb.linearVelocity = new Vector2(moveSpeed, rb.linearVelocity.y);
-       }
-       else
-       {
-           rb.linearVelocity = new Vector2(-1 * moveSpeed, rb.linearVelocity.y);
-       }
 
 
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
@@ -287,29 +285,29 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
-        
+
         if (num >= timeList.Count) return;
-            if (manager.GetGameTimer() >= timeList[num])
+        if (manager.GetGameTimer() >= timeList[num])
         {
             switch (actionList[num])
             {
-                 case 0:
+                case 0://0をジャンプ
                     rb.gravityScale = 1;
                     Jump();
                     num++;
                     break;
-                case 1:
+                case 1://1を方向転換
                     ChangeDirection();
                     num++;
                     break;
-                case 3:
+                case 3://3で羊に接着
                     MountOnNearestLoopSheep();
                     num++;
                     break;
-                case 4:
+                case 4://4でgroundに着地
                     rb.gravityScale = 0;
                     transform.position = positionList[num];
-                    rb.linearVelocity = new Vector2(0,0);
+                    rb.linearVelocity = new Vector2(0, 0);
                     num++;
                     break;
             }
@@ -319,7 +317,7 @@ public class PlayerScript : MonoBehaviour
     //LBでスポーン
     void Spawn()
     {
-        if (Input.GetKeyDown(KeyCode.JoystickButton4)||Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
@@ -336,19 +334,20 @@ public class PlayerScript : MonoBehaviour
             if (standbyTimer > standbyTime)
             {
                 isStandby = !isStandby;
-                standbyTimer = 0 ;
+                standbyTimer = 0;
             }
             if (isStandby)
             {
                 if (isDie == false) spr.sprite = S_Standby[0];
                 else { spr.sprite = S_Standby_Death[0]; }
             }
-            else {
+            else
+            {
                 if (isDie == false) spr.sprite = S_Standby[1];
                 else { spr.sprite = S_Standby_Death[1]; }
             }
-        } 
-        else if (rb.linearVelocityY>0 && rb.linearVelocityY < x)//ジャンプ
+        }
+        else if (rb.linearVelocityY > 0 && rb.linearVelocityY < x)//ジャンプ
         {
             if (isDie == false) spr.sprite = S_Jump[2];
             else { spr.sprite = S_Jump_Death[2]; }
@@ -358,7 +357,7 @@ public class PlayerScript : MonoBehaviour
             if (isDie == false) spr.sprite = S_Jump[1];
             else { spr.sprite = S_Jump_Death[1]; }
         }
-        else if (rb.linearVelocityY < 0&&rb.linearVelocityY>-x)//滞空
+        else if (rb.linearVelocityY < 0 && rb.linearVelocityY > -x)//滞空
         {
             if (isDie == false) spr.sprite = S_Jump[3];
             else { spr.sprite = S_Jump_Death[3]; }
@@ -375,10 +374,10 @@ public class PlayerScript : MonoBehaviour
     {
 
         S_Standby = Resources.LoadAll<Sprite>("S_Standby");
-        S_Standby_Death= Resources.LoadAll<Sprite>("S_Standby_Death");
+        S_Standby_Death = Resources.LoadAll<Sprite>("S_Standby_Death");
         S_Jump = Resources.LoadAll<Sprite>("S_Jump");
         S_Jump_Death = Resources.LoadAll<Sprite>("S_Jump_Death");
-        S_Dash= Resources.Load<Sprite>("S_Dash");
+        S_Dash = Resources.Load<Sprite>("S_Dash");
 
     }
     //クリア処理
@@ -389,12 +388,18 @@ public class PlayerScript : MonoBehaviour
     //当たり判定処理
     void FouceReceiveLayer()
     {
-        //死亡しているなら
+        Collider2D collider = GetComponent<BoxCollider2D>();
+
         if (isDie)
         {
-            Collider2D collider = GetComponent<BoxCollider2D>();
-            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
-            collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
+            collider.forceReceiveLayers = 0;
+            // 踏み台として、生きている羊・ループ羊どちらにも力を送る
+            collider.forceSendLayers = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("PlayerDie"));
+        }
+        else
+        {
+            collider.forceReceiveLayers = Physics2D.AllLayers;
+            collider.forceSendLayers = Physics2D.AllLayers;
         }
     }
     //近くのループ羊に乗る関数やつぁ
@@ -407,7 +412,7 @@ public class PlayerScript : MonoBehaviour
         foreach (GameObject sheep in sheepSpawner.sheeps)
         {
             PlayerScript ps = sheep.GetComponent<PlayerScript>();
-            if (ps == null  ||ps == this.GetComponent<PlayerScript>()) continue;
+            if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
             if (!ps.isRemind) continue; // ループ羊のみ対象
 
             float dist = Vector2.Distance(transform.position, sheep.transform.position);
@@ -435,7 +440,7 @@ public class PlayerScript : MonoBehaviour
         {
             Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
-            rb.linearVelocity= Vector2.zero;
+            rb.linearVelocity = Vector2.zero;
             audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
             isGrounded = true;
         }
@@ -450,15 +455,15 @@ public class PlayerScript : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collider)
     {
-        if (LayerMask.LayerToName(collider.gameObject.layer)=="Player"|| LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        {  
-             triggerPlayer.Add(collider.gameObject);
+        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+        {
+            triggerPlayer.Add(collider.gameObject);
         }
     }
     private void OnTriggerExit2D(Collider2D collider)
     {
         if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        { 
+        {
             triggerPlayer.Remove(collider.gameObject);
         }
     }
