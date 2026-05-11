@@ -213,6 +213,9 @@ MonoBehaviour:
   fastForwardNum: 2
   GameTimer: 0
   GameTime: 3.4028235e+38
+  audioClip:
+  - {fileID: 8300000, guid: 4caa25962ec9abb418b55cba05e47284, type: 3}
+  SEVolume: []
 --- !u!4 &82545658
 Transform:
   m_ObjectHideFlags: 0

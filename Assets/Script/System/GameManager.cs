@@ -16,6 +16,7 @@ public class GameManager : MonoBehaviour
 
     void Start()
     {
+        audioSource = GetComponent<AudioSource>();
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
     }
     void Update()
@@ -40,7 +41,9 @@ public class GameManager : MonoBehaviour
     {
         //R1を押している間のみ早送り
         if (Input.GetKey(KeyCode.JoystickButton5)||Input.GetKey(KeyCode.LeftShift)){ Time.timeScale = fastForwardNum;  }
-        audioSource.PlayOneShot(audioClip[4], SEVolume[0]);
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton5) || Input.GetKeyDown(KeyCode.LeftShift)) audioSource.PlayOneShot(audioClip[0]);
+
         if (Input.GetKeyUp(KeyCode.JoystickButton5)|| Input.GetKeyUp(KeyCode.LeftShift)) { Time.timeScale = 1; }
     }
     public float GetGameTimer() {  return GameTimer; }
