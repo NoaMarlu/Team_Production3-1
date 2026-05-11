@@ -15,6 +15,7 @@ public class PlayerScript : MonoBehaviour
     /*Jump*/
     public float jumpForce = 5.0f;
     private bool isGrounded;//地面に触れているか
+    private bool isJump=false;
 
     /*SheepIsDie*/
     private SheepSpawner sheepSpawner;
@@ -53,7 +54,7 @@ public class PlayerScript : MonoBehaviour
     private Sprite[] S_Standby_Death;
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
-    private float Velocity;
+    public Vector2 Velocity;
     private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
@@ -79,6 +80,11 @@ public class PlayerScript : MonoBehaviour
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
+
+    /*LinkForce*/
+    public float rayRadius=0.5f;
+    public float rayDistance = 0.5f;
+    List<RaycastHit2D> hits = new List<RaycastHit2D>();
 
     void Start()
     {
@@ -130,6 +136,7 @@ public class PlayerScript : MonoBehaviour
         GameTimerDayo = manager.GetGameTimer();
 
         ChangeSprite();
+        LinkForce();
 
         if (isRemind)
         {
@@ -156,7 +163,7 @@ public class PlayerScript : MonoBehaviour
             if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
             if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
             {
-                if (isGrounded) Jump();
+                if (isGrounded) isJump = true;
             }
             if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
             {
@@ -169,13 +176,17 @@ public class PlayerScript : MonoBehaviour
             Spawn();
         }
 
-        //Prototype
-        Velocity = rb.linearVelocityY;
+        //Debug
+        Velocity = rb.linearVelocity;
 
     }
     void FixedUpdate()
     {
-
+        if (isJump)
+        {
+            Jump();
+            isJump = false;
+        }
     }
     //Xでの方向転換処理
     void ChangeDirection()
@@ -207,7 +218,6 @@ public class PlayerScript : MonoBehaviour
         if (this.transform.position.y <= -5.47f)
         {
             gameObject.tag = "ground";
-            rb.bodyType = RigidbodyType2D.Kinematic;//キネマティックにすると力が加わらなくなる
             loopDie = true;
             FouceReceiveLayer();
             if (DieTime == 0) DieTime = manager.GetGameTimer();
@@ -218,7 +228,7 @@ public class PlayerScript : MonoBehaviour
             }
         }
     }
-    //自動ジャンプ処理
+    //ジャンプ処理
     void Jump()
     {
         AddList(0);
@@ -261,11 +271,6 @@ public class PlayerScript : MonoBehaviour
 
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
         isGrounded = false;
-
-    }
-    //ジャンプ
-    void PlayJump()
-    {
 
     }
     //プレイヤーの位置を記録
@@ -424,7 +429,20 @@ public class PlayerScript : MonoBehaviour
             );
         }
     }
-    //生成時に羊がいたら羊の上に乗る
+    //羊が上にいる場合に、力を連動させる
+    void LinkForce()
+    {
+        hits.Clear();
+        triggerPlayer.Clear();
+
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, rayRadius, Vector2.up, rayDistance);
+        if(hit.collider != null)
+        {
+            hits.Add(hit);
+            triggerPlayer.Add(hit.collider.gameObject);
+        }
+    }
+
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 地面との接触判定
@@ -445,19 +463,6 @@ public class PlayerScript : MonoBehaviour
             isGrounded = false;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collider)
-    {
-        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        {
-            triggerPlayer.Add(collider.gameObject);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        {
-            triggerPlayer.Remove(collider.gameObject);
-        }
-    }
+
 
 }

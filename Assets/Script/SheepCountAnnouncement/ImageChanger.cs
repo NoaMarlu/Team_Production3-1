@@ -11,16 +11,26 @@ public class SpriteDigitChanger : MonoBehaviour
 
     [Header("表示したい数字")]
     [Range(0, 99)]
-    public int debugNumber;
+    public int sheepCounter;
 
     private int lastDebugNumber = -1;
 
+    /*羊数の取得*/
+    public SheepSpawner spawner;
+
+    void Start()
+    {
+        GameObject spw= GameObject.FindWithTag("Spawner");
+        spawner = spw.GetComponent<SheepSpawner>();
+    }
     void Update()
     {
-        if (debugNumber != lastDebugNumber)
+        sheepCounter = spawner.sheepCount;
+
+        if (sheepCounter != lastDebugNumber)
         {
-            SetDigits(debugNumber);
-            lastDebugNumber = debugNumber;
+            SetDigits(sheepCounter);
+            lastDebugNumber = sheepCounter;
         }
     }
 
