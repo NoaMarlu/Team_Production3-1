@@ -1,9 +1,5 @@
-using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.Audio;
-using UnityEngine.InputSystem;
 
 public class PlayerScriptKitano : MonoBehaviour
 {
@@ -230,26 +226,6 @@ public class PlayerScriptKitano : MonoBehaviour
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
 
-        foreach (GameObject p in triggerPlayer)
-        {
-            //PlayerScript ps = p.GetComponent<PlayerScript>();
-            //if (ps != null && ps.isRemind == false) continue; // 操作中の羊には力を加えない
-
-            Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
-            float prbNum = prb.linearVelocity.x;
-            prb.linearVelocityY = jumpForce;
-
-            if (isDirection)//右向き
-            {
-                prb.linearVelocity = new Vector2(moveSpeed, prb.linearVelocity.y);
-            }
-            else
-            {
-                prb.linearVelocity = new Vector2(-1 * moveSpeed, prb.linearVelocity.y);
-            }
-        }
-
-
         //移動
         if (isDirection)//右向き
         {
@@ -258,6 +234,25 @@ public class PlayerScriptKitano : MonoBehaviour
         else
         {
             rb.linearVelocity = new Vector2(-1 * moveSpeed, rb.linearVelocity.y);
+        }
+
+        //Triggerで当たり判定を取っている羊も同じ動きをさせる
+        foreach (GameObject p in triggerPlayer)
+        {
+            if (p.transform.position.y > transform.position.y)
+            {
+                Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
+                prb.gravityScale = 1;
+
+                if (isDirection)//右向き
+                {
+                    prb.linearVelocity = rb.linearVelocity;
+                }
+                else
+                {
+                    prb.linearVelocity = rb.linearVelocity;
+                }
+            }
         }
 
 
@@ -283,14 +278,11 @@ public class PlayerScriptKitano : MonoBehaviour
     {
         if (gameObject.layer == 3) gameObject.layer = 6;
 
-        if (loopDie && manager.GetGameTimer() >= timeList[0])
+        if (loopDie && (manager.GetGameTimer() >= timeList[0]))
         {
-            if (sheepSpawner.isNotDieSheep() == false)
-            {
-                SheepIsLive();
-                num = 1;
-                return;
-            }
+            SheepIsLive();
+            num = 1;
+            return;
         }
 
 
@@ -299,24 +291,22 @@ public class PlayerScriptKitano : MonoBehaviour
         {
             switch (actionList[num])
             {
-                case 0:
+                case 0://0をジャンプ
                     rb.gravityScale = 1;
-                    transform.position = positionList[num];
                     Jump();
                     num++;
                     break;
-                case 1:
+                case 1://1を方向転換
                     ChangeDirection();
-                    transform.position = positionList[num];
                     num++;
                     break;
-                case 3:
+                case 3://3で羊に接着
                     MountOnNearestLoopSheep();
-                    transform.position = positionList[num];
                     num++;
                     break;
-                case 4:
+                case 4://4でgroundに着地
                     rb.gravityScale = 0;
+                    transform.position = positionList[num];
                     rb.linearVelocity = new Vector2(0, 0);
                     num++;
                     break;
@@ -398,12 +388,18 @@ public class PlayerScriptKitano : MonoBehaviour
     //当たり判定処理
     void FouceReceiveLayer()
     {
-        //死亡しているなら
+        Collider2D collider = GetComponent<BoxCollider2D>();
+
         if (isDie)
         {
-            Collider2D collider = GetComponent<BoxCollider2D>();
-            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("PlayerDie"));
-            //collider.forceReceiveLayers |= (1 << LayerMask.NameToLayer("Player"));
+            collider.forceReceiveLayers = 0;
+            // 踏み台として、生きている羊・ループ羊どちらにも力を送る
+            collider.forceSendLayers = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("PlayerDie"));
+        }
+        else
+        {
+            collider.forceReceiveLayers = Physics2D.AllLayers;
+            collider.forceSendLayers = Physics2D.AllLayers;
         }
     }
     //近くのループ羊に乗る関数やつぁ
@@ -444,8 +440,8 @@ public class PlayerScriptKitano : MonoBehaviour
         {
             Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
+            rb.linearVelocity = Vector2.zero;
             audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
-            if (isAnimation != true) AddList(4);
             isGrounded = true;
         }
     }
