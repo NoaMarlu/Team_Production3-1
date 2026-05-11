@@ -130,7 +130,6 @@ public class PlayerScript : MonoBehaviour
         GameTimerDayo = manager.GetGameTimer();
 
         ChangeSprite();
-        FouceReceiveLayer();
 
         if (isRemind)
         {
@@ -208,7 +207,9 @@ public class PlayerScript : MonoBehaviour
         if (this.transform.position.y <= -5.47f)
         {
             gameObject.tag = "ground";
+            rb.bodyType = RigidbodyType2D.Kinematic;//キネマティックにすると力が加わらなくなる
             loopDie = true;
+            FouceReceiveLayer();
             if (DieTime == 0) DieTime = manager.GetGameTimer();
             if (isRemind == false || isDie == false)
             {
@@ -382,26 +383,15 @@ public class PlayerScript : MonoBehaviour
         S_Dash = Resources.Load<Sprite>("S_Dash");
 
     }
-    //クリア処理
-    void Goal()
-    {
-
-    }
     //当たり判定処理
     void FouceReceiveLayer()
     {
         Collider2D collider = GetComponent<BoxCollider2D>();
+        LayerMask layerName = LayerMask.GetMask("Player");
 
         if (isDie)
         {
-            collider.forceReceiveLayers = 0;
-            // 踏み台として、生きている羊・ループ羊どちらにも力を送る
-            collider.forceSendLayers = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("PlayerDie"));
-        }
-        else
-        {
-            collider.forceReceiveLayers = Physics2D.AllLayers;
-            collider.forceSendLayers = Physics2D.AllLayers;
+            collider.forceReceiveLayers = layerName;
         }
     }
     //近くのループ羊に乗る関数やつぁ
