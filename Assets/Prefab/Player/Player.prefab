@@ -15,7 +15,6 @@ GameObject:
   - component: {fileID: 3104374664562586459}
   - component: {fileID: 4633745599034889793}
   - component: {fileID: -8921020831439152454}
-  - component: {fileID: 7210255949891151174}
   m_Layer: 3
   m_Name: Player
   m_TagString: Player
@@ -351,22 +350,3 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!251 &7210255949891151174
-PlatformEffector2D:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4874309050968122548}
-  m_Enabled: 1
-  m_UseColliderMask: 1
-  m_ColliderMask:
-    serializedVersion: 2
-    m_Bits: 4294967295
-  m_RotationalOffset: 0
-  m_UseOneWay: 1
-  m_UseOneWayGrouping: 0
-  m_SurfaceArc: 180
-  m_UseSideFriction: 0
-  m_UseSideBounce: 0
-  m_SideArc: 1
