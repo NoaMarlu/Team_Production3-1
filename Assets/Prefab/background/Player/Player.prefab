@@ -12,11 +12,11 @@ GameObject:
   - component: {fileID: 8499137455032029938}
   - component: {fileID: 7730219475382640168}
   - component: {fileID: 7232798093288124599}
+  - component: {fileID: 3104374664562586459}
   - component: {fileID: 4633745599034889793}
-  - component: {fileID: 6599265171971034208}
-  - component: {fileID: -5532604883410955818}
+  - component: {fileID: -8921020831439152454}
   m_Layer: 3
-  m_Name: PlayerKitano
+  m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -116,7 +116,7 @@ BoxCollider2D:
   m_LayerOverridePriority: 0
   m_ForceSendLayers:
     serializedVersion: 2
-    m_Bits: 63
+    m_Bits: 4294967295
   m_ForceReceiveLayers:
     serializedVersion: 2
     m_Bits: 4294967295
@@ -158,7 +158,7 @@ Rigidbody2D:
   m_LinearDamping: 0
   m_AngularDamping: 0.05
   m_GravityScale: 1
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 6200000, guid: 6bdf7a27af752954fbb266f50e6ed26e, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0
@@ -167,8 +167,46 @@ Rigidbody2D:
     m_Bits: 0
   m_Interpolate: 0
   m_SleepingMode: 1
-  m_CollisionDetection: 0
+  m_CollisionDetection: 1
   m_Constraints: 4
+--- !u!114 &3104374664562586459
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4874309050968122548}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c9e99bc37cc597c47b235a3dc55fe10c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
+  moveSpeed: 3
+  jumpForce: 7
+  isDie: 0
+  timeList: []
+  actionList: 
+  positionList: []
+  isSpawn: 0
+  isRemind: 0
+  num: 0
+  DieTime: 0
+  loopDie: 0
+  GameTimerDayo: 0
+  SpawnTiming: 0
+  isloopSpawn: 0
+  startDistance: 3
+  startMoveSpeed: 3
+  audioClip:
+  - {fileID: 8300000, guid: e58b97546adb74d4fa5d8196349d13ed, type: 3}
+  - {fileID: 8300000, guid: da8bda2a2152bdd4eaf9bfbd863aa71d, type: 3}
+  - {fileID: 8300000, guid: 2ab584d12e5d6394198a60e59fe5d3af, type: 3}
+  SEVolume:
+  - 0.5
+  - 0.3
+  - 1
+  mountRadius: 3
+  isOverRaped: 0
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0
@@ -215,43 +253,7 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.41, y: 1.01}
   m_EdgeRadius: 0
---- !u!114 &6599265171971034208
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4874309050968122548}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 0887deb0698e63047a7ef607ec7d5f60, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerScriptKitano
-  moveSpeed: 3
-  jumpForce: 7
-  isDie: 0
-  timeList: []
-  actionList: 
-  isSpawn: 0
-  isRemind: 0
-  num: 0
-  DieTime: 0
-  loopDie: 0
-  GameTimerDayo: 0
-  SpawnTiming: 0
-  isloopSpawn: 0
-  startDistance: 3
-  startMoveSpeed: 3
-  audioClip:
-  - {fileID: 8300000, guid: e58b97546adb74d4fa5d8196349d13ed, type: 3}
-  - {fileID: 8300000, guid: 6eebee77fa2ec9d439ad3cea6a05b5fb, type: 3}
-  - {fileID: 8300000, guid: 2ab584d12e5d6394198a60e59fe5d3af, type: 3}
-  SEVolume:
-  - 0.5
-  - 0.3
-  - 1
-  mountRadius: 3
---- !u!82 &-5532604883410955818
+--- !u!82 &-8921020831439152454
 AudioSource:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}

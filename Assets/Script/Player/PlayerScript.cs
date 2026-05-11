@@ -1,3 +1,4 @@
+
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -432,7 +433,7 @@ public class PlayerScript : MonoBehaviour
             );
         }
     }
-
+    //生成時に羊がいたら羊の上に乗る
     private void OnCollisionEnter2D(Collision2D collision)
     {
         // 地面との接触判定

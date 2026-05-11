@@ -54,7 +54,7 @@ public class SheepSpawner : MonoBehaviour
             return true;//Spawn成功
         }
         return false;
-
+        
     }
     //吹き出し表示
     IEnumerator showUI()
