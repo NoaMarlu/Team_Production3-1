@@ -1860,6 +1860,7 @@ GameObject:
   - component: {fileID: 1968852677}
   - component: {fileID: 1968852676}
   - component: {fileID: 1968852678}
+  - component: {fileID: 1968852679}
   m_Layer: 0
   m_Name: Goal
   m_TagString: Untagged
@@ -1987,6 +1988,19 @@ BoxCollider2D:
   m_AutoTiling: 0
   m_Size: {x: 1.26, y: 1.8}
   m_EdgeRadius: 0
+--- !u!114 &1968852679
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1968852675}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 68a8f68aa87e9f44a950740aa7e4d08e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::goal
+  SceneName: STAGE2
 --- !u!1001 &2097036442
 PrefabInstance:
   m_ObjectHideFlags: 0
