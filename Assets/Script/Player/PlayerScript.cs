@@ -159,7 +159,7 @@ public class PlayerScript : MonoBehaviour
             {
                 if (isGrounded) Jump();
             }
-            if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.C))
+            if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
             {
                 MountOnNearestLoopSheep();
             }
