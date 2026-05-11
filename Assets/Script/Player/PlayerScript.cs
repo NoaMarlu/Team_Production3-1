@@ -195,6 +195,7 @@ public class PlayerScript : MonoBehaviour
         rb.linearVelocity = Vector2.zero;//落下の力をリセット
         spr.flipX = false;
         isDirection = true;
+        triggerPlayer.Clear();
         if (isAnimation != true) transform.position = startPos;//位置
         if (isDie)
         {

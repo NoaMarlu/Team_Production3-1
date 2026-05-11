@@ -32,7 +32,7 @@ public class SheepSpawner : MonoBehaviour
         //最初に一体生成
         sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
         sheepCount++;
-        StartCoroutine(showUI());
+        //StartCoroutine(showUI());
     }
     void Update()
     {
@@ -49,7 +49,7 @@ public class SheepSpawner : MonoBehaviour
 
             sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
             sheepCount++;
-            StartCoroutine(showUI());
+            //StartCoroutine(showUI());
 
             return true;//Spawn成功
         }
