@@ -81,13 +81,6 @@ public class PlayerScript : MonoBehaviour
     private float mountOffset = 3.0f; // 羊の上に乗るためのYオフセット
     public bool isMount=false;
     public GameObject nearestCol = null;
-    private struct IgnoreCol 
-    {
-        public BoxCollider2D col1;
-        public BoxCollider2D col2;
-    }
-    IgnoreCol igcol;
-
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
@@ -123,7 +116,6 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
-
         Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
         ///StartAnimation///
 
@@ -498,7 +490,7 @@ public class PlayerScript : MonoBehaviour
     }
     void IgnoreReset()
     {
-        Physics2D.IgnoreCollision(igcol.col1, igcol.col2, true);
+        if(nearestCol!=null)Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), true);
         isMount = false;
         nearestCol = null;
     }
