@@ -1,6 +1,7 @@
 
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScript : MonoBehaviour
 {
@@ -25,6 +26,7 @@ public class PlayerScript : MonoBehaviour
     public List<float> timeList = new List<float>();
     public List<int> actionList = new List<int>();//0をジャンプ、1を方向転換、2を生成タイミング、3で羊に接着、4でgroundに着地
     public List<Vector2> positionList = new List<Vector2>();
+    public List<GameObject> nearestSheep = new List<GameObject>();
 
 
     /*Spawn*/
@@ -76,7 +78,16 @@ public class PlayerScript : MonoBehaviour
 
     /*MountOnLoopSheep*/
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
-    private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
+    private float mountOffset = 3.0f; // 羊の上に乗るためのYオフセット
+    public bool isMount=false;
+    public GameObject nearestCol = null;
+    private struct IgnoreCol 
+    {
+        public BoxCollider2D col1;
+        public BoxCollider2D col2;
+    }
+    IgnoreCol igcol;
+
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
@@ -129,13 +140,17 @@ public class PlayerScript : MonoBehaviour
         //           return;
         //       }
         isAnimation = false;
-
+        //羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
+        if (isAnimation) this.gameObject.layer = 20;
+        else this.gameObject.layer = 23;
         //////////////////////
         ///
 
-        //羊小屋のレイヤーが21で、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
-        if (isAnimation) this.gameObject.layer = 20;
-        else this.gameObject.layer = 22;
+        if (Input.GetKeyDown(KeyCode.JoystickButton10)||Input.GetKeyDown(KeyCode.Escape))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
 
 
         GameTimerDayo = manager.GetGameTimer();
@@ -172,6 +187,8 @@ public class PlayerScript : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
             {
+                isMount = false;
+                nearestCol = null;
                 MountOnNearestLoopSheep();
             }
         }
@@ -211,6 +228,8 @@ public class PlayerScript : MonoBehaviour
         spr.flipX = false;
         isDirection = true;
         triggerPlayer.Clear();
+        IgnoreReset();
+
         if (isAnimation != true) transform.position = startPos;//位置
         if (isDie)
         {
@@ -237,6 +256,8 @@ public class PlayerScript : MonoBehaviour
     void Jump()
     {
         AddList(0);
+
+        IgnoreReset();
 
         //ジャンプSE
         audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
@@ -285,6 +306,11 @@ public class PlayerScript : MonoBehaviour
         timeList.Add(manager.GetGameTimer());
         actionList.Add(num);
         positionList.Add(transform.position);
+        if (isMount && nearestCol != null)
+        {
+            nearestSheep.Add(nearestCol);
+        }
+        else nearestSheep.Add(null);
     }
     //記録された位置を再生する
     void RemindAction()
@@ -396,13 +422,13 @@ public class PlayerScript : MonoBehaviour
     //当たり判定処理
     void FouceReceiveLayer()
     {
-        Collider2D collider = GetComponent<BoxCollider2D>();
-        LayerMask layerName = LayerMask.GetMask("Player");
+        //BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        //LayerMask layerName = LayerMask.GetMask("Player");
 
-        if (isDie)
-        {
-            collider.forceReceiveLayers = layerName;
-        }
+        //if (isDie)
+        //{
+        //    collider.forceReceiveLayers = layerName;
+        //}
     }
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
@@ -411,27 +437,50 @@ public class PlayerScript : MonoBehaviour
         PlayerScript nearest = null;
         float nearestDist = float.MaxValue;
 
-        foreach (GameObject sheep in sheepSpawner.sheeps)
-        {
-            PlayerScript ps = sheep.GetComponent<PlayerScript>();
-            if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
-            if (!ps.isRemind) continue; // ループ羊のみ対象
+        /*内田加筆*/
+        IgnoreReset();
+        /////////////
 
-            float dist = Vector2.Distance(transform.position, sheep.transform.position);
-            if (dist <= mountRadius && dist < nearestDist)
+        if (isRemind != true)//ループしていないなら
+        {
+            foreach (GameObject sheep in sheepSpawner.sheeps)
             {
-                nearestDist = dist;
-                nearest = ps;
+                PlayerScript ps = sheep.GetComponent<PlayerScript>();
+                if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
+                if (!ps.isRemind) continue; // ループ羊のみ対象
+
+                float dist = Vector2.Distance(transform.position, sheep.transform.position);
+                if (dist <= mountRadius && dist < nearestDist)
+                {
+                    nearestDist = dist;
+                    nearest = ps;
+                    nearestCol = sheep;
+                }
             }
         }
+        else//ループ中にこの関数が呼ばれている場合
+        {
+            nearest = nearestSheep[num].GetComponent<PlayerScript>();
+            nearestCol = nearestSheep[num];
+        }
+
 
         if (nearest != null)
         {
+            isMount = true;
+
+            /*内田加筆*/
+            //nearestとの衝突判定をONにする
+            Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), false);
+            /////////////
+
             // 最も近いループ羊の真上に位置をセット
             transform.position = new Vector2(
                 nearest.transform.position.x,
                 nearest.transform.position.y + mountOffset
             );
+            
+
         }
     }
     //羊が上にいる場合に、力を連動させる
@@ -446,6 +495,12 @@ public class PlayerScript : MonoBehaviour
             hits.Add(hit);
             triggerPlayer.Add(hit.collider.gameObject);
         }
+    }
+    void IgnoreReset()
+    {
+        Physics2D.IgnoreCollision(igcol.col1, igcol.col2, true);
+        isMount = false;
+        nearestCol = null;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
