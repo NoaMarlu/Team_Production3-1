@@ -722,7 +722,7 @@ MonoBehaviour:
   - {fileID: 8300000, guid: 535463cf62b3f5749be1651c228ee38f, type: 3}
   waitTime: 2
   shakeSpeed: 1
-  shakeRadian: 3
+  shakeRadian: 4
   shakeCount: 3
 --- !u!82 &1589358259
 AudioSource:

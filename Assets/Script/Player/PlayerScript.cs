@@ -174,6 +174,7 @@ public class PlayerScript : MonoBehaviour
         {
 
             SheepIsDie();
+            FindNearSheep();
 
             //if(isGrounded)
             //{
@@ -507,19 +508,25 @@ public class PlayerScript : MonoBehaviour
     //矢印UIの表示管理
     void FindNearSheep()
     {
-        float nearestDist = float.MaxValue;
+        float nearestDist = mountRadius;
+        bool b = false;
         foreach (GameObject sheep in sheepSpawner.sheeps)
         {
+            if (sheep == this.gameObject) continue;
             PlayerScript ps = sheep.GetComponent<PlayerScript>();
+
             if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
-            if (!ps.isRemind) continue; // ループ羊のみ対象
+
+            if (ps==null||!ps.isRemind) continue; // ループ羊のみ対象
 
             float dist = Vector2.Distance(transform.position, sheep.transform.position);
             if (dist <= mountRadius && dist < nearestDist)
             {
-                setArrow(true);
+                nearestDist = dist;
+                b = true;
             }
         }
+        setArrow(b);
     }
     void setArrow(bool b)
     {
