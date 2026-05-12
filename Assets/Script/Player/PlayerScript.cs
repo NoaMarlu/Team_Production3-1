@@ -131,6 +131,11 @@ public class PlayerScript : MonoBehaviour
         isAnimation = false;
 
         //////////////////////
+        ///
+
+        //羊小屋のレイヤーが21で、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
+        if (isAnimation) this.gameObject.layer = 20;
+        else this.gameObject.layer = 22;
 
 
         GameTimerDayo = manager.GetGameTimer();

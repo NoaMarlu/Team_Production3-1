@@ -84,7 +84,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 10
+  m_SortingOrder: 20
   m_MaskInteraction: 0
   m_Sprite: {fileID: 7987313134780462315, guid: 33583d8de4e4c704e9a33634f988276d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -195,6 +195,7 @@ MonoBehaviour:
   GameTimerDayo: 0
   SpawnTiming: 0
   isloopSpawn: 0
+  Velocity: {x: 0, y: 0}
   startDistance: 3
   startMoveSpeed: 3
   audioClip:
@@ -207,6 +208,8 @@ MonoBehaviour:
   - 1
   mountRadius: 3
   isOverRaped: 0
+  rayRadius: 0.5
+  rayDistance: 0.5
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0
