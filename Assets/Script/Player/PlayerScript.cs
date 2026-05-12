@@ -78,7 +78,7 @@ public class PlayerScript : MonoBehaviour
 
     /*MountOnLoopSheep*/
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
-    private float mountOffset = 3.0f; // 羊の上に乗るためのYオフセット
+    private float mountOffset = 0.2f; // 羊の上に乗るためのYオフセット
     public bool isMount=false;
     public GameObject nearestCol = null;
 
@@ -133,8 +133,16 @@ public class PlayerScript : MonoBehaviour
         //       }
         isAnimation = false;
         //羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
-        if (isAnimation) this.gameObject.layer = 20;
-        else this.gameObject.layer = 23;
+        if (isAnimation)
+        {
+            SpriteRenderer spr=gameObject.GetComponent<SpriteRenderer>();
+            spr.sortingOrder = 20;
+        }
+        else
+        {
+            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
+            spr.sortingOrder = 23;
+        }
         //////////////////////
         ///
 
@@ -452,7 +460,7 @@ public class PlayerScript : MonoBehaviour
         }
         else//ループ中にこの関数が呼ばれている場合
         {
-            nearest = nearestSheep[num].GetComponent<PlayerScript>();
+            if (nearestSheep[num]!=null)nearest = nearestSheep[num].GetComponent<PlayerScript>();
             nearestCol = nearestSheep[num];
         }
 
