@@ -90,6 +90,9 @@ public class PlayerScript : MonoBehaviour
     public float rayDistance = 0.5f;
     List<RaycastHit2D> hits = new List<RaycastHit2D>();
 
+    /*setArrow*/
+    private SpriteRenderer arrow;
+
     void Start()
     {
 
@@ -187,8 +190,6 @@ public class PlayerScript : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
             {
-                isMount = false;
-                nearestCol = null;
                 MountOnNearestLoopSheep();
             }
         }
@@ -438,7 +439,6 @@ public class PlayerScript : MonoBehaviour
 
         /*内田加筆*/
         IgnoreReset();
-        isGrounded = true;
         /////////////
 
         if (isRemind != true)//ループしていないなら
@@ -468,6 +468,7 @@ public class PlayerScript : MonoBehaviour
         if (nearest != null)
         {
             isMount = true;
+            isGrounded = true;
 
             /*内田加筆*/
             //nearestとの衝突判定をONにする
@@ -496,11 +497,34 @@ public class PlayerScript : MonoBehaviour
             triggerPlayer.Add(hit.collider.gameObject);
         }
     }
+    //衝突判定を全て無効にする
     void IgnoreReset()
     {
         if(nearestCol!=null)Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), true);
         isMount = false;
         nearestCol = null;
+    }
+    //矢印UIの表示管理
+    void FindNearSheep()
+    {
+        float nearestDist = float.MaxValue;
+        foreach (GameObject sheep in sheepSpawner.sheeps)
+        {
+            PlayerScript ps = sheep.GetComponent<PlayerScript>();
+            if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
+            if (!ps.isRemind) continue; // ループ羊のみ対象
+
+            float dist = Vector2.Distance(transform.position, sheep.transform.position);
+            if (dist <= mountRadius && dist < nearestDist)
+            {
+                setArrow(true);
+            }
+        }
+    }
+    void setArrow(bool b)
+    {
+        if (b) { arrow.enabled = true; }
+        else { arrow.enabled = false; }
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
