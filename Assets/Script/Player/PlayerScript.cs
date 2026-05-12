@@ -78,7 +78,7 @@ public class PlayerScript : MonoBehaviour
 
     /*MountOnLoopSheep*/
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
-    private float mountOffset = 0.2f; // 羊の上に乗るためのYオフセット
+    public float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
     public bool isMount=false;
     public GameObject nearestCol = null;
 
@@ -229,7 +229,6 @@ public class PlayerScript : MonoBehaviour
         isDirection = true;
         triggerPlayer.Clear();
         IgnoreReset();
-
         if (isAnimation != true) transform.position = startPos;//位置
         if (isDie)
         {
@@ -439,6 +438,7 @@ public class PlayerScript : MonoBehaviour
 
         /*内田加筆*/
         IgnoreReset();
+        isGrounded = true;
         /////////////
 
         if (isRemind != true)//ループしていないなら
