@@ -452,7 +452,7 @@ public class PlayerScript : MonoBehaviour
         }
         else//ループ中にこの関数が呼ばれている場合
         {
-            nearest = nearestSheep[num].GetComponent<PlayerScript>();
+            if (nearestSheep[num]!=null)nearest = nearestSheep[num].GetComponent<PlayerScript>();
             nearestCol = nearestSheep[num];
         }
 
