@@ -96,17 +96,7 @@ public class PlayerScript : MonoBehaviour
     void Start()
     {
 
-        audioSource = GetComponent<AudioSource>();
-        GameObject obj = GameObject.Find("GameManager");
-        manager = obj.GetComponent<GameManager>();
-        rb = GetComponent<Rigidbody2D>();
-        sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
-        spr = GetComponent<SpriteRenderer>();
-        E_Spawn = Resources.Load<GameObject>("E_Spawn");
-        Transform childObj = transform.GetChild(0);
-        arrow = childObj.GetComponent<SpriteRenderer>();
-        arrow.enabled = false;
-
+        Init();
         SheepIsLive();
         SetSprite();
 
@@ -117,7 +107,6 @@ public class PlayerScript : MonoBehaviour
 
         //Debug
         SpawnTiming = manager.GetGameTimer();
-
 
     }
     void Update()
@@ -547,6 +536,20 @@ public class PlayerScript : MonoBehaviour
         }
         //////////////////////
         ///
+    }
+    //初期化
+    void Init()
+    {
+        audioSource = GetComponent<AudioSource>();
+        GameObject obj = GameObject.Find("GameManager");
+        manager = obj.GetComponent<GameManager>();
+        rb = GetComponent<Rigidbody2D>();
+        sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
+        spr = GetComponent<SpriteRenderer>();
+        E_Spawn = Resources.Load<GameObject>("E_Spawn");
+        Transform childObj = transform.GetChild(0);
+        arrow = childObj.GetComponent<SpriteRenderer>();
+        arrow.enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
