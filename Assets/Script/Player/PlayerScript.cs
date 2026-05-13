@@ -80,6 +80,7 @@ public class PlayerScript : MonoBehaviour
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
     public float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
     public bool isMount=false;
+    public bool isMountFunc = false;
     public GameObject nearestCol = null;
 
     /*当たり判定処理*/
@@ -91,7 +92,7 @@ public class PlayerScript : MonoBehaviour
     List<RaycastHit2D> hits = new List<RaycastHit2D>();
 
     /*setArrow*/
-    private SpriteRenderer arrow;
+    public SpriteRenderer arrow;
 
     void Start()
     {
@@ -103,6 +104,9 @@ public class PlayerScript : MonoBehaviour
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
         spr = GetComponent<SpriteRenderer>();
         E_Spawn = Resources.Load<GameObject>("E_Spawn");
+        Transform childObj = transform.GetChild(0);
+        arrow = childObj.GetComponent<SpriteRenderer>();
+        arrow.enabled = false;
 
         SheepIsLive();
         SetSprite();
@@ -119,6 +123,7 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
+
         Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
         ///StartAnimation///
 
@@ -159,6 +164,7 @@ public class PlayerScript : MonoBehaviour
         GameTimerDayo = manager.GetGameTimer();
 
         ChangeSprite();
+        MountOnNearestLoopSheep();
         LinkForce();
 
         if (isRemind)
@@ -191,7 +197,8 @@ public class PlayerScript : MonoBehaviour
             }
             if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
             {
-                MountOnNearestLoopSheep();
+                isMountFunc = true;
+                isMount = true;
             }
         }
 
@@ -257,8 +264,9 @@ public class PlayerScript : MonoBehaviour
     void Jump()
     {
         AddList(0);
-
         IgnoreReset();
+        isMountFunc = false;
+        isMount = false;
 
         //ジャンプSE
         audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
@@ -307,7 +315,7 @@ public class PlayerScript : MonoBehaviour
         timeList.Add(manager.GetGameTimer());
         actionList.Add(num);
         positionList.Add(transform.position);
-        if (isMount && nearestCol != null)
+        if (nearestCol != null)
         {
             nearestSheep.Add(nearestCol);
         }
@@ -341,7 +349,9 @@ public class PlayerScript : MonoBehaviour
                     num++;
                     break;
                 case 3://3で羊に接着
-                    MountOnNearestLoopSheep();
+                    isMountFunc = true;
+                    isMount = true;
+                    nearestCol = nearestSheep[num];
                     num++;
                     break;
                 case 4://4でgroundに着地
@@ -434,12 +444,13 @@ public class PlayerScript : MonoBehaviour
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        AddList(3);
+        if (isMountFunc == false) return;
+
+
+        /*内田加筆*/
         PlayerScript nearest = null;
         float nearestDist = float.MaxValue;
 
-        /*内田加筆*/
-        IgnoreReset();
         /////////////
 
         if (isRemind != true)//ループしていないなら
@@ -461,19 +472,27 @@ public class PlayerScript : MonoBehaviour
         }
         else//ループ中にこの関数が呼ばれている場合
         {
-            if (nearestSheep[num]!=null)nearest = nearestSheep[num].GetComponent<PlayerScript>();
-            nearestCol = nearestSheep[num];
+            if (nearestCol == null)
+            {
+                isMountFunc = false;
+                return;
+            }
+            nearest = nearestCol.GetComponent<PlayerScript>();
         }
 
 
         if (nearest != null)
         {
-            isMount = true;
-            isGrounded = true;
 
             /*内田加筆*/
-            //nearestとの衝突判定をONにする
-            Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), false);
+            if (isMount)
+            {
+                AddList(3);
+                IgnoreReset();
+                rb.linearVelocity = Vector2.zero;
+                isMount = false;
+                isGrounded = true;
+            }
             /////////////
 
             // 最も近いループ羊の真上に位置をセット
@@ -481,9 +500,15 @@ public class PlayerScript : MonoBehaviour
                 nearest.transform.position.x,
                 nearest.transform.position.y + mountOffset
             );
-            
+
 
         }
+        else
+        {
+            isMountFunc = false;
+            isMount = false;
+        }
+
     }
     //羊が上にいる場合に、力を連動させる
     void LinkForce()
@@ -503,7 +528,7 @@ public class PlayerScript : MonoBehaviour
     {
         if(nearestCol!=null)Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), true);
         isMount = false;
-        nearestCol = null;
+        //nearestCol = null;
     }
     //矢印UIの表示管理
     void FindNearSheep()
