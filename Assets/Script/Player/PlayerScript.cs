@@ -56,6 +56,7 @@ public class PlayerScript : MonoBehaviour
     private Sprite[] S_Standby_Death;
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
+    public Vector2 Velocity;
     private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
@@ -79,6 +80,7 @@ public class PlayerScript : MonoBehaviour
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
     public float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
     public bool isMount=false;
+    public bool isMountFunc = false;
     public GameObject nearestCol = null;
 
     /*当たり判定処理*/
@@ -102,10 +104,9 @@ public class PlayerScript : MonoBehaviour
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
         spr = GetComponent<SpriteRenderer>();
         E_Spawn = Resources.Load<GameObject>("E_Spawn");
-
-        /*setArrow*/
-        Transform arrowTrans = transform.GetChild(0);
-        arrow = arrowTrans.GetComponent<SpriteRenderer>();
+        Transform childObj = transform.GetChild(0);
+        arrow = childObj.GetComponent<SpriteRenderer>();
+        arrow.enabled = false;
 
         SheepIsLive();
         SetSprite();
@@ -123,24 +124,91 @@ public class PlayerScript : MonoBehaviour
     void Update()
     {
 
-        AnimationFunc();
+        Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
+        ///StartAnimation///
+
+        //       if (isAnimation)
+        //       {
+        //           transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
+        //           if (transform.position.x >= startPos.x + startDistance)
+        //           {
+        //               isAnimation = false;
+        //               startPos=transform.position;
+        //               SheepIsLive();
+        //               AddList(2);
+        //           }
+        //           return;
+        //       }
+        isAnimation = false;
+        //羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
+        if (isAnimation)
+        {
+            SpriteRenderer spr=gameObject.GetComponent<SpriteRenderer>();
+            spr.sortingOrder = 20;
+        }
+        else
+        {
+            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
+            spr.sortingOrder = 23;
+        }
+        //////////////////////
+        ///
+
+        if (Input.GetKeyDown(KeyCode.JoystickButton10)||Input.GetKeyDown(KeyCode.Escape))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
+
+
+        GameTimerDayo = manager.GetGameTimer();
+
         ChangeSprite();
+        MountOnNearestLoopSheep();
         LinkForce();
-        DebugFunc();
 
         if (isRemind)
         {
+            //if (isGrounded)
+            //{ 
+            //    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            //}
             SheepIsDie();
             RemindAction();
         }
         else
         {
+
             SheepIsDie();
             FindNearSheep();
-            PlayerInput();
+
+            //if(isGrounded)
+            //{
+            //    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
+            //}
+
+            //死亡済みなら操作を取りやめる
+            if (isDie) return;
+
+            if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
+            if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
+            {
+                if (isGrounded) isJump = true;
+            }
+            if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
+            {
+                isMountFunc = true;
+                isMount = true;
+            }
         }
 
-         Spawn();
+        if (isSpawn == false)
+        {
+            Spawn();
+        }
+
+        //Debug
+        Velocity = rb.linearVelocity;
 
     }
     void FixedUpdate()
@@ -196,8 +264,9 @@ public class PlayerScript : MonoBehaviour
     void Jump()
     {
         AddList(0);
-
         IgnoreReset();
+        isMountFunc = false;
+        isMount = false;
 
         //ジャンプSE
         audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
@@ -246,7 +315,7 @@ public class PlayerScript : MonoBehaviour
         timeList.Add(manager.GetGameTimer());
         actionList.Add(num);
         positionList.Add(transform.position);
-        if (isMount && nearestCol != null)
+        if (nearestCol != null)
         {
             nearestSheep.Add(nearestCol);
         }
@@ -280,7 +349,9 @@ public class PlayerScript : MonoBehaviour
                     num++;
                     break;
                 case 3://3で羊に接着
-                    MountOnNearestLoopSheep();
+                    isMountFunc = true;
+                    isMount = true;
+                    nearestCol = nearestSheep[num];
                     num++;
                     break;
                 case 4://4でgroundに着地
@@ -296,9 +367,7 @@ public class PlayerScript : MonoBehaviour
     //LBでスポーン
     void Spawn()
     {
-        if (isSpawn) return;
-
-            if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
+        if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
@@ -375,12 +444,13 @@ public class PlayerScript : MonoBehaviour
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        AddList(3);
+        if (isMountFunc == false) return;
+
+
+        /*内田加筆*/
         PlayerScript nearest = null;
         float nearestDist = float.MaxValue;
 
-        /*内田加筆*/
-        IgnoreReset();
         /////////////
 
         if (isRemind != true)//ループしていないなら
@@ -402,19 +472,27 @@ public class PlayerScript : MonoBehaviour
         }
         else//ループ中にこの関数が呼ばれている場合
         {
-            if (nearestSheep[num]!=null)nearest = nearestSheep[num].GetComponent<PlayerScript>();
-            nearestCol = nearestSheep[num];
+            if (nearestCol == null)
+            {
+                isMountFunc = false;
+                return;
+            }
+            nearest = nearestCol.GetComponent<PlayerScript>();
         }
 
 
         if (nearest != null)
         {
-            isMount = true;
-            isGrounded = true;
 
             /*内田加筆*/
-            //nearestとの衝突判定をONにする
-            Physics2D.IgnoreCollision(this.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), false);
+            if (isMount)
+            {
+                AddList(3);
+                IgnoreReset();
+                rb.linearVelocity = Vector2.zero;
+                isMount = false;
+                isGrounded = true;
+            }
             /////////////
 
             // 最も近いループ羊の真上に位置をセット
@@ -422,9 +500,15 @@ public class PlayerScript : MonoBehaviour
                 nearest.transform.position.x,
                 nearest.transform.position.y + mountOffset
             );
-            
+
 
         }
+        else
+        {
+            isMountFunc = false;
+            isMount = false;
+        }
+
     }
     //羊が上にいる場合に、力を連動させる
     void LinkForce()
@@ -444,18 +528,17 @@ public class PlayerScript : MonoBehaviour
     {
         if(nearestCol!=null)Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), true);
         isMount = false;
-        nearestCol = null;
+        //nearestCol = null;
     }
     //矢印UIの表示管理
     void FindNearSheep()
     {
         float nearestDist = mountRadius;
         bool b = false;
-        PlayerScript ps=null;
         foreach (GameObject sheep in sheepSpawner.sheeps)
         {
             if (sheep == this.gameObject) continue;
-            ps = sheep.GetComponent<PlayerScript>();
+            PlayerScript ps = sheep.GetComponent<PlayerScript>();
 
             if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
 
@@ -468,67 +551,12 @@ public class PlayerScript : MonoBehaviour
                 b = true;
             }
         }
-
-        if(ps!=null)ps.setArrow(b);
-
+        setArrow(b);
     }
-    public void setArrow(bool b)
+    void setArrow(bool b)
     {
         if (b) { arrow.enabled = true; }
         else { arrow.enabled = false; }
-    }
-    //アニメーション管理
-    void AnimationFunc()
-    {
-        ///StartAnimation///
-
-        //       if (isAnimation)
-        //       {
-        //           transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
-        //           if (transform.position.x >= startPos.x + startDistance)
-        //           {
-        //               isAnimation = false;
-        //               startPos=transform.position;
-        //               SheepIsLive();
-        //               AddList(2);
-        //           }
-        //           return;
-        //       }
-        isAnimation = false;
-        //羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
-        if (isAnimation)
-        {
-            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
-            spr.sortingOrder = 20;
-        }
-        else
-        {
-            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
-            spr.sortingOrder = 23;
-        }
-        //////////////////////
-        ///
-    }
-    //デバッグ関連
-    void DebugFunc()
-    {
-        //Debug
-        Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
-        if (Input.GetKeyDown(KeyCode.JoystickButton10) || Input.GetKeyDown(KeyCode.Escape))
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
-        GameTimerDayo = manager.GetGameTimer();
-    }
-    //プレイヤー入力関連
-    void PlayerInput()
-    {
-        //死亡済みなら操作を取りやめる
-        if (isDie) return;
-        if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
-        if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space)) if (isGrounded) isJump = true;
-        if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C)) MountOnNearestLoopSheep();
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -551,5 +579,6 @@ public class PlayerScript : MonoBehaviour
             isGrounded = false;
         }
     }
+
 
 }
