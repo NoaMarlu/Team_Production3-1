@@ -24,30 +24,24 @@ public class SheepSpawner : MonoBehaviour
     private GameManager manager;
     public float maxTime= 0;
 
+    /*レディGO!アニメーション*/
+    public bool isStartAnime;
+    private bool isStart = true;
+
     void Start()
     {
-
-        GameObject obj = GameObject.Find("GameManager");
-        manager = obj.GetComponent<GameManager>();
-
-        /*showUI*/
-        speechBubble1 = GameObject.Find("speechBubble1");
-        speechBubble2 = GameObject.Find("speechBubble2");
-        if (speechBubble1 == null) Debug.Log("speechBubble1はnullです");
-        if (speechBubble2 == null) Debug.Log("speechBubble2はnullです");
-        speechBubble1.SetActive(false);
-        speechBubble2.SetActive(false);
-
-        //最初に一体生成
-        sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
-        sheepCount++;
-        StartCoroutine(showUI());
-
+        Init();
     }
     void Update()
     {
+
+        isStartAnime = manager.isStartAnimation;
+        if (isStartAnime) return;
+
+        StartFunc();
         MaxTime();
         manager.SetGameTime(maxTime);
+
     }
 
     //スポーン処理
@@ -126,6 +120,30 @@ public class SheepSpawner : MonoBehaviour
             PlayerScript player = sheep.GetComponent<PlayerScript>();
             player.isloopSpawn = false;
         }
+    }
+
+    void Init()
+    {
+        GameObject obj = GameObject.Find("GameManager");
+        manager = obj.GetComponent<GameManager>();
+
+        /*showUI*/
+        speechBubble1 = GameObject.Find("speechBubble1");
+        speechBubble2 = GameObject.Find("speechBubble2");
+        if (speechBubble1 == null) Debug.Log("speechBubble1はnullです");
+        if (speechBubble2 == null) Debug.Log("speechBubble2はnullです");
+        speechBubble1.SetActive(false);
+        speechBubble2.SetActive(false);
+        isStartAnime = manager.isStartAnimation;
+    }
+    void StartFunc()
+    {
+        if (!isStart) return;
+        //最初に一体生成
+        sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
+        sheepCount++;
+        StartCoroutine(showUI());
+        isStart = false;
     }
 
 }

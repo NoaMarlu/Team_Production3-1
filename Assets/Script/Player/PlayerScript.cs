@@ -93,21 +93,11 @@ public class PlayerScript : MonoBehaviour
     /*setArrow*/
     public SpriteRenderer arrow;
 
+
     void Start()
     {
-
         Init();
-        SheepIsLive();
-        SetSprite();
-
-        //StartAnimation
-        //spr.sprite = S_Dash;
-        startPos = transform.position;
-        AddList(2);
-
-        //Debug
-        SpawnTiming = manager.GetGameTimer();
-
+        StartFunc();
     }
     void Update()
     {
@@ -472,11 +462,13 @@ public class PlayerScript : MonoBehaviour
             {
                 nearestDist = dist;
                 b = true;
+                ps.setArrow(b);
+                return;
             }
+            ps.setArrow(b);
         }
-        setArrow(b);
     }
-    void setArrow(bool b)
+    public void setArrow(bool b)
     {
         if (b) { arrow.enabled = true; }
         else { arrow.enabled = false; }
@@ -547,9 +539,21 @@ public class PlayerScript : MonoBehaviour
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
         spr = GetComponent<SpriteRenderer>();
         E_Spawn = Resources.Load<GameObject>("E_Spawn");
-        Transform childObj = transform.GetChild(0);
-        arrow = childObj.GetComponent<SpriteRenderer>();
         arrow.enabled = false;
+    }
+    //Start関数に入れる予定だったもの
+    void StartFunc()
+    {
+
+        Init();
+        SheepIsLive();
+        SetSprite();
+        startPos = transform.position;
+        AddList(2);
+
+        //Debug
+        SpawnTiming = manager.GetGameTimer();
+
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
