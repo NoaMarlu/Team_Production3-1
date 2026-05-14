@@ -1,56 +1,96 @@
 using UnityEngine;
-using UnityEngine.SceneManagement; // ★シーン遷移に必要です
+using UnityEngine.SceneManagement; // ★重要：シーン遷移を動かすために追加しました！
 
 public class goal : MonoBehaviour
 {
-    // ★インスペクターで設定する遷移先のシーン名
-    [Header("遷移先のシーン名")]
-    public string SceneName;
+    [Header("--- アニメーションの設定 ---")]
+    public Animator goalAnimAnimator;
+    public string animationStateName = "Goal"; // ゴールアニメのステート名
 
-    // --- 【コメントアウト】UI関連の変数 -------------------------
-    // // ゴールした時に表示させたいオブジェクトをここに登録する
-    // public GameObject goalUI;
-    // -----------------------------------------------------------
+    [Header("--- 演出の長さ（秒） ---")]
+    public float animationDuration = 2.0f;
+
+    [Header("--- 遷移先のシーン名 ---")]
+    [Tooltip("アニメーションが終わった後に移動したいステージ（シーン）の名前を入力")]
+    public string nextSceneName; // ★シーン切り替え用の変数を合体！
+
+    private float elapsedUnscaledTime = 0f;
+    private bool isGoalTriggered = false; // ゴールしたかどうかのフラグ
 
     void Start()
     {
-        // --- 【コメントアウト】初期化処理 -------------------------
-        // // ゲーム開始時に、念のためゴールUIを隠しておく
-        // if (goalUI != null)
-        // {
-        //     goalUI.SetActive(false);
-        // }
-        // -----------------------------------------------------------
+        // 開始時はアニメーション用オブジェクトを非表示にしておく（必要に応じて）
+        if (goalAnimAnimator != null)
+        {
+            goalAnimAnimator.gameObject.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        // ★ゴールした後にだけ、時間を計測する
+        if (isGoalTriggered)
+        {
+            elapsedUnscaledTime += Time.unscaledDeltaTime;
+
+            // 規定の秒数（2秒）が経過したら、演出を終わらせてシーンを切り替える
+            if (elapsedUnscaledTime >= animationDuration)
+            {
+                EndGoalAnimationAndLoadScene();
+            }
+        }
     }
 
     private void OnTriggerEnter2D(Collider2D collision)
     {
+        // すでにゴール演出中なら、2回目以降は無視する（バグ防止）
+        if (isGoalTriggered) return;
+
         // 触れたのがプレイヤーだったら
         if (collision.CompareTag("Player"))
         {
-            Debug.Log("ゴール！");
+            isGoalTriggered = true; // タイマースタートの合図
+            elapsedUnscaledTime = 0f; // タイマーをリセット
 
-            // ★インスペクターで設定したシーン名へ遷移する
-            if (!string.IsNullOrEmpty(SceneName))
+            Time.timeScale = 0f; // ゲームを停止
+
+            if (goalAnimAnimator != null)
             {
-                SceneManager.LoadScene(SceneName);
+                goalAnimAnimator.gameObject.SetActive(true); // アニメーションを表示
+                goalAnimAnimator.updateMode = AnimatorUpdateMode.UnscaledTime; // 時間停止中も動くモードに
+                goalAnimAnimator.Play(animationStateName, 0, 0f); // アニメーションを最初から再生
             }
-            else
+
+            // プレイヤーの物理挙動を止める
+            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+            if (rb != null)
             {
-                Debug.LogWarning("遷移先のSceneNameが設定されていません！");
+                rb.linearVelocity = Vector2.zero;
+                rb.simulated = false;
             }
-
-            // --- 【コメントアウト】UI表示関連の処理 -----------------
-            // // ゴールUIを表示させる
-            // if (goalUI != null)
-            // {
-            //     goalUI.SetActive(true);
-            // }
-            // -----------------------------------------------------------
-
-            // (オプション) プレイヤーを止めたい場合は以下を追加
-            // collision.GetComponent<Rigidbody2D>().linearVelocity = Vector2.zero;
-            // collision.GetComponent<Rigidbody2D>().simulated = false; 
         }
+    }
+
+    // ★2秒経ったときに呼び出され、次のシーンへ進む合体関数
+    void EndGoalAnimationAndLoadScene()
+    {
+        Time.timeScale = 1f; // ゲームの時間を動かす
+
+        if (goalAnimAnimator != null)
+        {
+            goalAnimAnimator.gameObject.SetActive(false); // アニメーションを非表示にする
+        }
+
+        // ★インスペクターで設定されたシーン名があれば、そこへ画面を切り替える！
+        if (!string.IsNullOrEmpty(nextSceneName))
+        {
+            SceneManager.LoadScene(nextSceneName);
+        }
+        else
+        {
+            Debug.LogWarning("遷移先の nextSceneName がインスペクターで設定されていません！");
+        }
+
+        enabled = false; // このスクリプト自体のUpdateを止めて軽量化
     }
 }
