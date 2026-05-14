@@ -2015,6 +2015,10 @@ PrefabInstance:
       propertyPath: m_FlipY
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 3090789712176660986, guid: af186f4a3accd5e43b2ed7d145445e46, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7715478624625651412, guid: 19b1a8ccedc252340b80a58a18a7776d, type: 3}
     - target: {fileID: 3335280283447147124, guid: af186f4a3accd5e43b2ed7d145445e46, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: -0.49020368
@@ -2067,6 +2071,10 @@ PrefabInstance:
       propertyPath: m_FlipY
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8226726896200301487, guid: af186f4a3accd5e43b2ed7d145445e46, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 7715478624625651412, guid: 19b1a8ccedc252340b80a58a18a7776d, type: 3}
     - target: {fileID: 8896083221649282395, guid: af186f4a3accd5e43b2ed7d145445e46, type: 3}
       propertyPath: m_AnchoredPosition.x
       value: 4.53774

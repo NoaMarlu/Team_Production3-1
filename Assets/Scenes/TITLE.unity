@@ -682,6 +682,7 @@ GameObject:
   - component: {fileID: 1589358257}
   - component: {fileID: 1589358258}
   - component: {fileID: 1589358259}
+  - component: {fileID: 1589358260}
   m_Layer: 0
   m_Name: sign&Manager
   m_TagString: Untagged
@@ -720,10 +721,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::TitleManager
   audioClip:
   - {fileID: 8300000, guid: 535463cf62b3f5749be1651c228ee38f, type: 3}
-  waitTime: 2
-  shakeSpeed: 1
-  shakeRadian: 4
-  shakeCount: 3
 --- !u!82 &1589358259
 AudioSource:
   m_ObjectHideFlags: 0
@@ -821,6 +818,22 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
+--- !u!114 &1589358260
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1589358256}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f37793547a6a8b4d94559062fa51b5b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Shake
+  waitTime: 2
+  shakeSpeed: 1
+  shakeRadian: 4
+  shakeCount: 3
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
