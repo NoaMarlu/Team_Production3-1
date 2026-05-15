@@ -1151,7 +1151,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a8f68aa87e9f44a950740aa7e4d08e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::goal
-  SceneName: TITLE
+  goalAnimAnimator: {fileID: 1595020821}
+  animationStateName: Goal
+  animationDuration: 2
+  nextSceneName: TITLE
 --- !u!1001 &836588554
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1447,6 +1450,7 @@ MonoBehaviour:
   speechBubble2: {fileID: 0}
   sheeps: []
   maxTime: 0
+  isStartAnime: 0
 --- !u!4 &1337842645
 Transform:
   m_ObjectHideFlags: 0
@@ -1599,6 +1603,63 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!1001 &1439783110
+PrefabInstance:
+  m_ObjectHideFlags: 0
+  serializedVersion: 2
+  m_Modification:
+    serializedVersion: 3
+    m_TransformParent: {fileID: 0}
+    m_Modifications:
+    - target: {fileID: 635917191084092874, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_Name
+      value: GoalAnim
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalRotation.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalRotation.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6030233956154970226, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    m_RemovedComponents: []
+    m_RemovedGameObjects: []
+    m_AddedGameObjects: []
+    m_AddedComponents: []
+  m_SourcePrefab: {fileID: 100100000, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
 --- !u!1 &1456782617
 GameObject:
   m_ObjectHideFlags: 0
@@ -1842,6 +1903,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 5233515571430131352, guid: b2b8f97c6a4dce0488965381bde1e330, type: 3}
   m_PrefabInstance: {fileID: 1575922480}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1595020821 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4513090973453398514, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+  m_PrefabInstance: {fileID: 1439783110}
   m_PrefabAsset: {fileID: 0}
 --- !u!1 &1640653750
 GameObject:
@@ -2274,6 +2340,14 @@ PrefabInstance:
       propertyPath: animationObj
       value: 
       objectReference: {fileID: 2884980039154087744, guid: 7386e95fe256181438719574a7cb90ba, type: 3}
+    - target: {fileID: 8253569761280824299, guid: bfcb931e0759d9443a6a0f084f82c582, type: 3}
+      propertyPath: audioClip.Array.size
+      value: 2
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253569761280824299, guid: bfcb931e0759d9443a6a0f084f82c582, type: 3}
+      propertyPath: 'audioClip.Array.data[1]'
+      value: 
+      objectReference: {fileID: 8300000, guid: 9179743613d9d1443b81ea3d704ed50a, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2425,3 +2499,4 @@ SceneRoots:
   - {fileID: 2122843288}
   - {fileID: 1719428989}
   - {fileID: 2111501476}
+  - {fileID: 1439783110}

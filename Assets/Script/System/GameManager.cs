@@ -27,8 +27,8 @@ public class GameManager : MonoBehaviour
     {
 
         animationInstance=Instantiate(animationObj);
-
         audioSource = GetComponent<AudioSource>();
+        audioSource.PlayOneShot(audioClip[1]);
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
 
         // ★追加：ゲーム開始時は画像を非表示（見えない状態）にしておく
