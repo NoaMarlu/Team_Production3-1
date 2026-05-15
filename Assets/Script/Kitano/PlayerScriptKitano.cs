@@ -1,8 +1,16 @@
+
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class PlayerScriptKitano : MonoBehaviour
 {
+    [System.Serializable]
+    public class AudioSet
+    {
+        public AudioClip clip;
+        public float volume;
+    }
 
     /*Move*/
     private Rigidbody2D rb;
@@ -14,6 +22,7 @@ public class PlayerScriptKitano : MonoBehaviour
     /*Jump*/
     public float jumpForce = 5.0f;
     private bool isGrounded;//地面に触れているか
+    private bool isJump = false;
 
     /*SheepIsDie*/
     private SheepSpawnerKitano sheepSpawner;
@@ -23,7 +32,9 @@ public class PlayerScriptKitano : MonoBehaviour
     public List<float> timeList = new List<float>();
     public List<int> actionList = new List<int>();//0をジャンプ、1を方向転換、2を生成タイミング、3で羊に接着、4でgroundに着地
     public List<Vector2> positionList = new List<Vector2>();
-
+    public List<GameObject> nearestSheep = new List<GameObject>();
+    public LayerMask layer_ceiling;
+    public LayerMask layer_player;
 
     /*Spawn*/
     public bool isSpawn = false;
@@ -52,7 +63,6 @@ public class PlayerScriptKitano : MonoBehaviour
     private Sprite[] S_Standby_Death;
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
-    private float Velocity;
     private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
@@ -69,27 +79,34 @@ public class PlayerScriptKitano : MonoBehaviour
 
     /*SE*/
     private AudioSource audioSource;//0=ジャンプ,1=スポーン、3=踏みつけ
-    public AudioClip[] audioClip;
-    public float[] SEVolume;
+    public AudioSet[] audioSets;
+    //public AudioClip[] audioClip;
+    //public float[] SEVolume;
 
     /*MountOnLoopSheep*/
     public float mountRadius = 3.0f; // Unity上で設定可能な円の半径
-    private float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
+    public float mountOffset = 1.0f; // 羊の上に乗るためのYオフセット
+    public bool isMount = false;
+    public bool isMountFunc = false;
+    public GameObject nearestCol = null;
+    private float mountCooldown = 0f;
+    public float mountCooldownTime = 1.0f;
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
 
+    /*LinkForce*/
+    public float rayRadius = 0.5f;
+    public float rayDistance = 0.5f;
+    List<RaycastHit2D> hits = new List<RaycastHit2D>();
+
+    /*setArrow*/
+    public SpriteRenderer arrow;
+
     void Start()
     {
 
-        audioSource = GetComponent<AudioSource>();
-        GameObject obj = GameObject.Find("GameManager");
-        manager = obj.GetComponent<GameManagerKitano>();
-        rb = GetComponent<Rigidbody2D>();
-        sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawnerKitano>();
-        spr = GetComponent<SpriteRenderer>();
-        E_Spawn = Resources.Load<GameObject>("E_Spawn");
-
+        Init();
         SheepIsLive();
         SetSprite();
 
@@ -101,81 +118,39 @@ public class PlayerScriptKitano : MonoBehaviour
         //Debug
         SpawnTiming = manager.GetGameTimer();
 
-
     }
     void Update()
     {
+        if (mountCooldown > 0f) mountCooldown -= Time.deltaTime;
 
-        Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
-        ///StartAnimation///
-
-        //       if (isAnimation)
-        //       {
-        //           transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
-        //           if (transform.position.x >= startPos.x + startDistance)
-        //           {
-        //               isAnimation = false;
-        //               startPos=transform.position;
-        //               SheepIsLive();
-        //               AddList(2);
-        //           }
-        //           return;
-        //       }
-        isAnimation = false;
-
-        //////////////////////
-
-
-        GameTimerDayo = manager.GetGameTimer();
-
+        DebugFunc();
+        AnimationFunc();
         ChangeSprite();
-        FouceReceiveLayer();
+        MountOnNearestLoopSheep();
+        LinkForce();
 
         if (isRemind)
         {
-            //if (isGrounded)
-            //{ 
-            //    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            //}
             SheepIsDie();
             RemindAction();
         }
         else
         {
-
             SheepIsDie();
-
-            //if(isGrounded)
-            //{
-            //    rb.linearVelocity = new Vector2(0, rb.linearVelocity.y);
-            //}
-
-            //死亡済みなら操作を取りやめる
-            if (isDie) return;
-
-            if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) { ChangeDirection(); }
-            if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
-            {
-                if (isGrounded) Jump();
-            }
-            if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.C))
-            {
-                MountOnNearestLoopSheep();
-            }
+            FindNearSheep();
+            PlayerInput();
         }
 
-        if (isSpawn == false)
-        {
-            Spawn();
-        }
-
-        //Prototype
-        Velocity = rb.linearVelocityY;
+        Spawn();
 
     }
     void FixedUpdate()
     {
-
+        if (isJump)
+        {
+            Jump();
+            isJump = false;
+        }
     }
     //Xでの方向転換処理
     void ChangeDirection()
@@ -194,10 +169,12 @@ public class PlayerScriptKitano : MonoBehaviour
         rb.linearVelocity = Vector2.zero;//落下の力をリセット
         spr.flipX = false;
         isDirection = true;
+        triggerPlayer.Clear();
+        IgnoreReset();
         if (isAnimation != true) transform.position = startPos;//位置
         if (isDie)
         {
-            audioSource.PlayOneShot(audioClip[1], SEVolume[1]);
+            audioSource.PlayOneShot(audioSets[1].clip, audioSets[1].volume);
             Instantiate(E_Spawn, transform.position, transform.rotation);
         }
     }
@@ -207,6 +184,7 @@ public class PlayerScriptKitano : MonoBehaviour
         {
             gameObject.tag = "ground";
             loopDie = true;
+            FouceReceiveLayer();
             if (DieTime == 0) DieTime = manager.GetGameTimer();
             if (isRemind == false || isDie == false)
             {
@@ -215,13 +193,16 @@ public class PlayerScriptKitano : MonoBehaviour
             }
         }
     }
-    //自動ジャンプ処理
+    //ジャンプ処理
     void Jump()
     {
         AddList(0);
+        IgnoreReset();
+        isMountFunc = false;
+        isMount = false;
 
         //ジャンプSE
-        audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
+        audioSource.PlayOneShot(audioSets[0].clip, audioSets[0].volume);
 
         //現在の横移動速度を維持しつつ、縦方向の速度を上書きする
         rb.linearVelocity = new Vector2(rb.linearVelocity.x, jumpForce);
@@ -260,11 +241,6 @@ public class PlayerScriptKitano : MonoBehaviour
         isGrounded = false;
 
     }
-    //ジャンプ
-    void PlayJump()
-    {
-
-    }
     //プレイヤーの位置を記録
     void AddList(int num) //0をジャンプ、1を方向転換とする
     {
@@ -272,6 +248,11 @@ public class PlayerScriptKitano : MonoBehaviour
         timeList.Add(manager.GetGameTimer());
         actionList.Add(num);
         positionList.Add(transform.position);
+        if (nearestCol != null)
+        {
+            nearestSheep.Add(nearestCol);
+        }
+        else nearestSheep.Add(null);
     }
     //記録された位置を再生する
     void RemindAction()
@@ -301,7 +282,9 @@ public class PlayerScriptKitano : MonoBehaviour
                     num++;
                     break;
                 case 3://3で羊に接着
-                    MountOnNearestLoopSheep();
+                    isMountFunc = true;
+                    isMount = true;
+                    nearestCol = nearestSheep[num];
                     num++;
                     break;
                 case 4://4でgroundに着地
@@ -317,6 +300,7 @@ public class PlayerScriptKitano : MonoBehaviour
     //LBでスポーン
     void Spawn()
     {
+        if (isSpawn) return;
         if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
@@ -380,57 +364,206 @@ public class PlayerScriptKitano : MonoBehaviour
         S_Dash = Resources.Load<Sprite>("S_Dash");
 
     }
-    //クリア処理
-    void Goal()
-    {
-
-    }
     //当たり判定処理
     void FouceReceiveLayer()
     {
-        Collider2D collider = GetComponent<BoxCollider2D>();
+        //BoxCollider2D collider = GetComponent<BoxCollider2D>();
+        //LayerMask layerName = LayerMask.GetMask("Player");
 
-        if (isDie)
-        {
-            collider.forceReceiveLayers = 0;
-            // 踏み台として、生きている羊・ループ羊どちらにも力を送る
-            collider.forceSendLayers = (1 << LayerMask.NameToLayer("Player")) | (1 << LayerMask.NameToLayer("PlayerDie"));
-        }
-        else
-        {
-            collider.forceReceiveLayers = Physics2D.AllLayers;
-            collider.forceSendLayers = Physics2D.AllLayers;
-        }
+        //if (isDie)
+        //{
+        //    collider.forceReceiveLayers = layerName;
+        //}
     }
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        AddList(3);
+        if (isMountFunc == false) return;
+
+
+        /*内田加筆*/
         PlayerScriptKitano nearest = null;
         float nearestDist = float.MaxValue;
 
-        foreach (GameObject sheep in sheepSpawner.sheeps)
-        {
-            PlayerScriptKitano ps = sheep.GetComponent<PlayerScriptKitano>();
-            if (ps == null || ps == this.GetComponent<PlayerScriptKitano>()) continue;
-            if (!ps.isRemind) continue; // ループ羊のみ対象
+        /////////////
 
-            float dist = Vector2.Distance(transform.position, sheep.transform.position);
-            if (dist <= mountRadius && dist < nearestDist)
+        if (isRemind != true)//ループしていないなら
+        {
+            foreach (GameObject sheep in sheepSpawner.sheeps)
             {
-                nearestDist = dist;
-                nearest = ps;
+                PlayerScriptKitano ps = sheep.GetComponent<PlayerScriptKitano>();
+                if (ps == null || ps == this.GetComponent<PlayerScriptKitano>()) continue;
+                if (!ps.isRemind) continue; // ループ羊のみ対象
+
+                float dist = Vector2.Distance(transform.position, sheep.transform.position);
+                if (dist <= mountRadius && dist < nearestDist)
+                {
+                    nearestDist = dist;
+                    nearest = ps;
+                    nearestCol = sheep;
+                }
             }
         }
+        else//ループ中にこの関数が呼ばれている場合
+        {
+            if (nearestCol == null)
+            {
+                isMountFunc = false;
+                return;
+            }
+            nearest = nearestCol.GetComponent<PlayerScriptKitano>();
+        }
+
 
         if (nearest != null)
         {
+            /*内田加筆*/
+            if (isMount)
+            {
+                AddList(3);
+                IgnoreReset();
+                rb.linearVelocity = Vector2.zero;
+                isMount = false;
+                isGrounded = true;
+            }
+            /////////////
+
             // 最も近いループ羊の真上に位置をセット
             transform.position = new Vector2(
                 nearest.transform.position.x,
                 nearest.transform.position.y + mountOffset
             );
+
+
         }
+        else
+        {
+            isMountFunc = false;
+            isMount = false;
+        }
+
+    }
+
+    //羊が上にいる場合に、力を連動させる
+    void LinkForce()
+    {
+        hits.Clear();
+        triggerPlayer.Clear();
+
+        RaycastHit2D hit = Physics2D.CircleCast(transform.position, rayRadius, Vector2.up, rayDistance, layer_player);
+        if (hit.collider != null)
+        {
+            hits.Add(hit);
+            triggerPlayer.Add(hit.collider.gameObject);
+        }
+    }
+    //衝突判定を全て無効にする
+    void IgnoreReset()
+    {
+        if (nearestCol != null) Physics2D.IgnoreCollision(gameObject.GetComponent<BoxCollider2D>(), nearestCol.GetComponent<BoxCollider2D>(), true);
+        isMount = false;
+        //nearestCol = null;
+    }
+    //矢印UIの表示管理
+    void FindNearSheep()
+    {
+        float nearestDist = mountRadius;
+        bool b = false;
+        foreach (GameObject sheep in sheepSpawner.sheeps)
+        {
+            if (sheep == this.gameObject) continue;
+            PlayerScriptKitano ps = sheep.GetComponent<PlayerScriptKitano>();
+
+            if (ps == null || ps == this.GetComponent<PlayerScriptKitano>()) continue;
+
+            if (ps == null || !ps.isRemind) continue; // ループ羊のみ対象
+
+            float dist = Vector2.Distance(transform.position, sheep.transform.position);
+            if (dist <= mountRadius && dist < nearestDist)
+            {
+                nearestDist = dist;
+                b = true;
+            }
+        }
+        setArrow(b);
+    }
+    void setArrow(bool b)
+    {
+        if (b) { arrow.enabled = true; }
+        else { arrow.enabled = false; }
+    }
+    //Debug関連
+    void DebugFunc()
+    {
+        Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
+        if (Input.GetKeyDown(KeyCode.JoystickButton10) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
+        }
+        GameTimerDayo = manager.GetGameTimer();
+    }
+    //プレイヤー入力関連
+    void PlayerInput()
+    {
+        //死亡済みなら操作を取りやめる
+        if (isDie) return;
+        if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
+        if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space)) if (isGrounded) isJump = true;
+        if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
+        {
+            if (mountCooldown <= 0f) // クールダウン中は反応しない
+            {
+                isMountFunc = true;
+                isMount = true;
+            }
+        }
+    }
+    //アニメーション管理
+    void AnimationFunc()
+    {
+        ///StartAnimation///
+
+        //       if (isAnimation)
+        //       {
+        //           transform.position =new Vector2(transform.position.x+startMoveSpeed * Time.deltaTime, transform.position.y);
+        //           if (transform.position.x >= startPos.x + startDistance)
+        //           {
+        //               isAnimation = false;
+        //               startPos=transform.position;
+        //               SheepIsLive();
+        //               AddList(2);
+        //           }
+        //           return;
+        //       }
+        isAnimation = false;
+        //羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
+        if (isAnimation)
+        {
+            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
+            spr.sortingOrder = 20;
+        }
+        else
+        {
+            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
+            spr.sortingOrder = 23;
+        }
+        //////////////////////
+        ///
+    }
+    //初期化
+    void Init()
+    {
+        audioSource = GetComponent<AudioSource>();
+        GameObject obj = GameObject.Find("GameManager");
+        manager = obj.GetComponent<GameManagerKitano>();
+        rb = GetComponent<Rigidbody2D>();
+        sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawnerKitano>();
+        spr = GetComponent<SpriteRenderer>();
+        E_Spawn = Resources.Load<GameObject>("E_Spawn");
+        Transform childObj = transform.GetChild(0);
+        arrow = childObj.GetComponent<SpriteRenderer>();
+        arrow.enabled = false;
     }
 
     private void OnCollisionEnter2D(Collision2D collision)
@@ -441,9 +574,18 @@ public class PlayerScriptKitano : MonoBehaviour
             Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
             rb.linearVelocity = Vector2.zero;
-            audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
+            audioSource.PlayOneShot(audioSets[2].clip, audioSets[2].volume);
             isGrounded = true;
+            // 乗ってる状態で地面に触れたら強制的に降ろす
+            if (isMountFunc == true)
+            {
+                isMountFunc = false;
+                isMount = false;
+                nearestCol = null;
+                mountCooldown = mountCooldownTime;
+            }
         }
+
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
@@ -453,18 +595,29 @@ public class PlayerScriptKitano : MonoBehaviour
             isGrounded = false;
         }
     }
-    private void OnTriggerEnter2D(Collider2D collider)
+    void OnDrawGizmos()
     {
-        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
+        if (sheepSpawner == null) return;
+
+        foreach (GameObject sheep in sheepSpawner.sheeps)
         {
-            triggerPlayer.Add(collider.gameObject);
-        }
-    }
-    private void OnTriggerExit2D(Collider2D collider)
-    {
-        if (LayerMask.LayerToName(collider.gameObject.layer) == "Player" || LayerMask.LayerToName(collider.gameObject.layer) == "PlayerDie")
-        {
-            triggerPlayer.Remove(collider.gameObject);
+            PlayerScriptKitano ps = sheep.GetComponent<PlayerScriptKitano>();
+            if (ps == null || ps == this) continue;
+            if (!ps.isRemind) continue;
+
+            Vector3 checkPos = new Vector3(
+                ps.transform.position.x,
+                ps.transform.position.y + mountOffset,
+                0
+            );
+
+            // CircleCastの円を表示
+            Gizmos.color = Color.red;
+            Gizmos.DrawWireSphere(checkPos, rayRadius);
+
+            // CircleCastの方向（上方向）を表示
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawLine(checkPos, checkPos + Vector3.up * rayDistance);
         }
     }
 
