@@ -141,7 +141,6 @@ public class SheepSpawner : MonoBehaviour
         if (!isStart) return;
         //最初に一体生成
         sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
-        sheepCount++;
         StartCoroutine(showUI());
         isStart = false;
     }

@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour
+public class TutorialPlayer : MonoBehaviour
 {
 
     /*Move*/
@@ -92,11 +92,6 @@ public class PlayerScript : MonoBehaviour
     /*setArrow*/
     public SpriteRenderer arrow;
 
-    /*チュートリアル用の制御変数*/
-    public bool directionOK = true;
-    public bool mountOK = true;
-
-
     void Start()
     {
         Init();
@@ -137,7 +132,6 @@ public class PlayerScript : MonoBehaviour
     //Xでの方向転換処理
     void ChangeDirection()
     {
-        if (directionOK != true) return;
         AddList(1);
         isDirection = !isDirection;
         spr.flipX = !spr.flipX;
@@ -361,7 +355,6 @@ public class PlayerScript : MonoBehaviour
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        if (mountOK != true) return;
         if (isMountFunc == false) return;
 
 
