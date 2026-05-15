@@ -288,7 +288,6 @@ MonoBehaviour:
   GameTimerDayo: 0
   SpawnTiming: 0
   isloopSpawn: 0
-  Velocity: {x: 0, y: 0}
   startDistance: 3
   startMoveSpeed: 3
   audioClip:
@@ -302,11 +301,13 @@ MonoBehaviour:
   mountRadius: 3
   mountOffset: 1
   isMount: 0
+  isMountFunc: 0
   nearestCol: {fileID: 0}
   isOverRaped: 0
   rayRadius: 0.5
   rayDistance: 0.5
-  arrow: {fileID: 0}
+  arrow: {fileID: 6356163556469710274}
+  animationObj: {fileID: 0}
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0

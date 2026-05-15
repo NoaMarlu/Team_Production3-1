@@ -16,8 +16,18 @@ public class GameManager : MonoBehaviour
     public AudioClip[] audioClip;
     public float[] SEVolume;
 
+    /*StartAnimation*/
+    public bool isStartAnimation = true;
+    private float animeTime = 2.0f;
+    private float animeTimer = 0;
+    public GameObject animationObj;
+    private GameObject animationInstance;
+
     void Start()
     {
+
+        animationInstance=Instantiate(animationObj);
+
         audioSource = GetComponent<AudioSource>();
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
 
@@ -26,12 +36,15 @@ public class GameManager : MonoBehaviour
         {
             targetSpriteRenderer.enabled = false;
         }
-    }
 
+    }
     void Update()
     {
-        FastForward();
+        StartAnimation();
 
+        if (isStartAnimation) return;
+
+        FastForward();
         GameTimer += Time.deltaTime;
         if (GameTimer > GameTime)
         {
@@ -41,6 +54,7 @@ public class GameManager : MonoBehaviour
                 GameTimer = 0;
             }
         }
+
     }
 
     // 早送り
@@ -77,9 +91,20 @@ public class GameManager : MonoBehaviour
             }
         }
     }
-
     public float GetGameTimer() { return GameTimer; }
     public void GameTimerReset() { GameTimer = 0; }
     public float GetGameTime() { return GameTime; }
     public void SetGameTime(float num) { GameTime = num; }
+    //開始時のレディGO!アニメーション
+    void StartAnimation()
+    {
+        if (isStartAnimation != true) return;
+        animeTimer += Time.deltaTime;
+        if (animeTimer > animeTime)
+        {
+            Destroy(animationInstance);
+            isStartAnimation = false;
+        }
+    }
+
 }

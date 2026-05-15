@@ -1102,6 +1102,7 @@ MonoBehaviour:
   speechBubble2: {fileID: 0}
   sheeps: []
   maxTime: 0
+  isStartAnime: 0
 --- !u!1001 &1038521913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2080,7 +2081,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 68a8f68aa87e9f44a950740aa7e4d08e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::goal
-  SceneName: STAGE2
+  goalAnimAnimator: {fileID: 0}
+  animationStateName: Goal
+  animationDuration: 2
+  nextSceneName: 
 --- !u!4 &2097940905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5233515571430131352, guid: b2b8f97c6a4dce0488965381bde1e330, type: 3}
