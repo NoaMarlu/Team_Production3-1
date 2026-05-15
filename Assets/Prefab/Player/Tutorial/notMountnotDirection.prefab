@@ -357,7 +357,7 @@ GameObject:
   - component: {fileID: 4633745599034889793}
   - component: {fileID: -8921020831439152454}
   m_Layer: 3
-  m_Name: Player
+  m_Name: notMountnotDirection
   m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -558,6 +558,8 @@ MonoBehaviour:
   rayRadius: 0.5
   rayDistance: 0.5
   arrow: {fileID: 6356163556469710274}
+  directionOK: 0
+  mountOK: 0
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0

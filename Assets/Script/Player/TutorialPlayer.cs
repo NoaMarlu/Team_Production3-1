@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 
-public class PlayerScript : MonoBehaviour
+public class TutorialPlayer : MonoBehaviour
 {
 
     /*Move*/
@@ -81,10 +81,6 @@ public class PlayerScript : MonoBehaviour
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
 
-    /*北野加筆*/
-    private float mountCooldown = 0f;
-    public float mountCooldownTime = 1.0f;
-
     /*当たり判定処理*/
     public bool isOverRaped = false;
 
@@ -96,11 +92,6 @@ public class PlayerScript : MonoBehaviour
     /*setArrow*/
     public SpriteRenderer arrow;
 
-    /*チュートリアル用の制御変数*/
-    public bool directionOK = true;
-    public bool mountOK = true;
-
-
     void Start()
     {
         Init();
@@ -108,9 +99,6 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
-
-        /*北野加筆*/
-        if (mountCooldown > 0f) mountCooldown -= Time.deltaTime;
 
         DebugFunc();
         AnimationFunc();
@@ -144,7 +132,6 @@ public class PlayerScript : MonoBehaviour
     //Xでの方向転換処理
     void ChangeDirection()
     {
-        if (directionOK != true) return;
         AddList(1);
         isDirection = !isDirection;
         spr.flipX = !spr.flipX;
@@ -368,7 +355,6 @@ public class PlayerScript : MonoBehaviour
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        if (mountOK != true) return;
         if (isMountFunc == false) return;
 
 
@@ -505,11 +491,8 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))if (isGrounded) isJump = true;
         if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
         {
-            if (mountCooldown <= 0f)     /*北野加筆、クールダウン中に反応しなくなるようにするためifを追加*/
-            {
-                isMountFunc = true;
-                isMount = true;
-            }
+            isMountFunc = true;
+            isMount = true;
         }
     }
     //アニメーション管理
@@ -581,16 +564,6 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             //audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
             isGrounded = true;
-
-            /*北野加筆*/
-            // 乗ってる状態で地面に触れたら強制的に降ろす
-            if (isMountFunc == true)
-            {
-                isMountFunc = false;
-                isMount = false;
-                nearestCol = null;
-                mountCooldown = mountCooldownTime;
-            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)

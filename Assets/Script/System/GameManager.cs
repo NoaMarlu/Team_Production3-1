@@ -18,18 +18,19 @@ public class GameManager : MonoBehaviour
 
     /*StartAnimation*/
     public bool isStartAnimation = true;
-    private float animeTime = 2.0f;
+    private float animeTime = 2.8f;
     private float animeTimer = 0;
     public GameObject animationObj;
     private GameObject animationInstance;
 
     void Start()
     {
-
         animationInstance=Instantiate(animationObj);
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioClip[1]);
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
+
+        sheepSpawner.sheepCount = 1;
 
         // ★追加：ゲーム開始時は画像を非表示（見えない状態）にしておく
         if (targetSpriteRenderer != null)
