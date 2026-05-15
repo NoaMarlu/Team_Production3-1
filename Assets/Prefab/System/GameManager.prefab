@@ -48,7 +48,9 @@ MonoBehaviour:
   fastForwardNum: 2
   GameTimer: 0
   GameTime: 3.4028235e+38
-  audioClip: []
+  audioClip:
+  - {fileID: 8300000, guid: 4caa25962ec9abb418b55cba05e47284, type: 3}
+  - {fileID: 8300000, guid: 9179743613d9d1443b81ea3d704ed50a, type: 3}
   SEVolume: []
   isStartAnimation: 1
   animationObj: {fileID: 2884980039154087744, guid: 7386e95fe256181438719574a7cb90ba, type: 3}
