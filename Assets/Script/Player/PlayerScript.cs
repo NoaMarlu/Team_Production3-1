@@ -81,6 +81,10 @@ public class PlayerScript : MonoBehaviour
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
 
+    /*北野加筆*/
+    private float mountCooldown = 0f;
+    public float mountCooldownTime = 1.0f;
+
     /*当たり判定処理*/
     public bool isOverRaped = false;
 
@@ -104,6 +108,9 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
+
+        /*北野加筆*/
+        if (mountCooldown > 0f) mountCooldown -= Time.deltaTime;
 
         DebugFunc();
         AnimationFunc();
@@ -498,8 +505,11 @@ public class PlayerScript : MonoBehaviour
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))if (isGrounded) isJump = true;
         if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
         {
-            isMountFunc = true;
-            isMount = true;
+            if (mountCooldown <= 0f)     /*北野加筆、クールダウン中に反応しなくなるようにするためifを追加*/
+            {
+                isMountFunc = true;
+                isMount = true;
+            }
         }
     }
     //アニメーション管理
@@ -571,6 +581,16 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             //audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
             isGrounded = true;
+
+            /*北野加筆*/
+            // 乗ってる状態で地面に触れたら強制的に降ろす
+            if (isMountFunc == true)
+            {
+                isMountFunc = false;
+                isMount = false;
+                nearestCol = null;
+                mountCooldown = mountCooldownTime;
+            }
         }
     }
     private void OnCollisionExit2D(Collision2D collision)
