@@ -80,6 +80,7 @@ public class PlayerScript : MonoBehaviour
     public bool isMount=false;
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
+    private bool isTop=true;//trueであれば単体または重なっている場合の最上段
 
     /*北野加筆*/
     private float mountCooldown = 0f;
@@ -190,6 +191,7 @@ public class PlayerScript : MonoBehaviour
         IgnoreReset();
         isMountFunc = false;
         isMount = false;
+        isTop = true;//単体になるとtrue
 
         //ジャンプSE
         audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
@@ -389,7 +391,9 @@ public class PlayerScript : MonoBehaviour
                 float dist = Vector2.Distance(transform.position, sheep.transform.position);
                 if (dist <= mountRadius && dist < nearestDist)
                 {
+                    if (ps.getIsTop() == false) return;//単体ではない、または最上段ではないなら
                     nearestDist = dist;
+                    ps.setIsTop(true);//最上段になったため
                     nearest = ps;
                     nearestCol = sheep;
                 }
@@ -482,7 +486,10 @@ public class PlayerScript : MonoBehaviour
     }
     public void setArrow(bool b)
     {
-        if (b) { arrow.enabled = true; }
+        if (b) {
+            if (isTop == false) return;//単体または最上段ではないのならArrowを表示しない
+            arrow.enabled = true;
+        }
         else { arrow.enabled = false; }
     }
     //Debug関連
@@ -570,6 +577,9 @@ public class PlayerScript : MonoBehaviour
         SpawnTiming = manager.GetGameTimer();
 
     }
+    //最上段または単体であることを取得する
+    public void setIsTop(bool top) { isTop = top; }
+    public bool getIsTop (){ return isTop; }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
