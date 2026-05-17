@@ -215,6 +215,7 @@ public class PlayerScript : MonoBehaviour
             if (p.transform.position.y > transform.position.y)
             {
                 Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
+                if (prb == null) continue;
                 prb.gravityScale = 1;
 
                 if (isDirection)//右向き
@@ -382,20 +383,25 @@ public class PlayerScript : MonoBehaviour
 
         if (isRemind != true)//ループしていないなら
         {
-            foreach (GameObject sheep in sheepSpawner.sheeps)
+            if (nearestCol != null) nearest = nearestCol.GetComponent<PlayerScript>();
+            else
             {
-                PlayerScript ps = sheep.GetComponent<PlayerScript>();
-                if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
-                if (!ps.isRemind) continue; // ループ羊のみ対象
-
-                float dist = Vector2.Distance(transform.position, sheep.transform.position);
-                if (dist <= mountRadius && dist < nearestDist)
+                foreach (GameObject sheep in sheepSpawner.sheeps)
                 {
-                    if (ps.getIsTop() == false) return;//単体ではない、または最上段ではないなら
-                    nearestDist = dist;
-                    ps.setIsTop(true);//最上段になったため
-                    nearest = ps;
-                    nearestCol = sheep;
+                    PlayerScript ps = sheep.GetComponent<PlayerScript>();
+                    if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
+                    if (!ps.isRemind) continue; // ループ羊のみ対象
+                    if (ps.getIsTop() == false) continue;
+
+                    float dist = Vector2.Distance(transform.position, sheep.transform.position);
+                    if (dist <= mountRadius && dist < nearestDist)
+                    {
+                        if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
+
+                        nearest = ps;
+                        nearestCol = sheep;
+
+                    }
                 }
             }
         }
@@ -416,6 +422,8 @@ public class PlayerScript : MonoBehaviour
             /*内田加筆*/
             if (isMount)
             {
+                setIsTop(true);
+                nearest.setIsTop(false);
                 AddList(3);
                 IgnoreReset();
                 rb.linearVelocity = Vector2.zero;
