@@ -89,6 +89,8 @@ public class PlayerScriptKitano : MonoBehaviour
     public bool isMount = false;
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
+
+    /*北野加筆*/
     private float mountCooldown = 0f;
     public float mountCooldownTime = 1.0f;
 
@@ -121,6 +123,8 @@ public class PlayerScriptKitano : MonoBehaviour
     }
     void Update()
     {
+
+        /*北野加筆*/
         if (mountCooldown > 0f) mountCooldown -= Time.deltaTime;
 
         DebugFunc();
@@ -512,7 +516,7 @@ public class PlayerScriptKitano : MonoBehaviour
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space)) if (isGrounded) isJump = true;
         if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
         {
-            if (mountCooldown <= 0f) // クールダウン中は反応しない
+            if (mountCooldown <= 0f)     /*北野加筆、クールダウン中に反応しなくなるようにするためifを追加*/
             {
                 isMountFunc = true;
                 isMount = true;
@@ -576,6 +580,8 @@ public class PlayerScriptKitano : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
             audioSource.PlayOneShot(audioSets[2].clip, audioSets[2].volume);
             isGrounded = true;
+
+            /*北野加筆*/
             // 乗ってる状態で地面に触れたら強制的に降ろす
             if (isMountFunc == true)
             {
