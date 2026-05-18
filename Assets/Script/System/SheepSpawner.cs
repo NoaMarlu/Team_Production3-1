@@ -146,8 +146,8 @@ public class SheepSpawner : MonoBehaviour
         speechBubble2 = GameObject.Find("speechBubble2");
         if (speechBubble1 == null) Debug.Log("speechBubble1はnullです");
         if (speechBubble2 == null) Debug.Log("speechBubble2はnullです");
-        speechBubble1.SetActive(false);
-        speechBubble2.SetActive(false);
+        if(speechBubble1!=null)speechBubble1.SetActive(false);
+        if(speechBubble2!=null)speechBubble2.SetActive(false);
         isStartAnime = manager.isStartAnimation;
     }
     //スタートアニメーション終了後に一回呼び出す処理

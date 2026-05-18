@@ -15,7 +15,7 @@ public class PlayerScript : MonoBehaviour
 
     /*Jump*/
     public float jumpForce = 5.0f;
-    private bool isGrounded;//地面に触れているか
+    public bool isGrounded;//地面に触れているか
     private bool isJump=false;
 
     /*SheepIsDie*/
@@ -164,7 +164,6 @@ public class PlayerScript : MonoBehaviour
         AddList(1);
         isDirection = !isDirection;
         spr.flipX = !spr.flipX;
-
     }
     //死亡判定
     void SheepIsLive()
@@ -207,6 +206,10 @@ public class PlayerScript : MonoBehaviour
         isMountFunc = false;
         isMount = false;
         isTop = true;//単体になるとtrue
+        nearestCol = null;
+        //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
+        isGrounded = false;
+
 
         //ジャンプSE
         audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
@@ -245,8 +248,6 @@ public class PlayerScript : MonoBehaviour
         }
 
 
-        //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
-        isGrounded = false;
 
     }
     //プレイヤーの位置を記録
@@ -297,8 +298,8 @@ public class PlayerScript : MonoBehaviour
                     break;
                 case 4://4でgroundに着地
                     rb.gravityScale = 0;
-                    transform.position = positionList[num];
                     rb.linearVelocity = new Vector2(0, 0);
+                    transform.position = positionList[num];
                     num++;
                     break;
             }
@@ -521,7 +522,7 @@ public class PlayerScript : MonoBehaviour
     //Debug関連
     void DebugFunc()
     {
-        Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
+        //Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
         if (Input.GetKeyDown(KeyCode.JoystickButton10) || Input.GetKeyDown(KeyCode.Escape))
         {
             string currentSceneName = SceneManager.GetActiveScene().name;
@@ -535,7 +536,10 @@ public class PlayerScript : MonoBehaviour
         //死亡済みなら操作を取りやめる
         if (isDie) return;
         if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
-        if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))if (isGrounded) isJump = true;
+        if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (isGrounded) isJump = true;
+        }
         if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
         {
             if (mountCooldown <= 0f)     /*北野加筆、クールダウン中に反応しなくなるようにするためifを追加*/
@@ -621,36 +625,25 @@ public class PlayerScript : MonoBehaviour
         SetSprite();
         spr.sprite = S_Standby_Death[0];
     }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    void OnCollisionEnter2D(Collision2D collision)
     {
-        // 地面との接触判定
-        if (collision.gameObject.CompareTag("ground"))
+        if (collision.gameObject.tag == "ground")
         {
-                Debug.Log("地面とプレイヤーが衝突");
-                AddList(4);
-                rb.linearVelocity = Vector2.zero;
-                isGrounded = true;
+            isGrounded = true;
+            Debug.Log("地面とプレイヤーが衝突");
+            AddList(4);
+            rb.linearVelocity = Vector2.zero;
 
-                /*北野加筆*/
-                // 乗ってる状態で地面に触れたら強制的に降ろす
-                if (isMountFunc == true)
-                {
-                    isMountFunc = false;
-                    isMount = false;
-                    nearestCol = null;
-                    mountCooldown = mountCooldownTime;
-                }
+            /*北野加筆*/
+            // 乗ってる状態で地面に触れたら強制的に降ろす
+            if (isMountFunc == true)
+            {
+                isMountFunc = false;
+                isMount = false;
+                nearestCol = null;
+                mountCooldown = mountCooldownTime;
             }
-    }
-    private void OnCollisionExit2D(Collision2D collision)
-    {
-        // 地面との接触判定
-        if (collision.gameObject.CompareTag("ground"))
-        {
-              isGrounded = false;
         }
     }
-
 
 }
