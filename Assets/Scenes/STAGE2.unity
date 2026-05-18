@@ -746,8 +746,8 @@ Transform:
   m_GameObject: {fileID: 526141349}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0.76, y: 0.33, z: 0}
-  m_LocalScale: {x: 0.41992003, y: 0.41992003, z: 0.41992003}
+  m_LocalPosition: {x: 0.77, y: 0.32, z: 0}
+  m_LocalScale: {x: 0.40456384, y: 0.40456384, z: 0.40456384}
   m_ConstrainProportionsScale: 0
   m_Children: []
   m_Father: {fileID: 0}
@@ -2212,7 +2212,7 @@ MonoBehaviour:
   goalAnimAnimator: {fileID: 1560206580}
   animationStateName: Goal
   animationDuration: 2
-  nextSceneName: STAGE2
+  nextSceneName: STAGE3
 --- !u!4 &2097940905 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 5233515571430131352, guid: b2b8f97c6a4dce0488965381bde1e330, type: 3}
@@ -2249,7 +2249,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f37793547a6a8b4d94559062fa51b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shake
-  waitTime: 4
+  waitTime: 2
   shakeSpeed: 0.5
   shakeRadian: 3
   shakeCount: 3
@@ -2428,7 +2428,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\u3061\u304B\u304F\u306E          \u306B\u306E\u308B"
+  m_text: "\u3061\u304B\u304F\u306E           \u306B\u306E\u308B"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
   m_sharedMaterial: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
@@ -2437,8 +2437,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4282203505
-  m_fontColor: {r: 0.4415095, g: 0.23908155, b: 0.23908155, a: 1}
+    rgba: 4279775587
+  m_fontColor: {r: 0.38823533, g: 0.19215688, b: 0.09411766, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2619,7 +2619,7 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 16
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -4910088520043721169, guid: cdf10a4a92cc45e40bd90a70f628da6b, type: 3}
+  m_Sprite: {fileID: -8559468162881350516, guid: f295f8cb158cd7440a62ea16ae1309dc, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

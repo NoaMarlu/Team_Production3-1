@@ -52,7 +52,7 @@ public class goal : MonoBehaviour
             isGoalTriggered = true; // タイマースタートの合図
             elapsedUnscaledTime = 0f; // タイマーをリセット
 
-            Time.timeScale = 0f; // ゲームを停止
+            //Time.timeScale = 0f; // ゲームを停止
 
             if (goalAnimAnimator != null)
             {
@@ -61,13 +61,13 @@ public class goal : MonoBehaviour
                 goalAnimAnimator.Play(animationStateName, 0, 0f); // アニメーションを最初から再生
             }
 
-            // プレイヤーの物理挙動を止める
-            Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
-            if (rb != null)
-            {
-                rb.linearVelocity = Vector2.zero;
-                rb.simulated = false;
-            }
+            //// プレイヤーの物理挙動を止める
+            //Rigidbody2D rb = collision.GetComponent<Rigidbody2D>();
+            //if (rb != null)
+            //{
+            //    rb.linearVelocity = Vector2.zero;
+            //    rb.simulated = false;
+            //}
         }
     }
 

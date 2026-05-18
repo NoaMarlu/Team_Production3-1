@@ -80,6 +80,7 @@ public class PlayerScript : MonoBehaviour
     public bool isMount=false;
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
+    private bool isTop=true;//trueであれば単体または重なっている場合の最上段
 
     /*北野加筆*/
     private float mountCooldown = 0f;
@@ -190,6 +191,7 @@ public class PlayerScript : MonoBehaviour
         IgnoreReset();
         isMountFunc = false;
         isMount = false;
+        isTop = true;//単体になるとtrue
 
         //ジャンプSE
         audioSource.PlayOneShot(audioClip[0], SEVolume[0]);
@@ -213,6 +215,7 @@ public class PlayerScript : MonoBehaviour
             if (p.transform.position.y > transform.position.y)
             {
                 Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
+                if (prb == null) continue;
                 prb.gravityScale = 1;
 
                 if (isDirection)//右向き
@@ -380,18 +383,25 @@ public class PlayerScript : MonoBehaviour
 
         if (isRemind != true)//ループしていないなら
         {
-            foreach (GameObject sheep in sheepSpawner.sheeps)
+            if (nearestCol != null) nearest = nearestCol.GetComponent<PlayerScript>();
+            else
             {
-                PlayerScript ps = sheep.GetComponent<PlayerScript>();
-                if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
-                if (!ps.isRemind) continue; // ループ羊のみ対象
-
-                float dist = Vector2.Distance(transform.position, sheep.transform.position);
-                if (dist <= mountRadius && dist < nearestDist)
+                foreach (GameObject sheep in sheepSpawner.sheeps)
                 {
-                    nearestDist = dist;
-                    nearest = ps;
-                    nearestCol = sheep;
+                    PlayerScript ps = sheep.GetComponent<PlayerScript>();
+                    if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
+                    if (!ps.isRemind) continue; // ループ羊のみ対象
+                    if (ps.getIsTop() == false) continue;
+
+                    float dist = Vector2.Distance(transform.position, sheep.transform.position);
+                    if (dist <= mountRadius && dist < nearestDist)
+                    {
+                        if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
+
+                        nearest = ps;
+                        nearestCol = sheep;
+
+                    }
                 }
             }
         }
@@ -412,6 +422,8 @@ public class PlayerScript : MonoBehaviour
             /*内田加筆*/
             if (isMount)
             {
+                setIsTop(true);
+                nearest.setIsTop(false);
                 AddList(3);
                 IgnoreReset();
                 rb.linearVelocity = Vector2.zero;
@@ -444,6 +456,7 @@ public class PlayerScript : MonoBehaviour
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, rayRadius, Vector2.up, rayDistance);
         if(hit.collider != null)
         {
+            if (hit.collider.gameObject.tag == "stepObj") return;
             hits.Add(hit);
             triggerPlayer.Add(hit.collider.gameObject);
         }
@@ -482,7 +495,10 @@ public class PlayerScript : MonoBehaviour
     }
     public void setArrow(bool b)
     {
-        if (b) { arrow.enabled = true; }
+        if (b) {
+            if (isTop == false) return;//単体または最上段ではないのならArrowを表示しない
+            arrow.enabled = true;
+        }
         else { arrow.enabled = false; }
     }
     //Debug関連
@@ -570,6 +586,9 @@ public class PlayerScript : MonoBehaviour
         SpawnTiming = manager.GetGameTimer();
 
     }
+    //最上段または単体であることを取得する
+    public void setIsTop(bool top) { isTop = top; }
+    public bool getIsTop (){ return isTop; }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

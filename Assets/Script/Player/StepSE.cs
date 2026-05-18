@@ -12,7 +12,8 @@ public class StepSE : MonoBehaviour
     }
     void OnTriggerEnter2D(Collider2D collider)
     {
-        if (collider.gameObject.tag == "ground")
+        //Groundレイヤーだったら
+        if (collider.gameObject.layer==8)
         {
             audioSource.PlayOneShot(stepSE);
         }
