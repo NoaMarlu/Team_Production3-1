@@ -28,6 +28,10 @@ public class SheepSpawner : MonoBehaviour
     public bool isStartAnime;
     private bool isStart = true;
 
+    /*スケール管理*/
+    public float pScale=1;
+    public float mountOffset=1.0f;
+
     void Start()
     {
         Init();
@@ -51,10 +55,9 @@ public class SheepSpawner : MonoBehaviour
         if (isHit())
         {
 
-            sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
+            InstansPlayer();
             sheepCount++;
             StartCoroutine(showUI());
-            //StartCoroutine(showUI());
 
             return true;//Spawn成功
         }
@@ -140,9 +143,23 @@ public class SheepSpawner : MonoBehaviour
     {
         if (!isStart) return;
         //最初に一体生成
-        sheeps.Add(Instantiate(sheepPrefab, transform.position, transform.rotation));
+        InstansPlayer();
         StartCoroutine(showUI());
         isStart = false;
+    }
+    //BoxColliderのスケールを変えるためのものだが、不要になったため没
+    void BoxColliderScaleChanger(GameObject sheepObj)
+    {
+        BoxCollider2D[] boxes = sheepObj.GetComponentsInChildren<BoxCollider2D>();
+        foreach(BoxCollider2D box in boxes)box.size = box.size * pScale;
+    }
+    void InstansPlayer()
+    {
+        GameObject newSheep = Instantiate(sheepPrefab, transform.position, transform.rotation);
+        newSheep.transform.localScale = new Vector3(pScale, pScale, pScale);
+        PlayerScript script = newSheep.GetComponent<PlayerScript>();
+        script.MountOffsetChanger(mountOffset);
+        sheeps.Add(newSheep);
     }
 
 }
