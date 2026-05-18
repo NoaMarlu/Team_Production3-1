@@ -597,12 +597,9 @@ public class PlayerScript : MonoBehaviour
     //ジャンプ力・移動速度の変更
     public void JumpForceChanger(float num) { jumpForce = num; }
     public void MoveSpeedChanger(float num) { moveSpeed = num; }
-
-    private void OnCollisionEnter2D(Collision2D collision)
+    //地面と接着したときの処理
+    public void groundCollision()
     {
-        // 地面との接触判定
-        if (collision.gameObject.CompareTag("ground"))
-        {
             Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
             rb.linearVelocity = Vector2.zero;
@@ -618,7 +615,6 @@ public class PlayerScript : MonoBehaviour
                 nearestCol = null;
                 mountCooldown = mountCooldownTime;
             }
-        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {

@@ -24,11 +24,9 @@ public class goal : MonoBehaviour
 
     void Start()
     {
-        if (wasSE != true)
-        {
+
             audioSource = GetComponent<AudioSource>();
-            wasSE = true;
-        }
+
         // 開始時はアニメーション用オブジェクトを非表示にしておく（必要に応じて）
         if (goalAnimAnimator != null)
         {
@@ -41,7 +39,11 @@ public class goal : MonoBehaviour
         // ★ゴールした後にだけ、時間を計測する
         if (isGoalTriggered)
         {
-            audioSource.PlayOneShot(clip);
+              if (wasSE != true)
+             {
+                 audioSource.PlayOneShot(clip);
+                wasSE = true;
+            }
             elapsedUnscaledTime += Time.unscaledDeltaTime;
 
             // 規定の秒数（2秒）が経過したら、演出を終わらせてシーンを切り替える
