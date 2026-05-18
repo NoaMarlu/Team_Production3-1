@@ -31,6 +31,7 @@ public class SheepSpawner : MonoBehaviour
     /*スケール管理*/
     public float pScale=1;
     public float mountOffset=1.0f;
+    public float jumpPower = 7.0f;
 
     void Start()
     {
@@ -125,6 +126,7 @@ public class SheepSpawner : MonoBehaviour
         }
     }
 
+    //初期化
     void Init()
     {
         GameObject obj = GameObject.Find("GameManager");
@@ -139,6 +141,7 @@ public class SheepSpawner : MonoBehaviour
         speechBubble2.SetActive(false);
         isStartAnime = manager.isStartAnimation;
     }
+    //スタートアニメーション終了後に一回呼び出す処理
     void StartFunc()
     {
         if (!isStart) return;
@@ -153,11 +156,13 @@ public class SheepSpawner : MonoBehaviour
         BoxCollider2D[] boxes = sheepObj.GetComponentsInChildren<BoxCollider2D>();
         foreach(BoxCollider2D box in boxes)box.size = box.size * pScale;
     }
+    //プレイヤー生成関連
     void InstansPlayer()
     {
         GameObject newSheep = Instantiate(sheepPrefab, transform.position, transform.rotation);
         newSheep.transform.localScale = new Vector3(pScale, pScale, pScale);
         PlayerScript script = newSheep.GetComponent<PlayerScript>();
+        script.JumpForceChanger(jumpPower);
         script.MountOffsetChanger(mountOffset);
         sheeps.Add(newSheep);
     }

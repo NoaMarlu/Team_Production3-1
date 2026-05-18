@@ -106,6 +106,9 @@ public class PlayerScript : MonoBehaviour
     {
         Init();
         StartFunc();
+
+        //プロトタイプ用
+        arrow.enabled=false;
     }
     void Update()
     {
@@ -496,6 +499,7 @@ public class PlayerScript : MonoBehaviour
     }
     public void setArrow(bool b)
     {
+        return;
         if (b) {
             if (isTop == false) return;//単体または最上段ではないのならArrowを表示しない
             arrow.enabled = true;
@@ -590,6 +594,8 @@ public class PlayerScript : MonoBehaviour
     //最上段または単体であることを取得する
     public void setIsTop(bool top) { isTop = top; }
     public bool getIsTop (){ return isTop; }
+    //ジャンプ力の変更
+    public void JumpForceChanger(float num) { jumpForce = num; }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
