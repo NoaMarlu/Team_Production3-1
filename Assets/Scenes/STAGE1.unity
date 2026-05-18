@@ -355,11 +355,15 @@ PrefabInstance:
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+      objectReference: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+    - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+      propertyPath: m_hasFontAssetChanged
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7033037830471999879, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_Name
       value: tutorial

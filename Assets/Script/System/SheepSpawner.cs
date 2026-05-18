@@ -37,12 +37,28 @@ public class SheepSpawner : MonoBehaviour
     /*レイヤー変更管理*/
     private int layerNum = 1;
 
+    /*最初はスポーンしない*/
+    public bool farstSpawn = true;
+    private bool spawnOnce = false;
+
     void Start()
     {
         Init();
     }
     void Update()
     {
+
+        if (farstSpawn != true)
+        {
+
+            if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
+            {
+                if (spawnOnce) return;
+                InstansPlayer();
+                spawnOnce=true;
+            }
+
+        }
 
         isStartAnime = manager.isStartAnimation;
         if (isStartAnime) return;
@@ -154,9 +170,14 @@ public class SheepSpawner : MonoBehaviour
     void StartFunc()
     {
         if (!isStart) return;
+
         //最初に一体生成
-        InstansPlayer();
-        StartCoroutine(showUI());
+        if (farstSpawn) {
+            Debug.Log("初回生成");
+           InstansPlayer();
+           StartCoroutine(showUI());
+        }
+
         isStart = false;
     }
     //プレイヤー生成関連

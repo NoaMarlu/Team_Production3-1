@@ -1889,6 +1889,7 @@ MonoBehaviour:
   mountOffset: 1
   jumpPower: 7
   moveSpeed: 3
+  farstSpawn: 1
 --- !u!1001 &1038521913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -3968,6 +3969,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
   moveSpeed: 3
   jumpForce: 7
+  isGrounded: 0
   isDie: 0
   timeList: []
   actionList: 
@@ -4105,7 +4107,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: nextSceneName
-      value: STAGE3
+      value: STAGE2_5
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: goalAnimAnimator
@@ -4611,6 +4613,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StepSE
   stepSE: {fileID: 8300000, guid: 2ab584d12e5d6394198a60e59fe5d3af, type: 3}
+  parent: {fileID: 0}
+  player: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0
