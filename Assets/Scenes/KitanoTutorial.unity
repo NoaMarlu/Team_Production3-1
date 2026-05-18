@@ -135,7 +135,7 @@ GameObject:
   - component: {fileID: 70555568}
   - component: {fileID: 70555569}
   - component: {fileID: 70555570}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ground
   m_TagString: ground
   m_Icon: {fileID: 0}
@@ -1273,6 +1273,7 @@ MonoBehaviour:
   animationStateName: Goal
   animationDuration: 2
   nextSceneName: TITLE
+  clip: {fileID: 0}
 --- !u!1001 &836588554
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1408,7 +1409,7 @@ GameObject:
   - component: {fileID: 1107132699}
   - component: {fileID: 1107132701}
   - component: {fileID: 1107132700}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: ground (1)
   m_TagString: ground
   m_Icon: {fileID: 0}
@@ -1705,6 +1706,7 @@ MonoBehaviour:
   pScale: 1
   mountOffset: 1
   jumpPower: 7
+  moveSpeed: 3
 --- !u!4 &1337842645
 Transform:
   m_ObjectHideFlags: 0

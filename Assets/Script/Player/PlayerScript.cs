@@ -576,7 +576,7 @@ public class PlayerScript : MonoBehaviour
         spr = GetComponent<SpriteRenderer>();
         E_Spawn = Resources.Load<GameObject>("E_Spawn");
         arrow.enabled = false;
-    }
+    } 
     //Start関数に入れる予定だったもの
     void StartFunc()
     {
@@ -603,9 +603,6 @@ public class PlayerScript : MonoBehaviour
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
-            foreach (ContactPoint2D contact in collision.contacts)
-            {
-                if (contact.normal.y <= 0.7f) continue;
                 Debug.Log("地面とプレイヤーが衝突");
                 AddList(4);
                 rb.linearVelocity = Vector2.zero;
@@ -622,14 +619,13 @@ public class PlayerScript : MonoBehaviour
                     mountCooldown = mountCooldownTime;
                 }
             }
-        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
-            isGrounded = false;
+                isGrounded = false;
         }
     }
 
