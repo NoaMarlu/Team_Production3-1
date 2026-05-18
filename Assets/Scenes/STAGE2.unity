@@ -1319,7 +1319,7 @@ PrefabInstance:
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: goalAnimAnimator
       value: 
-      objectReference: {fileID: 0}
+      objectReference: {fileID: 1686896597}
     - target: {fileID: 7642640411547614143, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_Name
       value: Goal
@@ -1895,6 +1895,11 @@ PrefabInstance:
 Transform:
   m_CorrespondingSourceObject: {fileID: 2289140918076726605, guid: a86630f52c5a8a8458c12c7f6306e9e9, type: 3}
   m_PrefabInstance: {fileID: 1659085178}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1686896597 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4513090973453398514, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+  m_PrefabInstance: {fileID: 702530271}
   m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1778304594
 PrefabInstance:
