@@ -594,8 +594,9 @@ public class PlayerScript : MonoBehaviour
     //最上段または単体であることを取得する
     public void setIsTop(bool top) { isTop = top; }
     public bool getIsTop (){ return isTop; }
-    //ジャンプ力の変更
+    //ジャンプ力・移動速度の変更
     public void JumpForceChanger(float num) { jumpForce = num; }
+    public void MoveSpeedChanger(float num) { moveSpeed = num; }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

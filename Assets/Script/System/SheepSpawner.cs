@@ -32,6 +32,7 @@ public class SheepSpawner : MonoBehaviour
     public float pScale=1;
     public float mountOffset=1.0f;
     public float jumpPower = 7.0f;
+    public float moveSpeed = 3.0f;
 
     void Start()
     {
@@ -150,20 +151,20 @@ public class SheepSpawner : MonoBehaviour
         StartCoroutine(showUI());
         isStart = false;
     }
-    //BoxColliderのスケールを変えるためのものだが、不要になったため没
-    void BoxColliderScaleChanger(GameObject sheepObj)
-    {
-        BoxCollider2D[] boxes = sheepObj.GetComponentsInChildren<BoxCollider2D>();
-        foreach(BoxCollider2D box in boxes)box.size = box.size * pScale;
-    }
     //プレイヤー生成関連
     void InstansPlayer()
     {
+        //生成
         GameObject newSheep = Instantiate(sheepPrefab, transform.position, transform.rotation);
         newSheep.transform.localScale = new Vector3(pScale, pScale, pScale);
         PlayerScript script = newSheep.GetComponent<PlayerScript>();
+
+        //変数調整
         script.JumpForceChanger(jumpPower);
+        script.MoveSpeedChanger(moveSpeed);
         script.MountOffsetChanger(mountOffset);
+
+        //list追加
         sheeps.Add(newSheep);
     }
 

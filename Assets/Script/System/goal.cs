@@ -17,8 +17,18 @@ public class goal : MonoBehaviour
     private float elapsedUnscaledTime = 0f;
     private bool isGoalTriggered = false; // ゴールしたかどうかのフラグ
 
+    /*SE関連*/
+    private AudioSource audioSource;
+    public AudioClip clip;
+    private bool wasSE = false;
+
     void Start()
     {
+        if (wasSE != true)
+        {
+            audioSource = GetComponent<AudioSource>();
+            wasSE = true;
+        }
         // 開始時はアニメーション用オブジェクトを非表示にしておく（必要に応じて）
         if (goalAnimAnimator != null)
         {
@@ -31,6 +41,7 @@ public class goal : MonoBehaviour
         // ★ゴールした後にだけ、時間を計測する
         if (isGoalTriggered)
         {
+            audioSource.PlayOneShot(clip);
             elapsedUnscaledTime += Time.unscaledDeltaTime;
 
             // 規定の秒数（2秒）が経過したら、演出を終わらせてシーンを切り替える
