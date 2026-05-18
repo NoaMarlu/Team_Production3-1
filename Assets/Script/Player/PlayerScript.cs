@@ -597,24 +597,32 @@ public class PlayerScript : MonoBehaviour
     //ジャンプ力・移動速度の変更
     public void JumpForceChanger(float num) { jumpForce = num; }
     public void MoveSpeedChanger(float num) { moveSpeed = num; }
-    //地面と接着したときの処理
-    public void groundCollision()
-    {
-            Debug.Log("地面とプレイヤーが衝突");
-            AddList(4);
-            rb.linearVelocity = Vector2.zero;
-            //audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
-            isGrounded = true;
 
-            /*北野加筆*/
-            // 乗ってる状態で地面に触れたら強制的に降ろす
-            if (isMountFunc == true)
+    private void OnCollisionEnter2D(Collision2D collision)
+    {
+        // 地面との接触判定
+        if (collision.gameObject.CompareTag("ground"))
+        {
+            foreach (ContactPoint2D contact in collision.contacts)
             {
-                isMountFunc = false;
-                isMount = false;
-                nearestCol = null;
-                mountCooldown = mountCooldownTime;
+                if (contact.normal.y <= 0.7f) continue;
+                Debug.Log("地面とプレイヤーが衝突");
+                AddList(4);
+                rb.linearVelocity = Vector2.zero;
+                //audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
+                isGrounded = true;
+
+                /*北野加筆*/
+                // 乗ってる状態で地面に触れたら強制的に降ろす
+                if (isMountFunc == true)
+                {
+                    isMountFunc = false;
+                    isMount = false;
+                    nearestCol = null;
+                    mountCooldown = mountCooldownTime;
+                }
             }
+        }
     }
     private void OnCollisionExit2D(Collision2D collision)
     {

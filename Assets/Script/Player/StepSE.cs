@@ -5,6 +5,7 @@ public class StepSE : MonoBehaviour
 
     private AudioSource audioSource;
     public AudioClip stepSE;
+    public 
 
     void Start()
     {
@@ -14,16 +15,7 @@ public class StepSE : MonoBehaviour
     {
         //Groundレイヤーだったら
 
-        // 地面との接触判定
-        if (collider.gameObject.CompareTag("ground"))
-        {
-            Transform parent = transform.parent;
-            if (parent != null)
-            {
-                PlayerScript player=parent.GetComponent<PlayerScript>();
-                player.groundCollision();
-            }
-        }
+
             if (collider.gameObject.layer==8)
         {
             audioSource.PlayOneShot(stepSE);
