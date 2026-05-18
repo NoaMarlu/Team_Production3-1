@@ -606,7 +606,6 @@ public class PlayerScript : MonoBehaviour
                 Debug.Log("地面とプレイヤーが衝突");
                 AddList(4);
                 rb.linearVelocity = Vector2.zero;
-                //audioSource.PlayOneShot(audioClip[2], SEVolume[2]);
                 isGrounded = true;
 
                 /*北野加筆*/
@@ -625,7 +624,7 @@ public class PlayerScript : MonoBehaviour
         // 地面との接触判定
         if (collision.gameObject.CompareTag("ground"))
         {
-                isGrounded = false;
+              isGrounded = false;
         }
     }
 

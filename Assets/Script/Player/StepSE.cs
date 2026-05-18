@@ -5,7 +5,6 @@ public class StepSE : MonoBehaviour
 
     private AudioSource audioSource;
     public AudioClip stepSE;
-    public 
 
     void Start()
     {
@@ -14,9 +13,7 @@ public class StepSE : MonoBehaviour
     void OnTriggerEnter2D(Collider2D collider)
     {
         //Groundレイヤーだったら
-
-
-            if (collider.gameObject.layer==8)
+        if (collider.gameObject.layer==8)
         {
             audioSource.PlayOneShot(stepSE);
         }
