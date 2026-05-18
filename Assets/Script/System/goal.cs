@@ -41,7 +41,7 @@ public class goal : MonoBehaviour
         {
               if (wasSE != true)
              {
-                 audioSource.PlayOneShot(clip);
+            audioSource.PlayOneShot(clip);
                 wasSE = true;
             }
             elapsedUnscaledTime += Time.unscaledDeltaTime;
