@@ -34,6 +34,9 @@ public class SheepSpawner : MonoBehaviour
     public float jumpPower = 7.0f;
     public float moveSpeed = 3.0f;
 
+    /*レイヤー変更管理*/
+    private int layerNum = 1;
+
     void Start()
     {
         Init();
@@ -158,6 +161,11 @@ public class SheepSpawner : MonoBehaviour
         GameObject newSheep = Instantiate(sheepPrefab, transform.position, transform.rotation);
         newSheep.transform.localScale = new Vector3(pScale, pScale, pScale);
         PlayerScript script = newSheep.GetComponent<PlayerScript>();
+        SpriteRenderer sprite = newSheep.GetComponent<SpriteRenderer>();
+
+        //付け焼き刃
+        sprite.sortingOrder += layerNum;
+        layerNum++;
 
         //変数調整
         script.JumpForceChanger(jumpPower);

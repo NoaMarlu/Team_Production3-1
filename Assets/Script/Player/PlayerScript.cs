@@ -551,17 +551,17 @@ public class PlayerScript : MonoBehaviour
         //           return;
         //       }
         isAnimation = false;
-        //羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
-        if (isAnimation)
-        {
-            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
-            spr.sortingOrder = 20;
-        }
-        else
-        {
-            SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
-            spr.sortingOrder = 23;
-        }
+        ////羊小屋のレイヤーが21で、スピーカーが22、「羊がn匹」フォントのレイヤーが19なため、羊のレイヤー順を変える必要がある
+        //if (isAnimation)
+        //{
+        //    SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
+        //    spr.sortingOrder = 20;
+        //}
+        //else
+        //{
+        //    SpriteRenderer spr = gameObject.GetComponent<SpriteRenderer>();
+        //    spr.sortingOrder = 23;
+        //}
         //////////////////////
         ///
     }
