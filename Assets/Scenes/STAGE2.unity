@@ -1268,6 +1268,11 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 5233515571430131352, guid: b2b8f97c6a4dce0488965381bde1e330, type: 3}
   m_PrefabInstance: {fileID: 1038521913}
   m_PrefabAsset: {fileID: 0}
+--- !u!95 &1177703661 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4513090973453398514, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+  m_PrefabInstance: {fileID: 702530271}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1199838817
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1317,9 +1322,13 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
+      propertyPath: nextSceneName
+      value: STAGE3
+      objectReference: {fileID: 0}
+    - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: goalAnimAnimator
       value: 
-      objectReference: {fileID: 1686896597}
+      objectReference: {fileID: 1177703661}
     - target: {fileID: 7642640411547614143, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_Name
       value: Goal
@@ -1896,11 +1905,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 2289140918076726605, guid: a86630f52c5a8a8458c12c7f6306e9e9, type: 3}
   m_PrefabInstance: {fileID: 1659085178}
   m_PrefabAsset: {fileID: 0}
---- !u!95 &1686896597 stripped
-Animator:
-  m_CorrespondingSourceObject: {fileID: 4513090973453398514, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
-  m_PrefabInstance: {fileID: 702530271}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1778304594
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2340,8 +2344,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u3061\u304B\u304F\u306E           \u306B\u306E\u308B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
-  m_sharedMaterial: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
