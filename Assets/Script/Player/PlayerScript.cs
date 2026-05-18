@@ -437,6 +437,7 @@ public class PlayerScript : MonoBehaviour
         RaycastHit2D hit = Physics2D.CircleCast(transform.position, rayRadius, Vector2.up, rayDistance);
         if(hit.collider != null)
         {
+            if (hit.collider.gameObject.tag == "stepObj") return;
             hits.Add(hit);
             triggerPlayer.Add(hit.collider.gameObject);
         }

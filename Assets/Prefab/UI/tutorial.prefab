@@ -255,7 +255,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4f37793547a6a8b4d94559062fa51b5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Shake
-  waitTime: 4
+  waitTime: 2
   shakeSpeed: 0.5
   shakeRadian: 3
   shakeCount: 3
