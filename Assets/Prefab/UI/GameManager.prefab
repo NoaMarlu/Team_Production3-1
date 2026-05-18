@@ -166,7 +166,10 @@ MonoBehaviour:
   GameTime: 3.4028235e+38
   audioClip:
   - {fileID: 8300000, guid: 4caa25962ec9abb418b55cba05e47284, type: 3}
+  - {fileID: 8300000, guid: 9179743613d9d1443b81ea3d704ed50a, type: 3}
   SEVolume: []
+  isStartAnimation: 1
+  animationObj: {fileID: 0}
 --- !u!82 &759332431184575461
 AudioSource:
   m_ObjectHideFlags: 0
