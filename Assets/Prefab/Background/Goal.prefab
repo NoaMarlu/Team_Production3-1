@@ -156,7 +156,7 @@ MonoBehaviour:
   animationStateName: Goal
   animationDuration: 2
   nextSceneName: STAGE2
-  clip: {fileID: 8300000, guid: 10d4bc328ae9ca44bb30eac2ab63b60b, type: 3}
+  clip: {fileID: 8300000, guid: 9179743613d9d1443b81ea3d704ed50a, type: 3}
 --- !u!82 &1184611379496677240
 AudioSource:
   m_ObjectHideFlags: 0
