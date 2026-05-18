@@ -244,6 +244,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::StepSE
   stepSE: {fileID: 8300000, guid: 2ab584d12e5d6394198a60e59fe5d3af, type: 3}
+  parent: {fileID: 0}
+  player: {fileID: 0}
 --- !u!82 &8133319464435958080
 AudioSource:
   m_ObjectHideFlags: 0
@@ -526,6 +528,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::PlayerScript
   moveSpeed: 3
   jumpForce: 7
+  isGrounded: 0
   isDie: 0
   timeList: []
   actionList: 
@@ -561,6 +564,7 @@ MonoBehaviour:
   arrow: {fileID: 6356163556469710274}
   directionOK: 0
   mountOK: 0
+  farstDie: 0
 --- !u!61 &4633745599034889793
 BoxCollider2D:
   m_ObjectHideFlags: 0

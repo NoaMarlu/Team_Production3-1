@@ -623,7 +623,7 @@ GameObject:
   - component: {fileID: 636329394}
   m_Layer: 0
   m_Name: ground
-  m_TagString: ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -2151,7 +2151,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: nextSceneName
-      value: STAGE4
+      value: STAGE5
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: goalAnimAnimator
