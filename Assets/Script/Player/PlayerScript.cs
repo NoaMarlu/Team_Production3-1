@@ -447,6 +447,7 @@ public class PlayerScript : MonoBehaviour
         }
 
     }
+    public void MountOffsetChanger(float num) { mountOffset = num; }
     //羊が上にいる場合に、力を連動させる
     void LinkForce()
     {
