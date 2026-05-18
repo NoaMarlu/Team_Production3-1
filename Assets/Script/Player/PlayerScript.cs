@@ -101,10 +101,15 @@ public class PlayerScript : MonoBehaviour
     public bool directionOK = true;
     public bool mountOK = true;
 
+    /*初回から死んでいる場合*/
+    public bool farstDie = false;
+
 
     void Start()
     {
         Init();
+        FirstDieInit();
+        if (farstDie == true) return;
         StartFunc();
 
         //プロトタイプ用
@@ -112,6 +117,13 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
+
+        if (farstDie == true)
+        {
+            MountOnNearestLoopSheep();
+            LinkForce();
+            return;
+        }
 
         /*北野加筆*/
         if (mountCooldown > 0f) mountCooldown -= Time.deltaTime;
@@ -597,6 +609,18 @@ public class PlayerScript : MonoBehaviour
     //ジャンプ力・移動速度の変更
     public void JumpForceChanger(float num) { jumpForce = num; }
     public void MoveSpeedChanger(float num) { moveSpeed = num; }
+    //最初から死亡
+    void FirstDieInit()
+    {
+        if (farstDie == false) return;
+        isDie = true;
+        isRemind = true;
+        DieTime = 0; // MaxTimeに影響させたくない場合は0のまま
+        gameObject.tag = "ground";
+        sheepSpawner.sheeps.Add(this.gameObject);
+        SetSprite();
+        spr.sprite = S_Standby_Death[0];
+    }
 
     private void OnCollisionEnter2D(Collision2D collision)
     {

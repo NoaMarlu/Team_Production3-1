@@ -103,6 +103,7 @@ public class SheepSpawner : MonoBehaviour
         {
             //全羊から死亡時間を取得
             PlayerScript player=sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
             if ( player.DieTime> maxTime && player.DieTime != 0)
             {
                 maxTime = player.DieTime;
@@ -116,6 +117,7 @@ public class SheepSpawner : MonoBehaviour
         foreach (GameObject sheep in sheeps)
         {
             PlayerScript player = sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
             if (player.isDie==false) return true;
         }
         return false;
@@ -126,6 +128,7 @@ public class SheepSpawner : MonoBehaviour
         foreach (GameObject sheep in sheeps)
         {
             PlayerScript player = sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
             player.isloopSpawn = false;
         }
     }
