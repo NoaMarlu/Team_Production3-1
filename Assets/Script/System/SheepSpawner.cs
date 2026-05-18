@@ -73,15 +73,17 @@ public class SheepSpawner : MonoBehaviour
     IEnumerator showUI()
     {
         if(sheepCount<10){
-        speechBubble1.SetActive(true);
+
+            if (speechBubble1 != null) speechBubble1.SetActive(true);
         yield return new WaitForSecondsRealtime(UItime);
-            speechBubble1.SetActive(false);
+            if (speechBubble1 != null) speechBubble1.SetActive(false);
         }
         else
         {
-            speechBubble2.SetActive(true);
+            if (speechBubble2 != null) { speechBubble2.SetActive(true); }
+            
             yield return new WaitForSecondsRealtime(UItime);
-            speechBubble2.SetActive(false);
+            if (speechBubble2 != null) { speechBubble2.SetActive(false); }
         }
     }
 
