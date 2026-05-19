@@ -985,6 +985,7 @@ MonoBehaviour:
   mountOffset: 1
   jumpPower: 7
   moveSpeed: 3
+  farstSpawn: 1
 --- !u!1001 &1038521913
 PrefabInstance:
   m_ObjectHideFlags: 0
