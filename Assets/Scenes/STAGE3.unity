@@ -2386,6 +2386,11 @@ MonoBehaviour:
     m_VarianceClampScale: 0.9
     m_ContrastAdaptiveSharpening: 0
   m_Version: 2
+--- !u!95 &1414687143 stripped
+Animator:
+  m_CorrespondingSourceObject: {fileID: 4513090973453398514, guid: ab33de0de1c761c4c8db78bb17281fb5, type: 3}
+  m_PrefabInstance: {fileID: 1439783110}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1431187141
 GameObject:
   m_ObjectHideFlags: 0
@@ -3336,6 +3341,10 @@ PrefabInstance:
       propertyPath: nextSceneName
       value: STAGE4
       objectReference: {fileID: 0}
+    - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
+      propertyPath: goalAnimAnimator
+      value: 
+      objectReference: {fileID: 1414687143}
     - target: {fileID: 7642640411547614143, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_Name
       value: Goal
