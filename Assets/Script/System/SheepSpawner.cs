@@ -55,7 +55,9 @@ public class SheepSpawner : MonoBehaviour
             {
                 if (spawnOnce) return;
                 InstansPlayer();
-                spawnOnce=true;
+                sheepCount = 1;
+                StartCoroutine(showUI());
+                spawnOnce =true;
             }
 
         }

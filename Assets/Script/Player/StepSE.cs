@@ -19,7 +19,7 @@ public class StepSE : MonoBehaviour
         //Groundレイヤーだったら
         if (collider.gameObject.layer==8)
         {
-            audioSource.PlayOneShot(stepSE);
+            if(player.farstDie!=true)audioSource.PlayOneShot(stepSE);
         }
     }
 }

@@ -188,6 +188,7 @@ public class PlayerScript : MonoBehaviour
         if (this.transform.position.y <= -5.47f)
         {
             gameObject.tag = "ground";
+            nearestCol = null;
             loopDie = true;
             FouceReceiveLayer();
             if (DieTime == 0) DieTime = manager.GetGameTimer();
@@ -233,9 +234,12 @@ public class PlayerScript : MonoBehaviour
             if (p.transform.position.y > transform.position.y)
             {
                 Rigidbody2D prb = p.GetComponent<Rigidbody2D>();
+                PlayerScript prbS = p.GetComponent<PlayerScript>();
                 if (prb == null) continue;
-                prb.gravityScale = 1;
+                if (prbS.nearestCol != this.gameObject) continue;
 
+                prb.gravityScale = 1;
+                Debug.Log("連動させました");
                 if (isDirection)//右向き
                 {
                     prb.linearVelocity = rb.linearVelocity;
@@ -389,7 +393,7 @@ public class PlayerScript : MonoBehaviour
     {
         if (mountOK != true) return;
         if (isMountFunc == false) return;
-
+        
 
         /*内田加筆*/
         PlayerScript nearest = null;
