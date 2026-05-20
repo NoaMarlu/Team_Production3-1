@@ -80,11 +80,9 @@ public class PlayerScript : MonoBehaviour
     public bool isMount=false;
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
+    public PlayerScript nearestColScript = null;
     private bool isTop=true;//trueであれば単体または重なっている場合の最上段
-
-    /*北野加筆*/
-    private float mountCooldown = 0f;
-    public float mountCooldownTime = 1.0f;
+    private GameObject nearestUpCol = null;
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
@@ -94,9 +92,6 @@ public class PlayerScript : MonoBehaviour
     public float rayDistance = 0.5f;
     List<RaycastHit2D> hits = new List<RaycastHit2D>();
 
-    /*setArrow*/
-    public SpriteRenderer arrow;
-
     /*チュートリアル用の制御変数*/
     public bool directionOK = true;
     public bool mountOK = true;
@@ -104,29 +99,25 @@ public class PlayerScript : MonoBehaviour
     /*初回から死んでいる場合*/
     public bool farstDie = false;
 
+    /*Debug*/
+    public float VelocityY;
 
     void Start()
     {
         Init();
         FirstDieInit();
-        if (farstDie == true) return;
+        if (farstDie) return;
         StartFunc();
-
-        //プロトタイプ用
-        arrow.enabled=false;
     }
     void Update()
     {
-
-        if (farstDie == true)
+        VelocityY = rb.linearVelocityY;
+        if (farstDie)
         {
             MountOnNearestLoopSheep();
             LinkForce();
             return;
         }
-
-        /*北野加筆*/
-        if (mountCooldown > 0f) mountCooldown -= Time.deltaTime;
 
         DebugFunc();
         AnimationFunc();
@@ -185,12 +176,12 @@ public class PlayerScript : MonoBehaviour
     }
     void SheepIsDie()
     {
-        if (this.transform.position.y <= -5.47f)
+        if (this.transform.position.y <= -6.53f)
         {
             gameObject.tag = "ground";
             nearestCol = null;
             loopDie = true;
-            FouceReceiveLayer();
+            rb.linearVelocityY = -10;
             if (DieTime == 0) DieTime = manager.GetGameTimer();
             if (isRemind == false || isDie == false)
             {
@@ -207,6 +198,8 @@ public class PlayerScript : MonoBehaviour
         isMountFunc = false;
         isMount = false;
         isTop = true;//単体になるとtrue
+        if(nearestColScript!=null)nearestColScript.NullNearestUpCol();
+        nearestColScript = null;
         nearestCol = null;
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
         isGrounded = false;
@@ -377,17 +370,6 @@ public class PlayerScript : MonoBehaviour
         S_Dash = Resources.Load<Sprite>("S_Dash");
 
     }
-    //当たり判定処理
-    void FouceReceiveLayer()
-    {
-        //BoxCollider2D collider = GetComponent<BoxCollider2D>();
-        //LayerMask layerName = LayerMask.GetMask("Player");
-
-        //if (isDie)
-        //{
-        //    collider.forceReceiveLayers = layerName;
-        //}
-    }
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
@@ -396,14 +378,13 @@ public class PlayerScript : MonoBehaviour
         
 
         /*内田加筆*/
-        PlayerScript nearest = null;
         float nearestDist = float.MaxValue;
 
         /////////////
 
         if (isRemind != true)//ループしていないなら
         {
-            if (nearestCol != null) nearest = nearestCol.GetComponent<PlayerScript>();
+            if (nearestCol != null) nearestColScript = nearestCol.GetComponent<PlayerScript>();
             else
             {
                 foreach (GameObject sheep in sheepSpawner.sheeps)
@@ -418,12 +399,15 @@ public class PlayerScript : MonoBehaviour
                     {
                         if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
 
-                        nearest = ps;
                         nearestCol = sheep;
+                        nearestColScript = ps;
+                        nearestColScript.SetNearestUpCol(this.gameObject);
 
                     }
                 }
             }
+
+            getTopSheep();
         }
         else//ループ中にこの関数が呼ばれている場合
         {
@@ -432,18 +416,18 @@ public class PlayerScript : MonoBehaviour
                 isMountFunc = false;
                 return;
             }
-            nearest = nearestCol.GetComponent<PlayerScript>();
+            if(nearestCol!=null)nearestColScript = nearestCol.GetComponent<PlayerScript>();
         }
 
 
-        if (nearest != null)
+        if (nearestColScript != null)
         {
 
             /*内田加筆*/
             if (isMount)
             {
                 setIsTop(true);
-                nearest.setIsTop(false);
+                nearestColScript.setIsTop(false);
                 AddList(3);
                 IgnoreReset();
                 rb.linearVelocity = Vector2.zero;
@@ -454,8 +438,8 @@ public class PlayerScript : MonoBehaviour
 
             // 最も近いループ羊の真上に位置をセット
             transform.position = new Vector2(
-                nearest.transform.position.x,
-                nearest.transform.position.y + mountOffset
+                nearestColScript.transform.position.x,
+                nearestColScript.transform.position.y + mountOffset
             );
 
 
@@ -468,6 +452,38 @@ public class PlayerScript : MonoBehaviour
 
     }
     public void MountOffsetChanger(float num) { mountOffset = num; }
+    //上に乗っている羊を取得、削除（羊がプレイヤーである場合セットしない）
+    public void SetNearestUpCol(GameObject col) {
+        PlayerScript pS=col.GetComponent<PlayerScript>();
+        if(pS.isDie)//プレイヤーをUpColにセットするとnearestUpColが二体いる状態に対応できないので除外
+        {
+            nearestUpCol = col; 
+        }
+    }
+    public void NullNearestUpCol() { nearestUpCol = null; }
+    //段差の一番上を取得
+    private void getTopSheep()
+    {
+        if (!isMountFunc) return;
+        if (nearestCol != null)//下に羊がいるなら
+        {
+            GameObject upObj=nearestCol;//まずは下にいる羊
+            PlayerScript upScript = upObj.GetComponent<PlayerScript>() ;
+
+            while (true)//一番上にいる羊を探る
+            {
+                if (upScript.nearestUpCol !=null)//下にいる羊の上にnearestUpColがいるなら
+                {
+                    upObj = upScript.nearestUpCol;
+                    upScript=upObj.GetComponent<PlayerScript>() ;
+                    //どんどん上の羊を取得する
+                }
+                else {  break; }//上に羊がいないならbreak
+            }
+            nearestCol = upObj;
+
+        }
+    }
     //羊が上にいる場合に、力を連動させる
     void LinkForce()
     {
@@ -493,7 +509,6 @@ public class PlayerScript : MonoBehaviour
     void FindNearSheep()
     {
         float nearestDist = mountRadius;
-        bool b = false;
         foreach (GameObject sheep in sheepSpawner.sheeps)
         {
             if (sheep == this.gameObject) continue;
@@ -507,21 +522,9 @@ public class PlayerScript : MonoBehaviour
             if (dist <= mountRadius && dist < nearestDist)
             {
                 nearestDist = dist;
-                b = true;
-                ps.setArrow(b);
                 return;
             }
-            ps.setArrow(b);
         }
-    }
-    public void setArrow(bool b)
-    {
-        return;
-        if (b) {
-            if (isTop == false) return;//単体または最上段ではないのならArrowを表示しない
-            arrow.enabled = true;
-        }
-        else { arrow.enabled = false; }
     }
     //Debug関連
     void DebugFunc()
@@ -537,6 +540,7 @@ public class PlayerScript : MonoBehaviour
     //プレイヤー入力関連
     void PlayerInput()
     {
+
         //死亡済みなら操作を取りやめる
         if (isDie) return;
         if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
@@ -544,14 +548,7 @@ public class PlayerScript : MonoBehaviour
         {
             if (isGrounded) isJump = true;
         }
-        if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
-        {
-            if (mountCooldown <= 0f)     /*北野加筆、クールダウン中に反応しなくなるようにするためifを追加*/
-            {
-                isMountFunc = true;
-                isMount = true;
-            }
-        }
+
     }
     //アニメーション管理
     void AnimationFunc()
@@ -595,7 +592,6 @@ public class PlayerScript : MonoBehaviour
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
         spr = GetComponent<SpriteRenderer>();
         E_Spawn = Resources.Load<GameObject>("E_Spawn");
-        arrow.enabled = false;
     } 
     //Start関数に入れる予定だったもの
     void StartFunc()
@@ -638,15 +634,6 @@ public class PlayerScript : MonoBehaviour
             AddList(4);
             rb.linearVelocity = Vector2.zero;
 
-            /*北野加筆*/
-            // 乗ってる状態で地面に触れたら強制的に降ろす
-            if (isMountFunc == true)
-            {
-                isMountFunc = false;
-                isMount = false;
-                nearestCol = null;
-                mountCooldown = mountCooldownTime;
-            }
         }
     }
 
