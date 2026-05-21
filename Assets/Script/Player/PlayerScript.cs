@@ -408,6 +408,7 @@ public class PlayerScript : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, sheep.transform.position);
                     if (dist <= mountRadius && dist < nearestDist)
                     {
+
                         if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
                         if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
@@ -476,12 +477,12 @@ public class PlayerScript : MonoBehaviour
     }
     public void NullNearestUpCol() { nearestUpCol = null; }
     //Mount解除時の処理
-    private void MountLeft()
+    public void MountLeft()
     {
-        isMountFunc = false;
         isMount = false;
         isTop = true;//単体になるとtrue
         if (isMountFunc && nearestColScript != null) nearestColScript.NullNearestUpCol();
+        isMountFunc = false;
         nearestColScript = null;
         nearestCol = null;
     }
@@ -638,6 +639,7 @@ public class PlayerScript : MonoBehaviour
         SetSprite();
         startPos = transform.position;
         AddList(2);
+        Instantiate(E_Spawn, transform.position, transform.rotation);
 
         //Debug
         SpawnTiming = manager.GetGameTimer();
@@ -726,7 +728,7 @@ public class PlayerScript : MonoBehaviour
         Vector2 origin = transform.position;
         Vector2 direction = Vector2.up;
         Vector2 boxCollider = boxCol.size * 0.9f * transform.localScale.y;
-        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0,LayerMask.GetMask("Ground"));
+        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0.5f,LayerMask.GetMask("Ground"));
 
         if (hit.collider != null) 
         {

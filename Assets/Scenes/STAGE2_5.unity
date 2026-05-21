@@ -460,6 +460,8 @@ MonoBehaviour:
   mountOffset: 1
   jumpPower: 7
   moveSpeed: 3
+  pMoveControl: 0
+  pControlValue: []
   farstSpawn: 0
 --- !u!4 &321131312
 Transform:
@@ -552,7 +554,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4328604953787789397, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.33
+      value: -1.19
       objectReference: {fileID: 0}
     - target: {fileID: 4328604953787789397, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_LocalPosition.z
