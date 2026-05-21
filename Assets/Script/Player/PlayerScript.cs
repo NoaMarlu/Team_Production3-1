@@ -103,8 +103,8 @@ public class PlayerScript : MonoBehaviour
     public float VelocityY;
 
     /*行けなくなる範囲を設定する場合*/
-    public bool moveControl = false;//基本はなし
-    public float[] controlValue;//0がX左、1がX右
+    private bool moveControl = false;//基本はなし
+    private float[] controlValue=new float[2];//0がX左、1がX右
     /*contorolValueを設定する際は、両方の軸をいれないといけない*/
 
     /*isCeiling*/
@@ -131,6 +131,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        MoveControl();
         CeilingCollision();
         IsCeiling();
         getTopSheep();
@@ -645,9 +646,21 @@ public class PlayerScript : MonoBehaviour
     //最上段または単体であることを取得する
     public void setIsTop(bool top) { isTop = top; }
     public bool getIsTop (){ return isTop; }
-    //ジャンプ力・移動速度の変更
+    //ジャンプ力・移動速度・MoveContorolの変更
     public void JumpForceChanger(float num) { jumpForce = num; }
     public void MoveSpeedChanger(float num) { moveSpeed = num; }
+    //任意での横移動の制御
+    public void MoveContorolChanger(float[] control)
+    {
+        moveControl = true;
+        controlValue = control;
+    }
+    void MoveControl()
+    {
+        if (!moveControl) return;//移動制御を行わない場合
+        if (transform.position.x < controlValue[0]) transform.position = new Vector2(controlValue[0], transform.position.y);
+        if (transform.position.x > controlValue[1]) transform.position = new Vector2(controlValue[1], transform.position.y);
+    }
     //最初から死亡
     void FirstDieInit()
     {

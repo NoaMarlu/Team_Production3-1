@@ -598,6 +598,8 @@ MonoBehaviour:
   mountOffset: 1
   jumpPower: 7
   moveSpeed: 3
+  pMoveControl: 0
+  pControlValue: []
   farstSpawn: 1
 --- !u!1001 &1189712212
 PrefabInstance:
@@ -1150,7 +1152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4328604953787789397, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -1.33
+      value: -1.17
       objectReference: {fileID: 0}
     - target: {fileID: 4328604953787789397, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1192,6 +1194,10 @@ PrefabInstance:
       propertyPath: goalAnimAnimator
       value: 
       objectReference: {fileID: 1560206580}
+    - target: {fileID: 7573149666860494624, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
+      propertyPath: m_SortingOrder
+      value: 10
+      objectReference: {fileID: 0}
     - target: {fileID: 7642640411547614143, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_Name
       value: Goal

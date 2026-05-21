@@ -18,7 +18,6 @@ public class SheepSpawner : MonoBehaviour
 
     /*isHit*/
     public List<GameObject> sheeps=new List<GameObject>();
-    private float r = 2.6f;
 
     /*MaxTime*/
     private GameManager manager;
@@ -28,11 +27,13 @@ public class SheepSpawner : MonoBehaviour
     public bool isStartAnime;
     private bool isStart = true;
 
-    /*スケール管理*/
+    /*プレイヤー変数管理*/
     public float pScale=1;
     public float mountOffset=1.0f;
     public float jumpPower = 7.0f;
     public float moveSpeed = 3.0f;
+    public bool pMoveControl = false;
+    public float[] pControlValue;//0がX左、1がX右
 
     /*レイヤー変更管理*/
     private int layerNum = 1;
@@ -199,6 +200,7 @@ public class SheepSpawner : MonoBehaviour
         script.JumpForceChanger(jumpPower);
         script.MoveSpeedChanger(moveSpeed);
         script.MountOffsetChanger(mountOffset);
+        if (pMoveControl) script.MoveContorolChanger(pControlValue);
 
         //list追加
         sheeps.Add(newSheep);
