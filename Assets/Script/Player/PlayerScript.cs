@@ -512,8 +512,11 @@ public class PlayerScript : MonoBehaviour
                 }
                 else {  break; }//上に羊がいないならbreak
             }
-            nearestCol = upObj;
-            AddList(3);
+            if (nearestCol != upObj) 
+            {
+                nearestCol = upObj;
+                AddList(3);
+            }
         }
     }
     //羊が上にいる場合に、力を連動させる
@@ -706,6 +709,7 @@ public class PlayerScript : MonoBehaviour
     void IsCeiling()
     {
 
+        if (isRemind) return;
         Vector2 origin = transform.position;
         Vector2 direction = Vector2.up;
         RaycastHit2D hit = Physics2D.CircleCast(origin, colW, direction,colH, LayerMask.GetMask("Ground"));
@@ -721,18 +725,44 @@ public class PlayerScript : MonoBehaviour
         Vector2 pos = (Vector2)transform.position+(Vector2.up*colH/2.0f);
         Gizmos.DrawWireSphere(transform.position, colW);
         Gizmos.DrawWireSphere(pos, colW);
+
+        Gizmos.color = Color.yellow;
+        Vector2 boxCollider = new Vector2(
+            boxCol.size.x * 0.9f * transform.localScale.x,
+            boxCol.size.y * 0.1f * transform.localScale.y
+            );
+        Vector2 origin = (Vector2)transform.position + Vector2.up * colH/2;
+        // BoxCastの初期位置
+        Gizmos.DrawWireCube(origin, boxCollider);
     }
     //天井の衝突判定を取得
     void CeilingCollision()
     {
-        Vector2 origin = transform.position;
+
+        if (!isMountFunc) return;
+        Vector2 origin = (Vector2)transform.position + Vector2.up * colH / 2;
         Vector2 direction = Vector2.up;
-        Vector2 boxCollider = boxCol.size * 0.9f * transform.localScale.y;
-        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0.5f,LayerMask.GetMask("Ground"));
+        Vector2 boxCollider = new Vector2(
+            boxCol.size.x * 0.9f * transform.localScale.x,
+            boxCol.size.y * 0.1f * transform.localScale.y
+            );
+        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0f,LayerMask.GetMask("Ground"));
 
         if (hit.collider != null) 
         {
-            MountLeft();
+            if (nearestCol != null)
+            {
+                nearestColScript.setIsTop(true);
+                nearestColScript.NullNearestUpCol();
+            }
+            isMount = false;
+            isTop = true;//単体になるとtrue
+            isMountFunc = false;
+            nearestColScript = null;
+            nearestCol = null;
+
+            //下に戻す
+            transform.position = new Vector2(transform.position.x, transform.position.y - 0.1f);
         }
 
     }
