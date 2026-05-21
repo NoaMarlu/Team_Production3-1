@@ -82,7 +82,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject nearestCol = null;
     public PlayerScript nearestColScript = null;
     private bool isTop=true;//trueであれば単体または重なっている場合の最上段
-    private GameObject nearestUpCol = null;
+    public GameObject nearestUpCol = null;
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
@@ -102,6 +102,17 @@ public class PlayerScript : MonoBehaviour
     /*Debug*/
     public float VelocityY;
 
+    /*行けなくなる範囲を設定する場合*/
+    private bool moveControl = false;//基本はなし
+    private float[] controlValue=new float[2];//0がX左、1がX右
+    /*contorolValueを設定する際は、両方の軸をいれないといけない*/
+
+    /*isCeiling*/
+    private BoxCollider2D boxCol;
+    private float colW;
+    private float colH;
+    public bool isCeiling;
+
     void Start()
     {
         Init();
@@ -111,6 +122,7 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
+
         VelocityY = rb.linearVelocityY;
         if (farstDie)
         {
@@ -119,11 +131,16 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        MoveControl();
+        CeilingCollision();
+        IsCeiling();
+        getTopSheep();
         DebugFunc();
         AnimationFunc();
         ChangeSprite();
         MountOnNearestLoopSheep();
         LinkForce();
+        MoveControler();
 
         if (isRemind)
         {
@@ -195,12 +212,7 @@ public class PlayerScript : MonoBehaviour
     {
         AddList(0);
         IgnoreReset();
-        isMountFunc = false;
-        isMount = false;
-        isTop = true;//単体になるとtrue
-        if(nearestColScript!=null)nearestColScript.NullNearestUpCol();
-        nearestColScript = null;
-        nearestCol = null;
+        MountLeft();
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
         isGrounded = false;
 
@@ -307,7 +319,7 @@ public class PlayerScript : MonoBehaviour
     void Spawn()
     {
         if (isSpawn) return;
-            if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetAxis("LT")>0.5f || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
@@ -373,13 +385,12 @@ public class PlayerScript : MonoBehaviour
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        if (mountOK != true) return;
-        if (isMountFunc == false) return;
+        if (!mountOK) return;
+        if (!isMountFunc) return;
         
 
         /*内田加筆*/
         float nearestDist = float.MaxValue;
-
         /////////////
 
         if (isRemind != true)//ループしていないなら
@@ -397,8 +408,9 @@ public class PlayerScript : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, sheep.transform.position);
                     if (dist <= mountRadius && dist < nearestDist)
                     {
-                        if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
 
+                        if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
+                        if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
                         nearestColScript = ps;
                         nearestColScript.SetNearestUpCol(this.gameObject);
@@ -407,7 +419,6 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            getTopSheep();
         }
         else//ループ中にこの関数が呼ばれている場合
         {
@@ -416,7 +427,11 @@ public class PlayerScript : MonoBehaviour
                 isMountFunc = false;
                 return;
             }
-            if(nearestCol!=null)nearestColScript = nearestCol.GetComponent<PlayerScript>();
+            if(nearestCol!=null)
+            { 
+                nearestColScript = nearestCol.GetComponent<PlayerScript>();
+                nearestColScript.SetNearestUpCol(this.gameObject);
+            }
         }
 
 
@@ -461,27 +476,44 @@ public class PlayerScript : MonoBehaviour
         }
     }
     public void NullNearestUpCol() { nearestUpCol = null; }
+    //Mount解除時の処理
+    public void MountLeft()
+    {
+        isMount = false;
+        isTop = true;//単体になるとtrue
+        if (isMountFunc && nearestColScript != null) nearestColScript.NullNearestUpCol();
+        isMountFunc = false;
+        nearestColScript = null;
+        nearestCol = null;
+    }
     //段差の一番上を取得
     private void getTopSheep()
     {
+        if (isDie) return;
         if (!isMountFunc) return;
         if (nearestCol != null)//下に羊がいるなら
         {
             GameObject upObj=nearestCol;//まずは下にいる羊
             PlayerScript upScript = upObj.GetComponent<PlayerScript>() ;
+            int count=0;
 
             while (true)//一番上にいる羊を探る
             {
+                count++;
                 if (upScript.nearestUpCol !=null)//下にいる羊の上にnearestUpColがいるなら
                 {
                     upObj = upScript.nearestUpCol;
                     upScript=upObj.GetComponent<PlayerScript>() ;
                     //どんどん上の羊を取得する
+                    if (count>100)
+                    {
+                        break;
+                    }
                 }
                 else {  break; }//上に羊がいないならbreak
             }
             nearestCol = upObj;
-
+            AddList(3);
         }
     }
     //羊が上にいる場合に、力を連動させる
@@ -530,23 +562,25 @@ public class PlayerScript : MonoBehaviour
     void DebugFunc()
     {
         //Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
-        if (Input.GetKeyDown(KeyCode.JoystickButton10) || Input.GetKeyDown(KeyCode.Escape))
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
         GameTimerDayo = manager.GetGameTimer();
     }
     //プレイヤー入力関連
     void PlayerInput()
     {
-
-        //死亡済みなら操作を取りやめる
         if (isDie) return;
+
+        //方向転換
         if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
+        //ジャンプ
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded) isJump = true;
+        }
+        //羊の乗る
+        if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
+        {
+             isMountFunc = true;
+             isMount = true;
         }
 
     }
@@ -585,6 +619,9 @@ public class PlayerScript : MonoBehaviour
     //初期化
     void Init()
     {
+        boxCol = GetComponent<BoxCollider2D>();
+        colW = boxCol.size.x*transform.localScale.x/2.0f;
+        colH= boxCol.size.y*transform.localScale.y;
         audioSource = GetComponent<AudioSource>();
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
@@ -602,6 +639,7 @@ public class PlayerScript : MonoBehaviour
         SetSprite();
         startPos = transform.position;
         AddList(2);
+        Instantiate(E_Spawn, transform.position, transform.rotation);
 
         //Debug
         SpawnTiming = manager.GetGameTimer();
@@ -610,9 +648,21 @@ public class PlayerScript : MonoBehaviour
     //最上段または単体であることを取得する
     public void setIsTop(bool top) { isTop = top; }
     public bool getIsTop (){ return isTop; }
-    //ジャンプ力・移動速度の変更
+    //ジャンプ力・移動速度・MoveContorolの変更
     public void JumpForceChanger(float num) { jumpForce = num; }
     public void MoveSpeedChanger(float num) { moveSpeed = num; }
+    //任意での横移動の制御
+    public void MoveContorolChanger(float[] control)
+    {
+        moveControl = true;
+        controlValue = control;
+    }
+    void MoveControl()
+    {
+        if (!moveControl) return;//移動制御を行わない場合
+        if (transform.position.x < controlValue[0]) transform.position = new Vector2(controlValue[0], transform.position.y);
+        if (transform.position.x > controlValue[1]) transform.position = new Vector2(controlValue[1], transform.position.y);
+    }
     //最初から死亡
     void FirstDieInit()
     {
@@ -635,6 +685,56 @@ public class PlayerScript : MonoBehaviour
             rb.linearVelocity = Vector2.zero;
 
         }
+    }
+    //横軸移動範囲の正業
+    void MoveControler()
+    {
+        //移動範囲を制限する場合
+        if (moveControl)
+        {
+            if (gameObject.transform.position.x < controlValue[0])
+            {
+                gameObject.transform.position = new Vector3(controlValue[0], transform.position.y, transform.position.z);
+            }
+            if (gameObject.transform.position.x > controlValue[1])
+            {
+                gameObject.transform.position = new Vector3(controlValue[1], transform.position.y, transform.position.z);
+            }
+        }
+    }
+    //天井判定取得
+    void IsCeiling()
+    {
+
+        Vector2 origin = transform.position;
+        Vector2 direction = Vector2.up;
+        RaycastHit2D hit = Physics2D.CircleCast(origin, colW, direction,colH, LayerMask.GetMask("Ground"));
+
+        if (hit.collider != null)  isCeiling = true;
+        else  isCeiling = false;
+    
+    }
+    bool GetCeiling() { return isCeiling; }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Vector2 pos = (Vector2)transform.position+(Vector2.up*colH/2.0f);
+        Gizmos.DrawWireSphere(transform.position, colW);
+        Gizmos.DrawWireSphere(pos, colW);
+    }
+    //天井の衝突判定を取得
+    void CeilingCollision()
+    {
+        Vector2 origin = transform.position;
+        Vector2 direction = Vector2.up;
+        Vector2 boxCollider = boxCol.size * 0.9f * transform.localScale.y;
+        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0.5f,LayerMask.GetMask("Ground"));
+
+        if (hit.collider != null) 
+        {
+            MountLeft();
+        }
+
     }
 
 }
