@@ -107,6 +107,12 @@ public class PlayerScript : MonoBehaviour
     public float[] controlValue;//0がX左、1がX右
     /*contorolValueを設定する際は、両方の軸をいれないといけない*/
 
+    /*isCeiling*/
+    private BoxCollider2D boxCol;
+    private float colW;
+    private float colH;
+    public bool isCeiling;
+
     void Start()
     {
         Init();
@@ -125,6 +131,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        IsCeiling();
         getTopSheep();
         DebugFunc();
         AnimationFunc();
@@ -315,7 +322,7 @@ public class PlayerScript : MonoBehaviour
     void Spawn()
     {
         if (isSpawn) return;
-            if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetAxis("LT")>0.5f || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
@@ -405,7 +412,7 @@ public class PlayerScript : MonoBehaviour
                     if (dist <= mountRadius && dist < nearestDist)
                     {
                         if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
-
+                        if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
                         nearestColScript = ps;
                         nearestColScript.SetNearestUpCol(this.gameObject);
@@ -567,12 +574,6 @@ public class PlayerScript : MonoBehaviour
              isMountFunc = true;
              isMount = true;
         }
-        //リセット
-        if (Input.GetKeyDown(KeyCode.JoystickButton6) || Input.GetKeyDown(KeyCode.Escape))
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
 
     }
     //アニメーション管理
@@ -610,6 +611,9 @@ public class PlayerScript : MonoBehaviour
     //初期化
     void Init()
     {
+        boxCol = GetComponent<BoxCollider2D>();
+        colW = boxCol.size.x*transform.localScale.x/2.0f;
+        colH= boxCol.size.y*transform.localScale.y;
         audioSource = GetComponent<AudioSource>();
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
@@ -676,6 +680,26 @@ public class PlayerScript : MonoBehaviour
                 gameObject.transform.position = new Vector3(controlValue[1], transform.position.y, transform.position.z);
             }
         }
+    }
+    //天井判定取得
+    void IsCeiling()
+    {
+
+        Vector2 origin = transform.position;
+        Vector2 direction = Vector2.up;
+        RaycastHit2D hit = Physics2D.CircleCast(origin, colW, direction,colH, LayerMask.GetMask("Ground"));
+
+        if (hit.collider != null)  isCeiling = true;
+        else  isCeiling = false;
+    
+    }
+    bool GetCeiling() { return isCeiling; }
+    void OnDrawGizmosSelected()
+    {
+        Gizmos.color = Color.red;
+        Vector2 pos = (Vector2)transform.position+(Vector2.up*colH/2.0f);
+        Gizmos.DrawWireSphere(transform.position, colW);
+        Gizmos.DrawWireSphere(pos, colW);
     }
 
 }
