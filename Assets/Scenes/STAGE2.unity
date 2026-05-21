@@ -402,8 +402,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u3061\u304B\u304F\u306E           \u306B\u306E\u308B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: e7403a576b01cdc4392f3453c0887750, type: 2}
+  m_sharedMaterial: {fileID: -1660980805347972715, guid: e7403a576b01cdc4392f3453c0887750, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4186,11 +4186,10 @@ MonoBehaviour:
   isMount: 0
   isMountFunc: 0
   nearestCol: {fileID: 0}
-  mountCooldownTime: 1
+  nearestColScript: {fileID: 0}
   isOverRaped: 0
   rayRadius: 0.5
   rayDistance: 0.5
-  arrow: {fileID: 6356163557367303969}
   directionOK: 1
   mountOK: 1
   farstDie: 1

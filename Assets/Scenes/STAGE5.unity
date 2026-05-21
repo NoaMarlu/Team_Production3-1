@@ -429,7 +429,7 @@ PrefabInstance:
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+      objectReference: {fileID: 11400000, guid: e7403a576b01cdc4392f3453c0887750, type: 2}
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_fontColor.b
       value: 0.09411766
@@ -445,7 +445,7 @@ PrefabInstance:
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+      objectReference: {fileID: -1660980805347972715, guid: e7403a576b01cdc4392f3453c0887750, type: 2}
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_fontColor32.rgba
       value: 4279776099
@@ -815,6 +815,7 @@ MonoBehaviour:
   mountOffset: 1
   jumpPower: 7
   moveSpeed: 3
+  farstSpawn: 1
 --- !u!1 &1233776116
 GameObject:
   m_ObjectHideFlags: 0
