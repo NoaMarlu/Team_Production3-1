@@ -51,7 +51,7 @@ public class SheepSpawner : MonoBehaviour
         if (farstSpawn != true)
         {
 
-            if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
+            if (Input.GetAxis("LT") > 0.5f || Input.GetKeyDown(KeyCode.Z))
             {
                 if (spawnOnce) return;
                 InstansPlayer();

@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Audio;
+using UnityEngine.SceneManagement;
 
 public class GameManager : MonoBehaviour
 {
@@ -23,6 +24,9 @@ public class GameManager : MonoBehaviour
     public GameObject animationObj;
     private GameObject animationInstance;
 
+    /*FastForward*/
+    private bool isFast=false;
+
     void Start()
     {
         animationInstance=Instantiate(animationObj);
@@ -42,6 +46,7 @@ public class GameManager : MonoBehaviour
     void Update()
     {
         StartAnimation();
+        GameReset();
 
         if (isStartAnimation) return;
 
@@ -62,29 +67,26 @@ public class GameManager : MonoBehaviour
     void FastForward()
     {
         // R1か左Shiftを押している間のみ早送り
-        if (Input.GetKey(KeyCode.JoystickButton5) || Input.GetKey(KeyCode.LeftShift))
+        if (Input.GetAxis("RT") > 0.5f || Input.GetKey(KeyCode.LeftShift))
         {
-            Time.timeScale = fastForwardNum;
-        }
+             Time.timeScale = fastForwardNum;
 
-        // ★追加：押した瞬間に画像を表示（enabled = true）にする
-        if (Input.GetKeyDown(KeyCode.JoystickButton5) || Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            if (targetSpriteRenderer != null)
+            if (!isFast)
             {
-                targetSpriteRenderer.enabled = true;
+                if (targetSpriteRenderer != null)
+                {
+                    targetSpriteRenderer.enabled = true;
+                }
+                audioSource.PlayOneShot(audioClip[0]);
+                isFast = true;
             }
         }
 
-        if (Input.GetKeyDown(KeyCode.JoystickButton5) || Input.GetKeyDown(KeyCode.LeftShift))
-        {
-            audioSource.PlayOneShot(audioClip[0]);
-        }
-
         // ★追加：離した瞬間に画像を非表示（enabled = false）にする
-        if (Input.GetKeyUp(KeyCode.JoystickButton5) || Input.GetKeyUp(KeyCode.LeftShift))
+        if (Input.GetAxis("RT") <=0|| Input.GetKeyUp(KeyCode.LeftShift))
         {
             Time.timeScale = 1;
+            isFast = false;
 
             if (targetSpriteRenderer != null)
             {
@@ -105,6 +107,15 @@ public class GameManager : MonoBehaviour
         {
             Destroy(animationInstance);
             isStartAnimation = false;
+        }
+    }
+    void GameReset()
+    {
+        //リセット
+        if (Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         }
     }
 
