@@ -402,8 +402,13 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u3061\u304B\u304F\u306E           \u306B\u306E\u308B"
   m_isRightToLeft: 0
+<<<<<<< HEAD
   m_fontAsset: {fileID: 11400000, guid: 04e5bf5d65c36c54ca5e88fe07061266, type: 2}
   m_sharedMaterial: {fileID: -9175454944341170859, guid: 04e5bf5d65c36c54ca5e88fe07061266, type: 2}
+=======
+  m_fontAsset: {fileID: 11400000, guid: 5085623def097134b9216d13e5389730, type: 2}
+  m_sharedMaterial: {fileID: 3186583170536941994, guid: 5085623def097134b9216d13e5389730, type: 2}
+>>>>>>> 18f707bad99273f3fef8eddf5ead1af1c06b3f6a
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -4113,8 +4118,6 @@ MonoBehaviour:
   mountOK: 1
   farstDie: 1
   VelocityY: 0
-  moveControl: 0
-  controlValue: []
 --- !u!4 &3329417221512768457
 Transform:
   m_ObjectHideFlags: 0
