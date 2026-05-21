@@ -102,6 +102,11 @@ public class PlayerScript : MonoBehaviour
     /*Debug*/
     public float VelocityY;
 
+    /*行けなくなる範囲を設定する場合*/
+    public bool moveControl = false;//基本はなし
+    public float[] controlValue;//0がX左、1がX右
+    /*contorolValueを設定する際は、両方の軸をいれないといけない*/
+
     void Start()
     {
         Init();
@@ -111,6 +116,7 @@ public class PlayerScript : MonoBehaviour
     }
     void Update()
     {
+
         VelocityY = rb.linearVelocityY;
         if (farstDie)
         {
@@ -125,6 +131,7 @@ public class PlayerScript : MonoBehaviour
         ChangeSprite();
         MountOnNearestLoopSheep();
         LinkForce();
+        MoveControler();
 
         if (isRemind)
         {
@@ -652,6 +659,22 @@ public class PlayerScript : MonoBehaviour
             AddList(4);
             rb.linearVelocity = Vector2.zero;
 
+        }
+    }
+    //横軸移動範囲の正業
+    void MoveControler()
+    {
+        //移動範囲を制限する場合
+        if (moveControl)
+        {
+            if (gameObject.transform.position.x < controlValue[0])
+            {
+                gameObject.transform.position = new Vector3(controlValue[0], transform.position.y, transform.position.z);
+            }
+            if (gameObject.transform.position.x > controlValue[1])
+            {
+                gameObject.transform.position = new Vector3(controlValue[1], transform.position.y, transform.position.z);
+            }
         }
     }
 
