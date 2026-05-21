@@ -82,7 +82,7 @@ public class PlayerScript : MonoBehaviour
     public GameObject nearestCol = null;
     public PlayerScript nearestColScript = null;
     private bool isTop=true;//trueであれば単体または重なっている場合の最上段
-    private GameObject nearestUpCol = null;
+    public GameObject nearestUpCol = null;
 
     /*当たり判定処理*/
     public bool isOverRaped = false;
@@ -119,6 +119,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        getTopSheep();
         DebugFunc();
         AnimationFunc();
         ChangeSprite();
@@ -198,7 +199,7 @@ public class PlayerScript : MonoBehaviour
         isMountFunc = false;
         isMount = false;
         isTop = true;//単体になるとtrue
-        if(nearestColScript!=null)nearestColScript.NullNearestUpCol();
+        if(isMountFunc && nearestColScript!=null)nearestColScript.NullNearestUpCol();
         nearestColScript = null;
         nearestCol = null;
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
@@ -373,13 +374,12 @@ public class PlayerScript : MonoBehaviour
     //近くのループ羊に乗る関数やつぁ
     void MountOnNearestLoopSheep()
     {
-        if (mountOK != true) return;
-        if (isMountFunc == false) return;
+        if (!mountOK) return;
+        if (!isMountFunc) return;
         
 
         /*内田加筆*/
         float nearestDist = float.MaxValue;
-
         /////////////
 
         if (isRemind != true)//ループしていないなら
@@ -407,7 +407,6 @@ public class PlayerScript : MonoBehaviour
                 }
             }
 
-            getTopSheep();
         }
         else//ループ中にこの関数が呼ばれている場合
         {
@@ -416,7 +415,11 @@ public class PlayerScript : MonoBehaviour
                 isMountFunc = false;
                 return;
             }
-            if(nearestCol!=null)nearestColScript = nearestCol.GetComponent<PlayerScript>();
+            if(nearestCol!=null)
+            { 
+                nearestColScript = nearestCol.GetComponent<PlayerScript>();
+                nearestColScript.SetNearestUpCol(this.gameObject);
+            }
         }
 
 
@@ -464,24 +467,31 @@ public class PlayerScript : MonoBehaviour
     //段差の一番上を取得
     private void getTopSheep()
     {
+        if (isDie) return;
         if (!isMountFunc) return;
         if (nearestCol != null)//下に羊がいるなら
         {
             GameObject upObj=nearestCol;//まずは下にいる羊
             PlayerScript upScript = upObj.GetComponent<PlayerScript>() ;
+            int count=0;
 
             while (true)//一番上にいる羊を探る
             {
+                count++;
                 if (upScript.nearestUpCol !=null)//下にいる羊の上にnearestUpColがいるなら
                 {
                     upObj = upScript.nearestUpCol;
                     upScript=upObj.GetComponent<PlayerScript>() ;
                     //どんどん上の羊を取得する
+                    if (count>100)
+                    {
+                        break;
+                    }
                 }
                 else {  break; }//上に羊がいないならbreak
             }
             nearestCol = upObj;
-
+            AddList(3);
         }
     }
     //羊が上にいる場合に、力を連動させる
@@ -530,23 +540,31 @@ public class PlayerScript : MonoBehaviour
     void DebugFunc()
     {
         //Debug.Log(rb.linearVelocityX + " " + rb.linearVelocityY);
-        if (Input.GetKeyDown(KeyCode.JoystickButton10) || Input.GetKeyDown(KeyCode.Escape))
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
         GameTimerDayo = manager.GetGameTimer();
     }
     //プレイヤー入力関連
     void PlayerInput()
     {
-
-        //死亡済みなら操作を取りやめる
         if (isDie) return;
+
+        //方向転換
         if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
+        //ジャンプ
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded) isJump = true;
+        }
+        //羊の乗る
+        if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
+        {
+             isMountFunc = true;
+             isMount = true;
+        }
+        //リセット
+        if (Input.GetKeyDown(KeyCode.JoystickButton6) || Input.GetKeyDown(KeyCode.Escape))
+        {
+            string currentSceneName = SceneManager.GetActiveScene().name;
+            SceneManager.LoadScene(currentSceneName);
         }
 
     }
