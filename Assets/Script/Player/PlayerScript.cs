@@ -131,6 +131,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        CeilingCollision();
         IsCeiling();
         getTopSheep();
         DebugFunc();
@@ -210,12 +211,7 @@ public class PlayerScript : MonoBehaviour
     {
         AddList(0);
         IgnoreReset();
-        isMountFunc = false;
-        isMount = false;
-        isTop = true;//単体になるとtrue
-        if(isMountFunc && nearestColScript!=null)nearestColScript.NullNearestUpCol();
-        nearestColScript = null;
-        nearestCol = null;
+        MountLeft();
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
         isGrounded = false;
 
@@ -478,6 +474,16 @@ public class PlayerScript : MonoBehaviour
         }
     }
     public void NullNearestUpCol() { nearestUpCol = null; }
+    //Mount解除時の処理
+    private void MountLeft()
+    {
+        isMountFunc = false;
+        isMount = false;
+        isTop = true;//単体になるとtrue
+        if (isMountFunc && nearestColScript != null) nearestColScript.NullNearestUpCol();
+        nearestColScript = null;
+        nearestCol = null;
+    }
     //段差の一番上を取得
     private void getTopSheep()
     {
@@ -700,6 +706,20 @@ public class PlayerScript : MonoBehaviour
         Vector2 pos = (Vector2)transform.position+(Vector2.up*colH/2.0f);
         Gizmos.DrawWireSphere(transform.position, colW);
         Gizmos.DrawWireSphere(pos, colW);
+    }
+    //天井の衝突判定を取得
+    void CeilingCollision()
+    {
+        Vector2 origin = transform.position;
+        Vector2 direction = Vector2.up;
+        Vector2 boxCollider = boxCol.size * 0.9f * transform.localScale.y;
+        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0,LayerMask.GetMask("Ground"));
+
+        if (hit.collider != null) 
+        {
+            MountLeft();
+        }
+
     }
 
 }

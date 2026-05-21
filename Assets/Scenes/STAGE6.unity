@@ -1249,11 +1249,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2779192702538635000, guid: eaddc8727d0510646b8360b7fd96ff77, type: 3}
       propertyPath: m_SortingOrder
-      value: 20
+      value: 19
       objectReference: {fileID: 0}
     - target: {fileID: 5533044144210595816, guid: eaddc8727d0510646b8360b7fd96ff77, type: 3}
       propertyPath: m_SortingOrder
-      value: 21
+      value: 20
       objectReference: {fileID: 0}
     - target: {fileID: 6074427305060828477, guid: eaddc8727d0510646b8360b7fd96ff77, type: 3}
       propertyPath: m_Name
