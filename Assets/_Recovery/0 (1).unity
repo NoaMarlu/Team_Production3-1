@@ -976,9 +976,15 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::SheepSpawner
   sheepPrefab: {fileID: 4874309050968122548, guid: 5833f682299689241a2be2073a45c67b, type: 3}
   sheepCount: 0
-  speechBubble: {fileID: 1365226366}
+  speechBubble1: {fileID: 0}
+  speechBubble2: {fileID: 0}
   sheeps: []
   maxTime: 0
+  isStartAnime: 0
+  pScale: 1
+  mountOffset: 1
+  jumpPower: 7
+  moveSpeed: 3
 --- !u!1001 &1038521913
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1085,9 +1091,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f01e5fae87e997447905856fe3423a6a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GameManager
+  targetSpriteRenderer: {fileID: 0}
   fastForwardNum: 2
   GameTimer: 0
   GameTime: 3.4028235e+38
+  audioClip: []
+  SEVolume: []
+  isStartAnimation: 1
+  animationObj: {fileID: 0}
 --- !u!1 &1233776116
 GameObject:
   m_ObjectHideFlags: 0

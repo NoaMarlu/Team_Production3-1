@@ -1,13 +1,10 @@
 fileFormatVersion: 2
-guid: 0b6d6008d379d7d478e15ab1383c473c
+guid: 3f0714f343d83bb4bb35340a0cea08f1
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -8708151249000511563
-    second: RB_0
-  - first:
-      213: -4825787287565598694
-    second: RB_1
+      213: -3497162051001425478
+    second: "\u30FC_0"
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -103,13 +100,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: RB_0
+      name: "\u30FC_0"
       rect:
         serializedVersion: 2
-        x: 28
-        y: 15
-        width: 141
-        height: 169
+        x: 15
+        y: 63
+        width: 176
+        height: 64
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -118,30 +115,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 5b743f8a39e662780800000000000000
-      internalID: -8708151249000511563
-      vertices: []
-      indices: 
-      edges: []
-      weights: []
-    - serializedVersion: 2
-      name: RB_1
-      rect:
-        serializedVersion: 2
-        x: 244
-        y: 12
-        width: 118
-        height: 170
-      alignment: 0
-      pivot: {x: 0, y: 0}
-      border: {x: 0, y: 0, z: 0, w: 0}
-      customData: 
-      outline: []
-      physicsShape: []
-      tessellationDetail: -1
-      bones: []
-      spriteID: a108e03b70c570db0800000000000000
-      internalID: -4825787287565598694
+      spriteID: ab16514b4a5977fc0800000000000000
+      internalID: -3497162051001425478
       vertices: []
       indices: 
       edges: []
@@ -150,7 +125,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: 5e97eb03825dee720800000000000000
+    spriteID: 
     internalID: 0
     vertices: []
     indices: 
@@ -160,8 +135,7 @@ TextureImporter:
     spriteCustomMetadata:
       entries: []
     nameFileIdTable:
-      RB_0: -8708151249000511563
-      RB_1: -4825787287565598694
+      "\u30FC_0": -3497162051001425478
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

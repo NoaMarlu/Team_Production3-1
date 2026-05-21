@@ -37,12 +37,30 @@ public class SheepSpawner : MonoBehaviour
     /*レイヤー変更管理*/
     private int layerNum = 1;
 
+    /*最初はスポーンしない*/
+    public bool farstSpawn = true;
+    private bool spawnOnce = false;
+
     void Start()
     {
         Init();
     }
     void Update()
     {
+
+        if (farstSpawn != true)
+        {
+
+            if (Input.GetKeyDown(KeyCode.JoystickButton4) || Input.GetKeyDown(KeyCode.Z))
+            {
+                if (spawnOnce) return;
+                InstansPlayer();
+                sheepCount = 1;
+                StartCoroutine(showUI());
+                spawnOnce =true;
+            }
+
+        }
 
         isStartAnime = manager.isStartAnimation;
         if (isStartAnime) return;
@@ -73,15 +91,17 @@ public class SheepSpawner : MonoBehaviour
     IEnumerator showUI()
     {
         if(sheepCount<10){
-        speechBubble1.SetActive(true);
+
+            if (speechBubble1 != null) speechBubble1.SetActive(true);
         yield return new WaitForSecondsRealtime(UItime);
-            speechBubble1.SetActive(false);
+            if (speechBubble1 != null) speechBubble1.SetActive(false);
         }
         else
         {
-            speechBubble2.SetActive(true);
+            if (speechBubble2 != null) { speechBubble2.SetActive(true); }
+            
             yield return new WaitForSecondsRealtime(UItime);
-            speechBubble2.SetActive(false);
+            if (speechBubble2 != null) { speechBubble2.SetActive(false); }
         }
     }
 
@@ -103,6 +123,7 @@ public class SheepSpawner : MonoBehaviour
         {
             //全羊から死亡時間を取得
             PlayerScript player=sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
             if ( player.DieTime> maxTime && player.DieTime != 0)
             {
                 maxTime = player.DieTime;
@@ -116,6 +137,7 @@ public class SheepSpawner : MonoBehaviour
         foreach (GameObject sheep in sheeps)
         {
             PlayerScript player = sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
             if (player.isDie==false) return true;
         }
         return false;
@@ -126,6 +148,7 @@ public class SheepSpawner : MonoBehaviour
         foreach (GameObject sheep in sheeps)
         {
             PlayerScript player = sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
             player.isloopSpawn = false;
         }
     }
@@ -141,17 +164,22 @@ public class SheepSpawner : MonoBehaviour
         speechBubble2 = GameObject.Find("speechBubble2");
         if (speechBubble1 == null) Debug.Log("speechBubble1はnullです");
         if (speechBubble2 == null) Debug.Log("speechBubble2はnullです");
-        speechBubble1.SetActive(false);
-        speechBubble2.SetActive(false);
+        if(speechBubble1!=null)speechBubble1.SetActive(false);
+        if(speechBubble2!=null)speechBubble2.SetActive(false);
         isStartAnime = manager.isStartAnimation;
     }
     //スタートアニメーション終了後に一回呼び出す処理
     void StartFunc()
     {
         if (!isStart) return;
+
         //最初に一体生成
-        InstansPlayer();
-        StartCoroutine(showUI());
+        if (farstSpawn) {
+            Debug.Log("初回生成");
+           InstansPlayer();
+           StartCoroutine(showUI());
+        }
+
         isStart = false;
     }
     //プレイヤー生成関連

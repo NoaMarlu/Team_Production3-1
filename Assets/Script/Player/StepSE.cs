@@ -5,9 +5,13 @@ public class StepSE : MonoBehaviour
 
     private AudioSource audioSource;
     public AudioClip stepSE;
+    public GameObject parent;
+    public PlayerScript player;
 
     void Start()
     {
+        parent = transform.parent.gameObject;
+        player=parent.GetComponent<PlayerScript>();
         audioSource=GetComponent<AudioSource>();
     }
     void OnTriggerEnter2D(Collider2D collider)
@@ -15,7 +19,7 @@ public class StepSE : MonoBehaviour
         //Groundレイヤーだったら
         if (collider.gameObject.layer==8)
         {
-            audioSource.PlayOneShot(stepSE);
+            if(player.farstDie!=true)audioSource.PlayOneShot(stepSE);
         }
     }
 }
