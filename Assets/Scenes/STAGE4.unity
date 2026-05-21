@@ -1589,8 +1589,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u306F\u3084\u304A\u304F\u308A"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
-  m_sharedMaterial: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 04e5bf5d65c36c54ca5e88fe07061266, type: 2}
+  m_sharedMaterial: {fileID: -9175454944341170859, guid: 04e5bf5d65c36c54ca5e88fe07061266, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -1653,7 +1653,7 @@ MonoBehaviour:
   m_VertexBufferAutoSizeReduction: 0
   m_useMaxVisibleDescender: 1
   m_pageToDisplay: 1
-  m_margin: {x: 0, y: 0, z: -743.36127, w: 0}
+  m_margin: {x: 0, y: 0, z: -743.36127, w: -38.553074}
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_hasFontAssetChanged: 0
