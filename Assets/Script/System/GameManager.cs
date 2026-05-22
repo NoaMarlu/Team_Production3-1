@@ -28,6 +28,7 @@ public class GameManager : MonoBehaviour
     private bool isFast=false;
 
     /*Pause*/
+    public bool isPausable = false; // 追加：trueのときだけポーズ可能
     public GameObject pauseUI; // ポーズ画面のUIオブジェクト（Unity上でアタッチ）
     public string selectSceneName = "StageSelect"; // 仮置き
     private bool isPause = false;
@@ -118,13 +119,16 @@ public class GameManager : MonoBehaviour
         {
             Destroy(animationInstance);
             isStartAnimation = false;
+            isPausable = true;
         }
     }
 
     void PauseInput()
     {
+        if (!isPausable) return;
         if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7))
         {
+
             if (isPause) ResumeGame();
             else PauseGame();
             return;
