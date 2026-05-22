@@ -1898,6 +1898,8 @@ MonoBehaviour:
   mountOffset: 1
   jumpPower: 7
   moveSpeed: 3
+  pMoveControl: 0
+  pControlValue: []
   farstSpawn: 1
 --- !u!1001 &1038521913
 PrefabInstance:
@@ -4113,8 +4115,7 @@ MonoBehaviour:
   mountOK: 1
   farstDie: 1
   VelocityY: 0
-  moveControl: 0
-  controlValue: []
+  isCeiling: 0
 --- !u!4 &3329417221512768457
 Transform:
   m_ObjectHideFlags: 0
@@ -4180,7 +4181,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4328604953787789397, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.4699999
+      value: 1.54
       objectReference: {fileID: 0}
     - target: {fileID: 4328604953787789397, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: m_LocalPosition.z
