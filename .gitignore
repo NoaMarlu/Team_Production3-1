@@ -105,6 +105,8 @@ InitTestScene*.unity*
 # Auto-generated cache in Assets folder
 /[Aa]ssets/[Ss]ceneDependencyCache*
 
-/[Aa]ssets/TextMesh Pro/
-/[Aa]ssets/TextMesh Pro.meta
+#/[Aa]ssets/TextMesh Pro/
+#/[Aa]ssets/TextMesh Pro.meta
+/Assets/TextMesh Pro/Resources/Fonts & Materials/
 /Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
+/Assets/TextMesh Pro/Resources/Fonts/RabbitandFullMoonFree-Regular SDF
