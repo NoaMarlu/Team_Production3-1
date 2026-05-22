@@ -9,6 +9,7 @@ TagManager:
   - Spawner
   - speechBubble
   - stepObj
+  - gauge
   layers:
   - Default
   - TransparentFX

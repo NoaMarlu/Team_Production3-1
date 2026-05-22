@@ -10,6 +10,7 @@ public class SheepSpawner : MonoBehaviour
     /*Spawn*/
     public GameObject sheepPrefab;
     public int sheepCount = 0;
+    private GaugeScript gaugeScript;
 
     /*UI*/
     public GameObject speechBubble1;//吹き出しアセットを用意してUnity上でアタッチしてください
@@ -105,7 +106,6 @@ public class SheepSpawner : MonoBehaviour
             if (speechBubble2 != null) { speechBubble2.SetActive(false); }
         }
     }
-
     //スポナーの半径r内にPlayerがいるか判定
     public bool  isHit()
     {
@@ -116,7 +116,6 @@ public class SheepSpawner : MonoBehaviour
         //}
         return true;
     }
-
     //羊のMaxTimeを取得
     void MaxTime()
     {
@@ -131,7 +130,6 @@ public class SheepSpawner : MonoBehaviour
             }
         }
     }
-
     //現状で死んでいない羊がいるかどうか
     public bool isNotDieSheep()
     {
@@ -143,7 +141,6 @@ public class SheepSpawner : MonoBehaviour
         }
         return false;
     }
-
     public void IsLoopSpawn()
     {
         foreach (GameObject sheep in sheeps)
@@ -153,12 +150,12 @@ public class SheepSpawner : MonoBehaviour
             player.isloopSpawn = false;
         }
     }
-
     //初期化
     void Init()
     {
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
+        gaugeScript=GameObject.FindWithTag("gauge").GetComponent<GaugeScript>();
 
         /*showUI*/
         speechBubble1 = GameObject.Find("speechBubble1");
@@ -196,6 +193,9 @@ public class SheepSpawner : MonoBehaviour
         sprite.sortingOrder += layerNum;
         layerNum++;
 
+        //ゲージ管理
+        gaugeScript.DrawIcon();
+
         //変数調整
         script.JumpForceChanger(jumpPower);
         script.MoveSpeedChanger(moveSpeed);
@@ -205,5 +205,6 @@ public class SheepSpawner : MonoBehaviour
         //list追加
         sheeps.Add(newSheep);
     }
+    public GameObject GetSheepList(int num) { return sheeps[num]; }
 
 }
