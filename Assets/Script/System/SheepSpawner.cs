@@ -43,6 +43,9 @@ public class SheepSpawner : MonoBehaviour
     public bool farstSpawn = true;
     private bool spawnOnce = false;
 
+    /*MaxTime*/
+    private float maxLiveTime=0;
+
     void Start()
     {
         Init();
@@ -121,6 +124,7 @@ public class SheepSpawner : MonoBehaviour
     {
         foreach(GameObject sheep in sheeps)
         {
+
             //全羊から死亡時間を取得
             PlayerScript player=sheep.GetComponent<PlayerScript>();
             if (player == null) continue;
@@ -128,6 +132,13 @@ public class SheepSpawner : MonoBehaviour
             {
                 maxTime = player.DieTime;
             }
+
+            //全羊から最大生存時間を取得
+            if (maxLiveTime <= player.GetLiveTimer())
+            {
+                maxLiveTime =player.GetLiveTimer();
+            }
+
         }
     }
     //現状で死んでいない羊がいるかどうか
@@ -155,7 +166,8 @@ public class SheepSpawner : MonoBehaviour
     {
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
-        gaugeScript=GameObject.FindWithTag("gauge").GetComponent<GaugeScript>();
+        GameObject gaugeObj = GameObject.FindWithTag("gauge");
+        if(gaugeObj!=null)gaugeScript =gaugeObj.GetComponent<GaugeScript>();
 
         /*showUI*/
         speechBubble1 = GameObject.Find("speechBubble1");
@@ -193,8 +205,11 @@ public class SheepSpawner : MonoBehaviour
         sprite.sortingOrder += layerNum;
         layerNum++;
 
+        //list追加
+        sheeps.Add(newSheep);
+
         //ゲージ管理
-        gaugeScript.DrawIcon();
+        if (gaugeScript!=null)gaugeScript.DrawIcon();
 
         //変数調整
         script.JumpForceChanger(jumpPower);
@@ -202,9 +217,8 @@ public class SheepSpawner : MonoBehaviour
         script.MountOffsetChanger(mountOffset);
         if (pMoveControl) script.MoveContorolChanger(pControlValue);
 
-        //list追加
-        sheeps.Add(newSheep);
     }
     public GameObject GetSheepList(int num) { return sheeps[num]; }
+    public float GetLiveTimer() { return maxLiveTime; }
 
 }

@@ -402,8 +402,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: "\u3061\u304B\u304F\u306E           \u306B\u306E\u308B"
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+  m_sharedMaterial: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []

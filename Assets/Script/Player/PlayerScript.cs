@@ -21,6 +21,7 @@ public class PlayerScript : MonoBehaviour
     /*SheepIsDie*/
     private SheepSpawner sheepSpawner;
     public bool isDie = false;//trueで一度死亡している判定
+    private float liveTimer=0;
 
     /*AddPos*/
     public List<float> timeList = new List<float>();
@@ -131,6 +132,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        CheckLive();
         MoveControl();
         CeilingCollision();
         IsCeiling();
@@ -388,6 +390,7 @@ public class PlayerScript : MonoBehaviour
         if (!mountOK) return;
         if (!isMountFunc) return;
         
+        
 
         /*内田加筆*/
         float nearestDist = float.MaxValue;
@@ -582,7 +585,7 @@ public class PlayerScript : MonoBehaviour
         //羊の乗る
         if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
         {
-             isMountFunc = true;
+            isMountFunc = true;
              isMount = true;
         }
 
@@ -766,5 +769,12 @@ public class PlayerScript : MonoBehaviour
         }
 
     }
+    //生存時間の記録
+    void CheckLive()
+    {
+        if(isDie)return;
+        liveTimer += Time.deltaTime;
+    }
+    public float GetLiveTimer() { return liveTimer; }
 
 }
