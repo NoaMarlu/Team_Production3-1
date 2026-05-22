@@ -27,6 +27,15 @@ public class GameManager : MonoBehaviour
     /*FastForward*/
     private bool isFast=false;
 
+    /*Pause*/
+    public GameObject pauseUI; // ポーズ画面のUIオブジェクト（Unity上でアタッチ）
+    public string selectSceneName = "StageSelect"; // 仮置き
+    private bool isPause = false;
+    private int pauseSelectIndex = 0; // 0=リトライ、1=ステージセレクト
+    public SpriteRenderer retryUI;   // 仮置き
+    public SpriteRenderer selectUI;  // 仮置き
+    private bool stickMoved = false; // 追加
+
     void Start()
     {
         animationInstance=Instantiate(animationObj);
@@ -45,10 +54,11 @@ public class GameManager : MonoBehaviour
     }
     void Update()
     {
+        PauseInput();
         StartAnimation();
-        GameReset();
 
         if (isStartAnimation) return;
+        if (isPause) return;
 
         FastForward();
         GameTimer += Time.deltaTime;
@@ -66,6 +76,7 @@ public class GameManager : MonoBehaviour
     // 早送り
     void FastForward()
     {
+        if (isPause) return; // ポーズ中は早送りしない
         // R1か左Shiftを押している間のみ早送り
         if (Input.GetAxis("RT") > 0.5f || Input.GetKey(KeyCode.LeftShift))
         {
@@ -109,14 +120,80 @@ public class GameManager : MonoBehaviour
             isStartAnimation = false;
         }
     }
-    void GameReset()
+
+    void PauseInput()
     {
-        //リセット
-        if (Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7))
         {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
+            if (isPause) ResumeGame();
+            else PauseGame();
+            return;
+        }
+
+        if (!isPause) return;
+
+        // Lスティックの上下でカーソル移動
+        float stick = Input.GetAxisRaw("Vertical");
+        if (stick > 0.5f || stick < -0.5f)
+        {
+            if (!stickMoved)
+            {
+                pauseSelectIndex = pauseSelectIndex == 0 ? 1 : 0;
+                UpdatePauseCursor();
+                stickMoved = true;
+            }
+        }
+        else
+        {
+            stickMoved = false;
+        }
+
+        // 決定ボタン（Aボタン or Space）
+        if (Input.GetKeyDown(KeyCode.JoystickButton0) || Input.GetKeyDown(KeyCode.Space))
+        {
+            if (pauseSelectIndex == 0)
+            {
+                // リトライ
+                Time.timeScale = 1;
+                string currentSceneName = SceneManager.GetActiveScene().name;
+                SceneManager.LoadScene(currentSceneName);
+            }
+            else
+            {
+                // ステージセレクト
+                Time.timeScale = 1;
+                SceneManager.LoadScene(selectSceneName);
+            }
         }
     }
 
+    void PauseGame()
+    {
+        isPause = true;
+        Time.timeScale = 0;
+        if (pauseUI != null) pauseUI.SetActive(true);
+        pauseSelectIndex = 0;
+        UpdatePauseCursor();
+    }
+
+    void ResumeGame()
+    {
+        isPause = false;
+        Time.timeScale = 1;
+        if (pauseUI != null) pauseUI.SetActive(false);
+    }
+
+    void UpdatePauseCursor()
+    {
+        if (retryUI != null)
+        {
+            retryUI.enabled = true;
+            retryUI.color = pauseSelectIndex == 0 ? Color.white : Color.gray;
+        }
+        if (selectUI != null)
+        {
+            selectUI.enabled = true;
+            selectUI.color = pauseSelectIndex == 1 ? Color.white : Color.gray;
+        }
+    }
 }
