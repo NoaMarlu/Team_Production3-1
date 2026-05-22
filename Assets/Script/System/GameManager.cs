@@ -28,13 +28,18 @@ public class GameManager : MonoBehaviour
     private bool isFast=false;
 
     /*Pause*/
+    public bool isPausable = false; // 追加：trueのときだけポーズ可能
     public GameObject pauseUI; // ポーズ画面のUIオブジェクト（Unity上でアタッチ）
     public string selectSceneName = "StageSelect"; // 仮置き
     private bool isPause = false;
     private int pauseSelectIndex = 0; // 0=リトライ、1=ステージセレクト
-    public SpriteRenderer retryUI;   // 仮置き
-    public SpriteRenderer selectUI;  // 仮置き
-    private bool stickMoved = false; // 追加
+    public SpriteRenderer retryUI;
+    public Sprite retrySelected;    //選択中のスプライト
+    public Sprite retryDeselected;  //非選択中のスプライト
+    public SpriteRenderer selectUI;
+    public Sprite selectSelected;  
+    public Sprite selectDeselected;
+    private bool stickMoved = false;
 
     void Start()
     {
@@ -56,7 +61,6 @@ public class GameManager : MonoBehaviour
     {
         PauseInput();
         StartAnimation();
-        GameReset();
 
         if (isStartAnimation) return;
         if (isPause) return;
@@ -119,30 +123,16 @@ public class GameManager : MonoBehaviour
         {
             Destroy(animationInstance);
             isStartAnimation = false;
+            isPausable = true;
         }
     }
-    //void GameReset()
-    //{
-    //    //リセット
-    //    if (Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape))
-    //    {
-    //        string currentSceneName = SceneManager.GetActiveScene().name;
-    //        SceneManager.LoadScene(currentSceneName);
-    //    }
-    //}
-    void GameReset()//北野修正
-    {
-        // リセットはコントローラーのStartボタンのみに変更
-        if (Input.GetKeyDown(KeyCode.JoystickButton7))
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
-    }
+
     void PauseInput()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton9))
+        if (!isPausable) return;
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7))
         {
+
             if (isPause) ResumeGame();
             else PauseGame();
             return;
@@ -206,12 +196,12 @@ public class GameManager : MonoBehaviour
         if (retryUI != null)
         {
             retryUI.enabled = true;
-            retryUI.color = pauseSelectIndex == 0 ? Color.white : Color.gray;
+            retryUI.sprite = pauseSelectIndex == 0 ? retrySelected : retryDeselected;
         }
         if (selectUI != null)
         {
             selectUI.enabled = true;
-            selectUI.color = pauseSelectIndex == 1 ? Color.white : Color.gray;
+            selectUI.sprite = pauseSelectIndex == 1 ? selectSelected : selectDeselected;
         }
     }
 }

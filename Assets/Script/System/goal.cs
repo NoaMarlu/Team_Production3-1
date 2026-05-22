@@ -16,6 +16,7 @@ public class goal : MonoBehaviour
 
     private float elapsedUnscaledTime = 0f;
     private bool isGoalTriggered = false; // ゴールしたかどうかのフラグ
+    private GameManager gameManager;
 
     /*SE関連*/
     private AudioSource audioSource;
@@ -24,9 +25,8 @@ public class goal : MonoBehaviour
 
     void Start()
     {
-
-            audioSource = GetComponent<AudioSource>();
-
+        audioSource = GetComponent<AudioSource>();
+        gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         // 開始時はアニメーション用オブジェクトを非表示にしておく（必要に応じて）
         if (goalAnimAnimator != null)
         {
@@ -64,6 +64,8 @@ public class goal : MonoBehaviour
         {
             isGoalTriggered = true; // タイマースタートの合図
             elapsedUnscaledTime = 0f; // タイマーをリセット
+
+            if (gameManager != null) gameManager.isPausable = false;
 
             //Time.timeScale = 0f; // ゲームを停止
 
