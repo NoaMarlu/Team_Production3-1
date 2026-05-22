@@ -103,8 +103,8 @@ public class PlayerScript : MonoBehaviour
     public float VelocityY;
 
     /*行けなくなる範囲を設定する場合*/
-    public bool moveControl = false;//基本はなし
-    public float[] controlValue;//0がX左、1がX右
+    private bool moveControl = false;//基本はなし
+    private float[] controlValue=new float[2];//0がX左、1がX右
     /*contorolValueを設定する際は、両方の軸をいれないといけない*/
 
     /*isCeiling*/
@@ -131,6 +131,8 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        MoveControl();
+        CeilingCollision();
         IsCeiling();
         getTopSheep();
         DebugFunc();
@@ -210,12 +212,7 @@ public class PlayerScript : MonoBehaviour
     {
         AddList(0);
         IgnoreReset();
-        isMountFunc = false;
-        isMount = false;
-        isTop = true;//単体になるとtrue
-        if(isMountFunc && nearestColScript!=null)nearestColScript.NullNearestUpCol();
-        nearestColScript = null;
-        nearestCol = null;
+        MountLeft();
         //ジャンプした瞬間に接地判定をオフにする（二段ジャンプ防止）
         isGrounded = false;
 
@@ -411,6 +408,7 @@ public class PlayerScript : MonoBehaviour
                     float dist = Vector2.Distance(transform.position, sheep.transform.position);
                     if (dist <= mountRadius && dist < nearestDist)
                     {
+
                         if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
                         if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
@@ -478,6 +476,16 @@ public class PlayerScript : MonoBehaviour
         }
     }
     public void NullNearestUpCol() { nearestUpCol = null; }
+    //Mount解除時の処理
+    public void MountLeft()
+    {
+        isMount = false;
+        isTop = true;//単体になるとtrue
+        if (isMountFunc && nearestColScript != null) nearestColScript.NullNearestUpCol();
+        isMountFunc = false;
+        nearestColScript = null;
+        nearestCol = null;
+    }
     //段差の一番上を取得
     private void getTopSheep()
     {
@@ -504,8 +512,11 @@ public class PlayerScript : MonoBehaviour
                 }
                 else {  break; }//上に羊がいないならbreak
             }
-            nearestCol = upObj;
-            AddList(3);
+            if (nearestCol != upObj) 
+            {
+                nearestCol = upObj;
+                AddList(3);
+            }
         }
     }
     //羊が上にいる場合に、力を連動させる
@@ -631,6 +642,7 @@ public class PlayerScript : MonoBehaviour
         SetSprite();
         startPos = transform.position;
         AddList(2);
+        Instantiate(E_Spawn, transform.position, transform.rotation);
 
         //Debug
         SpawnTiming = manager.GetGameTimer();
@@ -639,9 +651,21 @@ public class PlayerScript : MonoBehaviour
     //最上段または単体であることを取得する
     public void setIsTop(bool top) { isTop = top; }
     public bool getIsTop (){ return isTop; }
-    //ジャンプ力・移動速度の変更
+    //ジャンプ力・移動速度・MoveContorolの変更
     public void JumpForceChanger(float num) { jumpForce = num; }
     public void MoveSpeedChanger(float num) { moveSpeed = num; }
+    //任意での横移動の制御
+    public void MoveContorolChanger(float[] control)
+    {
+        moveControl = true;
+        controlValue = control;
+    }
+    void MoveControl()
+    {
+        if (!moveControl) return;//移動制御を行わない場合
+        if (transform.position.x < controlValue[0]) transform.position = new Vector2(controlValue[0], transform.position.y);
+        if (transform.position.x > controlValue[1]) transform.position = new Vector2(controlValue[1], transform.position.y);
+    }
     //最初から死亡
     void FirstDieInit()
     {
@@ -685,6 +709,7 @@ public class PlayerScript : MonoBehaviour
     void IsCeiling()
     {
 
+        if (isRemind) return;
         Vector2 origin = transform.position;
         Vector2 direction = Vector2.up;
         RaycastHit2D hit = Physics2D.CircleCast(origin, colW, direction,colH, LayerMask.GetMask("Ground"));
@@ -700,6 +725,46 @@ public class PlayerScript : MonoBehaviour
         Vector2 pos = (Vector2)transform.position+(Vector2.up*colH/2.0f);
         Gizmos.DrawWireSphere(transform.position, colW);
         Gizmos.DrawWireSphere(pos, colW);
+
+        Gizmos.color = Color.yellow;
+        Vector2 boxCollider = new Vector2(
+            boxCol.size.x * 0.9f * transform.localScale.x,
+            boxCol.size.y * 0.1f * transform.localScale.y
+            );
+        Vector2 origin = (Vector2)transform.position + Vector2.up * colH/2;
+        // BoxCastの初期位置
+        Gizmos.DrawWireCube(origin, boxCollider);
+    }
+    //天井の衝突判定を取得
+    void CeilingCollision()
+    {
+
+        if (!isMountFunc) return;
+        Vector2 origin = (Vector2)transform.position + Vector2.up * colH / 2;
+        Vector2 direction = Vector2.up;
+        Vector2 boxCollider = new Vector2(
+            boxCol.size.x * 0.9f * transform.localScale.x,
+            boxCol.size.y * 0.1f * transform.localScale.y
+            );
+        RaycastHit2D hit = Physics2D.BoxCast(origin, boxCollider, 0, Vector2.up, 0f,LayerMask.GetMask("Ground"));
+
+        if (hit.collider != null) 
+        {
+            if (nearestCol != null)
+            {
+                nearestColScript.setIsTop(true);
+                nearestColScript.NullNearestUpCol();
+            }
+            isMount = false;
+            isTop = true;//単体になるとtrue
+            isMountFunc = false;
+            nearestColScript = null;
+            nearestCol = null;
+
+            //下に戻す
+            transform.position = new Vector2(transform.position.x, transform.position.y - 0.1f);
+        }
+
     }
 
 }
