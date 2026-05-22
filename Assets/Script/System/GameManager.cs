@@ -33,9 +33,13 @@ public class GameManager : MonoBehaviour
     public string selectSceneName = "StageSelect"; // 仮置き
     private bool isPause = false;
     private int pauseSelectIndex = 0; // 0=リトライ、1=ステージセレクト
-    public SpriteRenderer retryUI;   // 仮置き
-    public SpriteRenderer selectUI;  // 仮置き
-    private bool stickMoved = false; // 追加
+    public SpriteRenderer retryUI;
+    public Sprite retrySelected;    //選択中のスプライト
+    public Sprite retryDeselected;  //非選択中のスプライト
+    public SpriteRenderer selectUI;
+    public Sprite selectSelected;  
+    public Sprite selectDeselected;
+    private bool stickMoved = false;
 
     void Start()
     {
@@ -192,12 +196,12 @@ public class GameManager : MonoBehaviour
         if (retryUI != null)
         {
             retryUI.enabled = true;
-            retryUI.color = pauseSelectIndex == 0 ? Color.white : Color.gray;
+            retryUI.sprite = pauseSelectIndex == 0 ? retrySelected : retryDeselected;
         }
         if (selectUI != null)
         {
             selectUI.enabled = true;
-            selectUI.color = pauseSelectIndex == 1 ? Color.white : Color.gray;
+            selectUI.sprite = pauseSelectIndex == 1 ? selectSelected : selectDeselected;
         }
     }
 }
