@@ -56,7 +56,6 @@ public class GameManager : MonoBehaviour
     {
         PauseInput();
         StartAnimation();
-        GameReset();
 
         if (isStartAnimation) return;
         if (isPause) return;
@@ -121,27 +120,10 @@ public class GameManager : MonoBehaviour
             isStartAnimation = false;
         }
     }
-    //void GameReset()
-    //{
-    //    //リセット
-    //    if (Input.GetKeyDown(KeyCode.JoystickButton7) || Input.GetKeyDown(KeyCode.Escape))
-    //    {
-    //        string currentSceneName = SceneManager.GetActiveScene().name;
-    //        SceneManager.LoadScene(currentSceneName);
-    //    }
-    //}
-    void GameReset()//北野修正
-    {
-        // リセットはコントローラーのStartボタンのみに変更
-        if (Input.GetKeyDown(KeyCode.JoystickButton7))
-        {
-            string currentSceneName = SceneManager.GetActiveScene().name;
-            SceneManager.LoadScene(currentSceneName);
-        }
-    }
+
     void PauseInput()
     {
-        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton9))
+        if (Input.GetKeyDown(KeyCode.Escape) || Input.GetKeyDown(KeyCode.JoystickButton7))
         {
             if (isPause) ResumeGame();
             else PauseGame();
