@@ -109,8 +109,8 @@ public class GaugeScript : MonoBehaviour
             int num = iconList.IndexOf(obj);
             if (sheepSpawner.GetSheepList(num).GetComponent<PlayerScript>().isDie)
             {
-                SpriteRenderer sprite = obj.GetComponent<SpriteRenderer>();
-                sprite = dieIcon;
+                SpriteRenderer spriteRen = obj.GetComponent<SpriteRenderer>();
+                spriteRen.sprite = dieIcon.sprite;
             }
         }
     }

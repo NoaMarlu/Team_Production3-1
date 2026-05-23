@@ -148,7 +148,7 @@ GameObject:
   m_Component:
   - component: {fileID: 399190853302807822}
   - component: {fileID: 2856314243409297737}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: groundShadow
   m_TagString: ground
   m_Icon: {fileID: 0}
@@ -238,9 +238,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 994573603574510922}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: HalfGround
-  m_TagString: ground
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -330,7 +330,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6546657596477404900, guid: a86630f52c5a8a8458c12c7f6306e9e9, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -356,7 +356,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2551283653388143928, guid: 0dcc49fbba1113b408650fcf985e957b, type: 3}
       propertyPath: m_Layer
-      value: 8
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5651824436855971419, guid: 0dcc49fbba1113b408650fcf985e957b, type: 3}
       propertyPath: m_LocalPosition.x
