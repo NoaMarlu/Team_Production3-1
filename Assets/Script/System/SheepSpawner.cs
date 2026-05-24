@@ -49,6 +49,7 @@ public class SheepSpawner : MonoBehaviour
     /*StarRecord*/
     public bool hasStar=false;
     public string prefsName;
+    public string prefsNameSheepCount;
     public int[] scoreSheep;
 
     void Start()
@@ -229,7 +230,7 @@ public class SheepSpawner : MonoBehaviour
     void StarRecord()
     {
         if (!hasStar) return;
-
+        PlayerPrefs.SetInt(prefsNameSheepCount,sheepCount);
         if (sheepCount <= scoreSheep[0])
         {
             if (sheepCount <= scoreSheep[1])
@@ -248,6 +249,9 @@ public class SheepSpawner : MonoBehaviour
             PlayerPrefs.Save();
             return;
         }
+        PlayerPrefs.SetInt(prefsName, 0);
+        PlayerPrefs.Save();
+        return;
 
     }
 

@@ -2399,6 +2399,7 @@ MonoBehaviour:
   farstSpawn: 1
   hasStar: 1
   prefsName: STAGE2_Star
+  prefsNameSheepCount: STAGE2_Count
   scoreSheep: 050000000400000003000000
 --- !u!4 &1311407242
 Transform:

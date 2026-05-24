@@ -61,7 +61,11 @@ public class StageSelect : MonoBehaviour
             if (!isInput)
             {
                 if (currentStage <= 0) currentStage = 0;
-                else currentStage--;
+                else
+                {
+                    currentStage--;
+                    audioSource.PlayOneShot(stageChange);
+                }
                 isInput = true;
             }
         }//Lスティック入力が右向きなら
@@ -70,7 +74,11 @@ public class StageSelect : MonoBehaviour
             if (!isInput)
             {
                 if (currentStage >= maxStage) currentStage = maxStage;
-                else currentStage++;
+                else
+                {
+                    currentStage++;
+                    audioSource.PlayOneShot(stageChange);
+                }
                 isInput = true;
             }
         }//入力されていないなら

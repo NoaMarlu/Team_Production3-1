@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 
 public class Result : MonoBehaviour
@@ -8,9 +9,12 @@ public class Result : MonoBehaviour
     public SpriteRenderer[] star;
     public Sprite onStar;
     public Sprite offStar;
+
+    public AudioClip select;
+    private AudioSource audioSource;
     void Start()
     {
-        
+        audioSource = GetComponent<AudioSource>();
     }
     void Update()
     {
@@ -23,6 +27,7 @@ public class Result : MonoBehaviour
     {
         if(Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
         {
+            audioSource.PlayOneShot(select);
             SceneManager.LoadScene("StageSelect");
         }
     }
