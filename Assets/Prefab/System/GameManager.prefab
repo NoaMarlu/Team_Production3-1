@@ -54,3 +54,12 @@ MonoBehaviour:
   SEVolume: []
   isStartAnimation: 1
   animationObj: {fileID: 2884980039154087744, guid: 7386e95fe256181438719574a7cb90ba, type: 3}
+  isPausable: 0
+  pauseUI: {fileID: 0}
+  selectSceneName: StageSelect
+  retryUI: {fileID: 0}
+  retrySelected: {fileID: 0}
+  retryDeselected: {fileID: 0}
+  selectUI: {fileID: 0}
+  selectSelected: {fileID: 0}
+  selectDeselected: {fileID: 0}

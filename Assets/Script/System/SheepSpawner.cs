@@ -46,6 +46,11 @@ public class SheepSpawner : MonoBehaviour
     /*MaxTime*/
     private float maxLiveTime=0;
 
+    /*StarRecord*/
+    public bool hasStar=false;
+    public string prefsName;
+    public int[] scoreSheep;
+
     void Start()
     {
         Init();
@@ -72,6 +77,7 @@ public class SheepSpawner : MonoBehaviour
 
         StartFunc();
         MaxTime();
+        StarRecord();
         manager.SetGameTime(maxTime);
 
     }
@@ -220,5 +226,29 @@ public class SheepSpawner : MonoBehaviour
     }
     public GameObject GetSheepList(int num) { return sheeps[num]; }
     public float GetLiveTimer() { return maxLiveTime; }
+    void StarRecord()
+    {
+        if (!hasStar) return;
+
+        if (sheepCount <= scoreSheep[0])
+        {
+            if (sheepCount <= scoreSheep[1])
+            {
+                if (sheepCount <= scoreSheep[2])
+                {
+                    PlayerPrefs.SetInt(prefsName, 3);
+                    PlayerPrefs.Save();
+                    return;
+                }
+                PlayerPrefs.SetInt(prefsName, 2);
+                PlayerPrefs.Save();
+                return;
+            }
+            PlayerPrefs.SetInt(prefsName, 1);
+            PlayerPrefs.Save();
+            return;
+        }
+
+    }
 
 }

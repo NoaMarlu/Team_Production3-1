@@ -628,7 +628,7 @@ SpriteRenderer:
   m_SortingOrder: 15
   m_MaskInteraction: 0
   m_Sprite: {fileID: -8021445561669790619, guid: e20e65bf2dfc83c4db5ec1cea8739ebb, type: 3}
-  m_Color: {r: 0.8788066, g: 0.63529414, b: 0.96862745, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1432,8 +1432,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287709324
-  m_fontColor: {r: 0.5487112, g: 0.25265214, b: 0.5698112, a: 1}
+    rgba: 4280562789
+  m_fontColor: {r: 0.39607847, g: 0.20392159, b: 0.14117648, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -1767,7 +1767,7 @@ SpriteRenderer:
   m_SortingOrder: 15
   m_MaskInteraction: 0
   m_Sprite: {fileID: -8021445561669790619, guid: e20e65bf2dfc83c4db5ec1cea8739ebb, type: 3}
-  m_Color: {r: 0.8788066, g: 0.63529414, b: 0.96862745, a: 1}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1875,7 +1875,7 @@ SpriteRenderer:
   m_SortingOrder: 16
   m_MaskInteraction: 0
   m_Sprite: {fileID: -8708151249000511563, guid: 0b6d6008d379d7d478e15ab1383c473c, type: 3}
-  m_Color: {r: 0.54901963, g: 0.2509804, b: 0.5686275, a: 1}
+  m_Color: {r: 0.3962264, g: 0.20231526, b: 0.14279103, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
@@ -1964,8 +1964,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287709324
-  m_fontColor: {r: 0.5487112, g: 0.25265214, b: 0.5698112, a: 1}
+    rgba: 4280562789
+  m_fontColor: {r: 0.39607847, g: 0.20392159, b: 0.14117648, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -2397,6 +2397,9 @@ MonoBehaviour:
   - -13.31
   - 7.86
   farstSpawn: 1
+  hasStar: 1
+  prefsName: STAGE2_Star
+  scoreSheep: 050000000400000003000000
 --- !u!4 &1311407242
 Transform:
   m_ObjectHideFlags: 0
@@ -2806,8 +2809,8 @@ MonoBehaviour:
   m_fontMaterials: []
   m_fontColor32:
     serializedVersion: 2
-    rgba: 4287709324
-  m_fontColor: {r: 0.5487112, g: 0.25265214, b: 0.5698112, a: 1}
+    rgba: 4280562789
+  m_fontColor: {r: 0.39607847, g: 0.20392159, b: 0.14117648, a: 1}
   m_enableVertexGradient: 0
   m_colorMode: 3
   m_fontColorGradient:
@@ -3399,7 +3402,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: nextSceneName
-      value: STAGE5
+      value: Result_S2
       objectReference: {fileID: 0}
     - target: {fileID: 4806610332946827960, guid: 7563e58cd72fe8041a05a811ee18f1f5, type: 3}
       propertyPath: goalAnimAnimator
@@ -3622,8 +3625,8 @@ SpriteRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 16
   m_MaskInteraction: 0
-  m_Sprite: {fileID: -4825787287565598694, guid: 0b6d6008d379d7d478e15ab1383c473c, type: 3}
-  m_Color: {r: 0.54901963, g: 0.2509804, b: 0.5686275, a: 1}
+  m_Sprite: {fileID: 3398953558418567759, guid: 6743fddeb64565e479e2f705529f828b, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0
   m_DrawMode: 0
