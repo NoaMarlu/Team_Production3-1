@@ -52,6 +52,7 @@ public class StageSelect : MonoBehaviour
         ChangeStar();
         LoadScene();
         ScrollStage();
+        ChangeCurrent();
     }
     void SelectStage()
     {
@@ -101,7 +102,11 @@ public class StageSelect : MonoBehaviour
             }
         }
 
-        currentStage = 0;
+        currentStage = PlayerPrefs.GetInt("CurrentStage");
+        if (currentStage >= 3)
+        {
+            BG.transform.position = new Vector2(-17.92f, 0);
+        }
         maxStage = SS.Length-1;
     }
     void SpriteChanger()
@@ -185,5 +190,6 @@ public class StageSelect : MonoBehaviour
             right.enabled = true;
         }
     }
+    void ChangeCurrent() { PlayerPrefs.SetInt("CurrentStage", currentStage); }
 
 }

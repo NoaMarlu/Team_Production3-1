@@ -33,6 +33,7 @@ public class TitleManager : MonoBehaviour
         if(!PlayerPrefs.HasKey("STAGE2_Star"))PlayerPrefs.SetInt("STAGE2_Star",0);
         if(!PlayerPrefs.HasKey("STAGE4_Count"))PlayerPrefs.SetInt("STAGE4_Count",0);
         if(!PlayerPrefs.HasKey("STAGE4_Star"))PlayerPrefs.SetInt("STAGE4_Star",0);
+        if(!PlayerPrefs.HasKey("CurrentStage"))PlayerPrefs.SetInt("CurrentStage", 0);
         PlayerPrefs.Save();
     }
 
