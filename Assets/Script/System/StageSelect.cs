@@ -38,8 +38,8 @@ public class StageSelect : MonoBehaviour
     /*ScrollStage*/
     public GameObject BG;
     public float LerpSpeed = 4.0f;
-    public GameObject right;
-    public GameObject left;
+    public SpriteRenderer right;
+    public SpriteRenderer left;
 
     void Start()
     {
@@ -167,14 +167,14 @@ public class StageSelect : MonoBehaviour
         if (currentStage >= 3)
         {
             BG.transform.position = Vector2.Lerp(BG.transform.position, new Vector2(-17.92f, 0), LerpSpeed);
-            left.SetActive(true);
-            right.SetActive(false);
+            left.enabled = true;
+            right.enabled = false;
         }
         else
         {
             BG.transform.position = Vector2.Lerp(BG.transform.position, new Vector2(0, 0),LerpSpeed);
-            left.SetActive(false);
-            right.SetActive(true);
+            left.enabled = false;
+            right.enabled = true;
         }
     }
 
