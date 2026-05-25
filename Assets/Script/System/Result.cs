@@ -15,7 +15,8 @@ public class Result : MonoBehaviour
 
     /*DispSocre*/
     public GameObject Text1;
-    public GameObject Text2;
+    public GameObject Text2_1;//1Œ…–Ú
+    public GameObject Text2_2;//2Œ…–Ú
     public string prefsNameCount;
     private float sheepCount;
     public Sprite[] num;
@@ -81,6 +82,17 @@ public class Result : MonoBehaviour
         {
 
         }
+    }
+    void NumSwitch(GameObject obj,int num)
+    {
+        switch (num) {
+
+            case 0:
+                break;
+
+        
+        }
+
     }
 
 }

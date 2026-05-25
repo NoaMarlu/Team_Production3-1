@@ -25,6 +25,7 @@ public class goal : MonoBehaviour
 
 
     private SheepSpawner sheepSpawner;
+    public bool isGoal=false;
 
     void Start()
     {
@@ -47,6 +48,7 @@ public class goal : MonoBehaviour
              {
                 audioSource.PlayOneShot(clip);
                 sheepSpawner.StarRecord();
+                isGoal = true;
                 wasSE = true;
             }
             elapsedUnscaledTime += Time.unscaledDeltaTime;

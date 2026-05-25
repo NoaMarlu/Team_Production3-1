@@ -41,11 +41,14 @@ public class GameManager : MonoBehaviour
     public Sprite selectDeselected;
     private bool stickMoved = false;
 
+    private goal goalScript;
+
     void Start()
     {
         animationInstance=Instantiate(animationObj);
         audioSource = GetComponent<AudioSource>();
         audioSource.PlayOneShot(audioClip[1]);
+        goalScript = GameObject.FindWithTag("goal").GetComponent<goal>();
         sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
 
         sheepSpawner.sheepCount = 1;
@@ -81,6 +84,7 @@ public class GameManager : MonoBehaviour
     // 早送り
     void FastForward()
     {
+        if (goalScript.isGoal) return;
         if (isPause) return; // ポーズ中は早送りしない
         // R1か左Shiftを押している間のみ早送り
         if (Input.GetAxis("RT") > 0.5f || Input.GetKey(KeyCode.LeftShift))
