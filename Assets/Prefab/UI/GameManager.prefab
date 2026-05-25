@@ -170,6 +170,15 @@ MonoBehaviour:
   SEVolume: []
   isStartAnimation: 1
   animationObj: {fileID: 0}
+  isPausable: 0
+  pauseUI: {fileID: 3607223625883261207, guid: f18448104b1ab844d9bb6166972b8997, type: 3}
+  selectSceneName: StageSelect
+  retryUI: {fileID: 0}
+  retrySelected: {fileID: 4085870051702657249, guid: c3c01b2b94758394c9609afdade33312, type: 3}
+  retryDeselected: {fileID: 4472758272404598897, guid: 62cd7ccb31d50c64fac153f3ca34e807, type: 3}
+  selectUI: {fileID: 0}
+  selectSelected: {fileID: -4830692211098358999, guid: 4ffcac6ef1315d04f89ae2d730fba0fa, type: 3}
+  selectDeselected: {fileID: 7569826253631508621, guid: 81cde40daf9127c4d8dd8b95a3dbb439, type: 3}
 --- !u!82 &759332431184575461
 AudioSource:
   m_ObjectHideFlags: 0

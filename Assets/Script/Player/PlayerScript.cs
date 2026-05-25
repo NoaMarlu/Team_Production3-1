@@ -21,6 +21,7 @@ public class PlayerScript : MonoBehaviour
     /*SheepIsDie*/
     private SheepSpawner sheepSpawner;
     public bool isDie = false;//trueで一度死亡している判定
+    private float liveTimer=0;
 
     /*AddPos*/
     public List<float> timeList = new List<float>();
@@ -55,6 +56,7 @@ public class PlayerScript : MonoBehaviour
     private Sprite[] S_Standby_Death;
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
+    private Sprite[] S_Ceiling;
     private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
@@ -62,7 +64,6 @@ public class PlayerScript : MonoBehaviour
 
     /*StartAnimation*/
     private bool isAnimation = true;
-    private Sprite S_Dash;
     public float startDistance = 1.0f;//小屋からスポーン距離までの長さ
     public float startMoveSpeed = 0.3f;
 
@@ -111,7 +112,8 @@ public class PlayerScript : MonoBehaviour
     private BoxCollider2D boxCol;
     private float colW;
     private float colH;
-    public bool isCeiling;
+    public bool wasCeiling;
+    private bool isCeilingSpr=false;
 
     void Start()
     {
@@ -131,6 +133,7 @@ public class PlayerScript : MonoBehaviour
             return;
         }
 
+        CheckLive();
         MoveControl();
         CeilingCollision();
         IsCeiling();
@@ -198,6 +201,8 @@ public class PlayerScript : MonoBehaviour
             gameObject.tag = "ground";
             nearestCol = null;
             loopDie = true;
+            wasCeiling = false;
+            isCeilingSpr = false;
             rb.linearVelocityY = -10;
             if (DieTime == 0) DieTime = manager.GetGameTimer();
             if (isRemind == false || isDie == false)
@@ -361,13 +366,29 @@ public class PlayerScript : MonoBehaviour
         }
         else if (rb.linearVelocityY < 0 && rb.linearVelocityY > -x)//滞空
         {
-            if (isDie == false) spr.sprite = S_Jump[3];
-            else { spr.sprite = S_Jump_Death[3]; }
+            if(!isCeilingSpr)//天井に衝突していないなら
+            {
+                if (isDie == false) spr.sprite = S_Jump[3];
+                else { spr.sprite = S_Jump_Death[3]; }
+            }
+            else
+            {
+                if(isDie==false) spr.sprite = S_Ceiling[0];
+                else spr.sprite = S_Ceiling[0];
+            }
         }
         else if (rb.linearVelocityY < 0 && rb.linearVelocityY <= -x)//滞空
         {
-            if (isDie == false) spr.sprite = S_Jump[4];
-            else { spr.sprite = S_Jump_Death[4]; }
+            if (!isCeilingSpr)//天井に衝突していないなら
+            {
+                if (isDie == false) spr.sprite = S_Jump[4];
+                else { spr.sprite = S_Jump_Death[4]; }
+            }
+            else
+            {
+                if (isDie == false) spr.sprite = S_Ceiling[1];
+                else spr.sprite = S_Ceiling[1];
+            }
         }
 
     }
@@ -379,7 +400,7 @@ public class PlayerScript : MonoBehaviour
         S_Standby_Death = Resources.LoadAll<Sprite>("S_Standby_Death");
         S_Jump = Resources.LoadAll<Sprite>("S_Jump");
         S_Jump_Death = Resources.LoadAll<Sprite>("S_Jump_Death");
-        S_Dash = Resources.Load<Sprite>("S_Dash");
+        S_Ceiling = Resources.LoadAll<Sprite>("S_Ceiling");
 
     }
     //近くのループ羊に乗る関数やつぁ
@@ -582,7 +603,7 @@ public class PlayerScript : MonoBehaviour
         //羊の乗る
         if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
         {
-             isMountFunc = true;
+            isMountFunc = true;
              isMount = true;
         }
 
@@ -683,6 +704,7 @@ public class PlayerScript : MonoBehaviour
         if (collision.gameObject.tag == "ground")
         {
             isGrounded = true;
+            isCeilingSpr = false;
             Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
             rb.linearVelocity = Vector2.zero;
@@ -709,16 +731,18 @@ public class PlayerScript : MonoBehaviour
     void IsCeiling()
     {
 
-        if (isRemind) return;
         Vector2 origin = transform.position;
         Vector2 direction = Vector2.up;
         RaycastHit2D hit = Physics2D.CircleCast(origin, colW, direction,colH, LayerMask.GetMask("Ground"));
 
-        if (hit.collider != null)  isCeiling = true;
-        else  isCeiling = false;
+        if (hit.collider != null)
+        {
+            wasCeiling = true;
+        }
+        else  wasCeiling = false;
     
     }
-    bool GetCeiling() { return isCeiling; }
+    bool GetCeiling() { return wasCeiling; }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -755,6 +779,9 @@ public class PlayerScript : MonoBehaviour
                 nearestColScript.setIsTop(true);
                 nearestColScript.NullNearestUpCol();
             }
+            rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 1;
+            isCeilingSpr = true;
             isMount = false;
             isTop = true;//単体になるとtrue
             isMountFunc = false;
@@ -766,5 +793,12 @@ public class PlayerScript : MonoBehaviour
         }
 
     }
+    //生存時間の記録
+    void CheckLive()
+    {
+        if(isDie)return;
+        liveTimer += Time.deltaTime;
+    }
+    public float GetLiveTimer() { return liveTimer; }
 
 }
