@@ -18,7 +18,7 @@ public class Result : MonoBehaviour
     public SpriteRenderer Text2_1;//1Œ…–Ú
     public SpriteRenderer Text2_2;//2Œ…–Ú
     public string prefsNameCount;
-    public float sheepCount;
+    public int sheepCount;
     public Sprite[] num;
 
     void Start()
@@ -89,11 +89,11 @@ public class Result : MonoBehaviour
             Text2_1.enabled = true;
             Text2_2.enabled = true;
 
-            Text2_1.sprite = NumSwitch((sheepCount/10)%10);
-            Text2_2.sprite = NumSwitch(sheepCount%10);
+            Text2_2.sprite = NumSwitch((sheepCount/10)%10);
+            Text2_1.sprite = NumSwitch(sheepCount%10);
         }
     }
-   Sprite NumSwitch(float x)
+   Sprite NumSwitch(int x)
     {
         switch (x) {
             case 0:
