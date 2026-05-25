@@ -112,7 +112,7 @@ public class PlayerScript : MonoBehaviour
     private BoxCollider2D boxCol;
     private float colW;
     private float colH;
-    public bool isCeiling;
+    public bool wasCeiling;
     private bool isCeilingSpr=false;
 
     void Start()
@@ -201,7 +201,7 @@ public class PlayerScript : MonoBehaviour
             gameObject.tag = "ground";
             nearestCol = null;
             loopDie = true;
-            isCeiling = false;
+            wasCeiling = false;
             isCeilingSpr = false;
             rb.linearVelocityY = -10;
             if (DieTime == 0) DieTime = manager.GetGameTimer();
@@ -408,7 +408,6 @@ public class PlayerScript : MonoBehaviour
     {
         if (!mountOK) return;
         if (!isMountFunc) return;
-        
         
 
         /*内田加筆*/
@@ -732,19 +731,18 @@ public class PlayerScript : MonoBehaviour
     void IsCeiling()
     {
 
-        if (isRemind) return;
         Vector2 origin = transform.position;
         Vector2 direction = Vector2.up;
         RaycastHit2D hit = Physics2D.CircleCast(origin, colW, direction,colH, LayerMask.GetMask("Ground"));
 
         if (hit.collider != null)
         {
-            isCeiling = true;
+            wasCeiling = true;
         }
-        else  isCeiling = false;
+        else  wasCeiling = false;
     
     }
-    bool GetCeiling() { return isCeiling; }
+    bool GetCeiling() { return wasCeiling; }
     void OnDrawGizmosSelected()
     {
         Gizmos.color = Color.red;
@@ -782,6 +780,7 @@ public class PlayerScript : MonoBehaviour
                 nearestColScript.NullNearestUpCol();
             }
             rb.linearVelocity = Vector2.zero;
+            rb.gravityScale = 1;
             isCeilingSpr = true;
             isMount = false;
             isTop = true;//単体になるとtrue

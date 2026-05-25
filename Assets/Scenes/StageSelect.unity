@@ -2880,7 +2880,7 @@ MonoBehaviour:
   - stageObj: {fileID: 1759457001}
     spriteRenderer: {fileID: 0}
     star: []
-    sceneName: STAGE3
+    sceneName: STAGE3_1
     prefsName: 
     hasStar: 0
   - stageObj: {fileID: 798174235}
