@@ -16,6 +16,9 @@ public class Result : MonoBehaviour
     /*DispSocre*/
     public GameObject Text1;
     public GameObject Text2;
+    public string prefsNameCount;
+    private float sheepCount;
+    public Sprite[] num;
 
     void Start()
     {
@@ -67,7 +70,9 @@ public class Result : MonoBehaviour
     }
     void DispScore()
     {
+        //1Œ…–Ú
 
+        //2Œ…–Ú
     }
 
 }
