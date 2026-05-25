@@ -57,6 +57,7 @@ public class PlayerScript : MonoBehaviour
     private Sprite[] S_Jump;
     private Sprite[] S_Jump_Death;
     private Sprite[] S_Ceiling;
+    private Sprite[] S_Ceiling_Death;
     private float standbyTime = 0.1f;
     private float standbyTimer = 0;
     private bool isStandby = false;
@@ -215,6 +216,7 @@ public class PlayerScript : MonoBehaviour
     //ジャンプ処理
     void Jump()
     {
+        if (isCeilingSpr) return;
         AddList(0);
         IgnoreReset();
         MountLeft();
@@ -374,7 +376,7 @@ public class PlayerScript : MonoBehaviour
             else
             {
                 if(isDie==false) spr.sprite = S_Ceiling[0];
-                else spr.sprite = S_Ceiling[0];
+                else spr.sprite = S_Ceiling_Death[0];
             }
         }
         else if (rb.linearVelocityY < 0 && rb.linearVelocityY <= -x)//滞空
@@ -387,7 +389,7 @@ public class PlayerScript : MonoBehaviour
             else
             {
                 if (isDie == false) spr.sprite = S_Ceiling[1];
-                else spr.sprite = S_Ceiling[1];
+                else spr.sprite = S_Ceiling_Death[1];
             }
         }
 
@@ -401,6 +403,7 @@ public class PlayerScript : MonoBehaviour
         S_Jump = Resources.LoadAll<Sprite>("S_Jump");
         S_Jump_Death = Resources.LoadAll<Sprite>("S_Jump_Death");
         S_Ceiling = Resources.LoadAll<Sprite>("S_Ceiling");
+        S_Ceiling_Death = Resources.LoadAll<Sprite>("S_Celing_Death");
 
     }
     //近くのループ羊に乗る関数やつぁ
