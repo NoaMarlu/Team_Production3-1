@@ -216,6 +216,7 @@ public class PlayerScript : MonoBehaviour
     //ジャンプ処理
     void Jump()
     {
+        if (isCeilingSpr) return;
         AddList(0);
         IgnoreReset();
         MountLeft();
