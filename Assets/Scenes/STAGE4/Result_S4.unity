@@ -573,6 +573,7 @@ GameObject:
   m_Component:
   - component: {fileID: 795631320}
   - component: {fileID: 795631319}
+  - component: {fileID: 795631321}
   m_Layer: 0
   m_Name: num (1)
   m_TagString: Untagged
@@ -654,6 +655,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &795631321
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 795631318}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 0.1
+  ponPonSpeed: 0.5
+  ponPonTime: 0.8
+  waitTime: 1.6
+  startWaitTime: 0
 --- !u!1 &841463316
 GameObject:
   m_ObjectHideFlags: 0
@@ -892,6 +910,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1120298535}
   - component: {fileID: 1120298534}
+  - component: {fileID: 1120298536}
   m_Layer: 0
   m_Name: num (2)
   m_TagString: Untagged
@@ -973,6 +992,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1120298536
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1120298533}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 0.1
+  ponPonSpeed: 0.5
+  ponPonTime: 0.8
+  waitTime: 1.6
+  startWaitTime: 0
 --- !u!1 &1214848510
 GameObject:
   m_ObjectHideFlags: 0
@@ -983,6 +1019,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1214848512}
   - component: {fileID: 1214848511}
+  - component: {fileID: 1214848513}
   m_Layer: 0
   m_Name: num
   m_TagString: Untagged
@@ -1064,6 +1101,23 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1214848513
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1214848510}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 0.1
+  ponPonSpeed: 0.5
+  ponPonTime: 0.8
+  waitTime: 1.6
+  startWaitTime: 0
 --- !u!1 &1249708372
 GameObject:
   m_ObjectHideFlags: 0
