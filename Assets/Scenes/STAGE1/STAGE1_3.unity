@@ -758,114 +758,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &732410190
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 732410191}
-  - component: {fileID: 732410193}
-  - component: {fileID: 732410192}
-  m_Layer: 0
-  m_Name: button (1)
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &732410191
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732410190}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -2.37, y: 2.24, z: 0}
-  m_LocalScale: {x: 0.66935724, y: 0.66935724, z: 0.66935724}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 1049063895}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &732410192
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732410190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 4f37793547a6a8b4d94559062fa51b5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::Shake
-  waitTime: 2
-  shakeSpeed: 0.5
-  shakeRadian: 3
-  shakeCount: 3
---- !u!212 &732410193
-SpriteRenderer:
-  serializedVersion: 2
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 732410190}
-  m_Enabled: 1
-  m_CastShadows: 0
-  m_ReceiveShadows: 0
-  m_DynamicOccludee: 1
-  m_StaticShadowCaster: 0
-  m_MotionVectors: 1
-  m_LightProbeUsage: 1
-  m_ReflectionProbeUsage: 1
-  m_RayTracingMode: 0
-  m_RayTraceProcedural: 0
-  m_RayTracingAccelStructBuildFlagsOverride: 0
-  m_RayTracingAccelStructBuildFlags: 1
-  m_SmallMeshCulling: 1
-  m_ForceMeshLod: -1
-  m_MeshLodSelectionBias: 0
-  m_RenderingLayerMask: 1
-  m_RendererPriority: 0
-  m_Materials:
-  - {fileID: 2100000, guid: a97c105638bdf8b4a8650670310a4cd3, type: 2}
-  m_StaticBatchInfo:
-    firstSubMesh: 0
-    subMeshCount: 0
-  m_StaticBatchRoot: {fileID: 0}
-  m_ProbeAnchor: {fileID: 0}
-  m_LightProbeVolumeOverride: {fileID: 0}
-  m_ScaleInLightmap: 1
-  m_ReceiveGI: 1
-  m_PreserveUVs: 0
-  m_IgnoreNormalsForChartDetection: 0
-  m_ImportantGI: 0
-  m_StitchLightmapSeams: 1
-  m_SelectedEditorRenderState: 0
-  m_MinimumChartSize: 4
-  m_AutoUVMaxDistance: 0.5
-  m_AutoUVMaxAngle: 89
-  m_LightmapParameters: {fileID: 0}
-  m_GlobalIlluminationMeshLod: 0
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
-  m_SortingOrder: 16
-  m_MaskInteraction: 0
-  m_Sprite: {fileID: -8628097478127654178, guid: 48adfe8f01bd33148b898b7aedb85395, type: 3}
-  m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_FlipX: 0
-  m_FlipY: 0
-  m_DrawMode: 0
-  m_Size: {x: 1.22, y: 1.52}
-  m_AdaptiveModeThreshold: 0.5
-  m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
-  m_SpriteSortPoint: 0
 --- !u!1001 &975762164
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -944,13 +836,17 @@ PrefabInstance:
       value: "\u3092"
       objectReference: {fileID: 0}
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+      propertyPath: m_margin.w
+      value: -106.47915
+      objectReference: {fileID: 0}
+    - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_fontAsset
       value: 
-      objectReference: {fileID: 11400000, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+      objectReference: {fileID: 11400000, guid: 04e5bf5d65c36c54ca5e88fe07061266, type: 2}
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_sharedMaterial
       value: 
-      objectReference: {fileID: 4113564093067652511, guid: 9f17ea96fe7a39a4e8163b377468fbc0, type: 2}
+      objectReference: {fileID: -9175454944341170859, guid: 04e5bf5d65c36c54ca5e88fe07061266, type: 2}
     - target: {fileID: 1751333224767050709, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_hasFontAssetChanged
       value: 0
@@ -974,18 +870,30 @@ PrefabInstance:
     - target: {fileID: 3640481189874263594, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_Sprite
       value: 
-      objectReference: {fileID: -2949557052073368641, guid: 289e9cf5340d7e24bb70f7ba4543f84d, type: 3}
+      objectReference: {fileID: -8486940406169793398, guid: 1675f099f20f01048807af3eb6d24f25, type: 3}
     - target: {fileID: 3640481189874263594, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_WasSpriteAssigned
       value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 4436758068721278287, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+      propertyPath: m_LocalScale.x
+      value: 1.4957458
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436758068721278287, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+      propertyPath: m_LocalScale.y
+      value: 1.4957458
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436758068721278287, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 1.4957458
+      objectReference: {fileID: 0}
+    - target: {fileID: 4436758068721278287, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -3.26
+      value: -2.97
       objectReference: {fileID: 0}
     - target: {fileID: 4436758068721278287, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 2.24
+      value: 2.32
       objectReference: {fileID: 0}
     - target: {fileID: 7033037830471999879, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
       propertyPath: m_Name
@@ -1043,19 +951,15 @@ PrefabInstance:
       propertyPath: m_Sprite
       value: 
       objectReference: {fileID: 9055093430671562976, guid: eeb629c93f9ec854687ddaf362033eba, type: 3}
-    m_RemovedComponents: []
+    m_RemovedComponents:
+    - {fileID: 898178162667609123, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
     m_RemovedGameObjects: []
-    m_AddedGameObjects:
-    - targetCorrespondingSourceObject: {fileID: 7714339160537547230, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
-      insertIndex: 3
-      addedObject: {fileID: 732410191}
-    m_AddedComponents: []
+    m_AddedGameObjects: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 2449529800521524790, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1614395506}
   m_SourcePrefab: {fileID: 100100000, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
---- !u!4 &1049063895 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 7714339160537547230, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
-  m_PrefabInstance: {fileID: 1049063894}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1064057071
 GameObject:
   m_ObjectHideFlags: 0
@@ -1452,6 +1356,33 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 86777113b686702448721bc6b39a7cd2, type: 3}
+--- !u!1 &1614395504 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 2449529800521524790, guid: b295b10e869a23a4aaa74c3be2e4cbcd, type: 3}
+  m_PrefabInstance: {fileID: 1049063894}
+  m_PrefabAsset: {fileID: 0}
+--- !u!95 &1614395506
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1614395504}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 3c6607cc609aef441a3e4ac0e944f0b3, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
 --- !u!1001 &1705920217
 PrefabInstance:
   m_ObjectHideFlags: 0
