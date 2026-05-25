@@ -1012,12 +1012,12 @@ Transform:
   m_GameObject: {fileID: 887463421}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -4.775877, y: 2.4378343, z: 0}
-  m_LocalScale: {x: 0.7840429, y: 0.7840429, z: 0.7840429}
+  m_LocalPosition: {x: -0.4899844, y: 0.43147755, z: 0}
+  m_LocalScale: {x: 0.69533616, y: 0.69533616, z: 0.69533616}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 681852083}
-  m_Father: {fileID: 1946967732}
+  m_Father: {fileID: 2097519167}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &887463423
 Animator:
@@ -1231,6 +1231,8 @@ MonoBehaviour:
   prefsName: 
   prefsNameSheepCount: 
   scoreSheep: 
+  symbolON: {fileID: 0}
+  symbolOFF: {fileID: 0}
 --- !u!1 &1233776116
 GameObject:
   m_ObjectHideFlags: 0
@@ -1770,10 +1772,42 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1841018000}
-  - {fileID: 887463422}
+  - {fileID: 2097519167}
   - {fileID: 459299267}
   - {fileID: 1371609287}
   m_Father: {fileID: 7714339161036748549}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &2097519166
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2097519167}
+  m_Layer: 0
+  m_Name: GameObject
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2097519167
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2097519166}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -0.1, y: -1.03, z: 0}
+  m_LocalScale: {x: 1.1275738, y: 1.1275738, z: 1.1275738}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 887463422}
+  m_Father: {fileID: 1946967732}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!224 &77979321588759114
 RectTransform:

@@ -2038,6 +2038,8 @@ MonoBehaviour:
   prefsName: 
   prefsNameSheepCount: 
   scoreSheep: 
+  symbolON: {fileID: 0}
+  symbolOFF: {fileID: 0}
 --- !u!1001 &1038521913
 PrefabInstance:
   m_ObjectHideFlags: 0

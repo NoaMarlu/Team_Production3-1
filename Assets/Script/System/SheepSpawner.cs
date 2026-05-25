@@ -52,6 +52,10 @@ public class SheepSpawner : MonoBehaviour
     public string prefsNameSheepCount;
     public int[] scoreSheep;
 
+    /*看板*/
+    public GameObject symbolON;
+    public GameObject symbolOFF;
+
     void Start()
     {
         Init();
@@ -79,6 +83,21 @@ public class SheepSpawner : MonoBehaviour
         StartFunc();
         MaxTime();
         manager.SetGameTime(maxTime);
+
+
+        if (symbolOFF != null)
+        {
+            if (isNotDieSheep())
+            {
+                symbolOFF.SetActive(true);
+                symbolON.SetActive(false);
+            }
+            else
+            {
+                symbolOFF.SetActive(false);
+                symbolON.SetActive(true);
+            }
+        }
 
     }
 
@@ -170,6 +189,8 @@ public class SheepSpawner : MonoBehaviour
     //初期化
     void Init()
     {
+        symbolON = GameObject.Find("symbol_ON");
+        symbolOFF = GameObject.Find("symbol_OFF");
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
         GameObject gaugeObj = GameObject.FindWithTag("gauge");

@@ -116,6 +116,7 @@ public class PlayerScript : MonoBehaviour
     public bool wasCeiling;
     private bool isCeilingSpr=false;
 
+
     void Start()
     {
         Init();
@@ -333,7 +334,8 @@ public class PlayerScript : MonoBehaviour
     void Spawn()
     {
         if (isSpawn) return;
-            if (Input.GetAxis("LT")>0.5f || Input.GetKeyDown(KeyCode.Z))
+
+        if (Input.GetAxis("LT")>0.5f || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
