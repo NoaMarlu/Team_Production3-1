@@ -12,6 +12,11 @@ public class Result : MonoBehaviour
 
     public AudioClip select;
     private AudioSource audioSource;
+
+    /*DispSocre*/
+    public GameObject Text1;
+    public GameObject Text2;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
@@ -59,6 +64,10 @@ public class Result : MonoBehaviour
                 Debug.Log("Star‚Ì”’l‚ª3‚ğã‰ñ‚è‚Ü‚µ‚½");
                 break;
         }
+    }
+    void DispScore()
+    {
+
     }
 
 }

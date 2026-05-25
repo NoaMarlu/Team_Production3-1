@@ -23,9 +23,13 @@ public class goal : MonoBehaviour
     public AudioClip clip;
     private bool wasSE = false;
 
+
+    private SheepSpawner sheepSpawner;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        sheepSpawner = GameObject.FindWithTag("Spawner").GetComponent<SheepSpawner>();
         gameManager = GameObject.Find("GameManager").GetComponent<GameManager>();
         // 開始時はアニメーション用オブジェクトを非表示にしておく（必要に応じて）
         if (goalAnimAnimator != null)
@@ -41,7 +45,8 @@ public class goal : MonoBehaviour
         {
               if (wasSE != true)
              {
-            audioSource.PlayOneShot(clip);
+                audioSource.PlayOneShot(clip);
+                sheepSpawner.StarRecord();
                 wasSE = true;
             }
             elapsedUnscaledTime += Time.unscaledDeltaTime;

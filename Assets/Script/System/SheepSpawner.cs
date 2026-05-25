@@ -78,7 +78,6 @@ public class SheepSpawner : MonoBehaviour
 
         StartFunc();
         MaxTime();
-        StarRecord();
         manager.SetGameTime(maxTime);
 
     }
@@ -227,7 +226,7 @@ public class SheepSpawner : MonoBehaviour
     }
     public GameObject GetSheepList(int num) { return sheeps[num]; }
     public float GetLiveTimer() { return maxLiveTime; }
-    void StarRecord()
+    public void StarRecord()
     {
         if (!hasStar) return;
         PlayerPrefs.SetInt(prefsNameSheepCount,sheepCount);
