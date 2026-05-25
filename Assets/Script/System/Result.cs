@@ -72,8 +72,15 @@ public class Result : MonoBehaviour
     void DispScore()
     {
         //1Œ…–Ú
+        if (sheepCount < 10)
+        {
 
+        }
         //2Œ…–Ú
+        if (sheepCount >= 10)
+        {
+
+        }
     }
 
 }
