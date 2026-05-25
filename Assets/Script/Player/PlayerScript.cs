@@ -813,5 +813,14 @@ public class PlayerScript : MonoBehaviour
         liveTimer += Time.deltaTime;
     }
     public float GetLiveTimer() { return liveTimer; }
+    void getDirecion()
+    {
+        //実装の際はPlayerInputのDirection変更処理にif(isMountFunc)returnを足す
+        //getDirection関数はUpdateに入れる
+        if (isMountFunc)
+        {
+            isDirection = nearestColScript.isDirection;
+        }
+    }
 
 }

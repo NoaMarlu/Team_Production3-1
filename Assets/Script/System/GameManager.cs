@@ -141,6 +141,10 @@ public class GameManager : MonoBehaviour
             else PauseGame();
             return;
         }
+        if (Input.GetKeyDown(KeyCode.JoystickButton1)){
+            if (isPause) ResumeGame();
+            return;
+        }
 
         if (!isPause) return;
 
