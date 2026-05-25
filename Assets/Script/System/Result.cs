@@ -14,11 +14,11 @@ public class Result : MonoBehaviour
     private AudioSource audioSource;
 
     /*DispSocre*/
-    public GameObject Text1;
-    public GameObject Text2_1;//1Œ…–Ú
-    public GameObject Text2_2;//2Œ…–Ú
+    public SpriteRenderer Text1;
+    public SpriteRenderer Text2_1;//1Œ…–Ú
+    public SpriteRenderer Text2_2;//2Œ…–Ú
     public string prefsNameCount;
-    private float sheepCount;
+    public float sheepCount;
     public Sprite[] num;
 
     void Start()
@@ -28,6 +28,7 @@ public class Result : MonoBehaviour
     }
     void Update()
     {
+        DispScore();
         LoadScene();
         StarChange();
     }
@@ -75,24 +76,48 @@ public class Result : MonoBehaviour
         //1Œ…–Ú
         if (sheepCount < 10)
         {
+            Text1.enabled = true;
+            Text2_1.enabled = false;
+            Text2_2.enabled = false;
 
+            Text1.sprite = NumSwitch(sheepCount);
         }
         //2Œ…–Ú
         if (sheepCount >= 10)
         {
+            Text1.enabled = false;
+            Text2_1.enabled = true;
+            Text2_2.enabled = true;
 
+            Text2_1.sprite = NumSwitch((sheepCount/10)%10);
+            Text2_2.sprite = NumSwitch(sheepCount%10);
         }
     }
-    void NumSwitch(GameObject obj,int num)
+   Sprite NumSwitch(float x)
     {
-        switch (num) {
-
+        switch (x) {
             case 0:
-                break;
-
-        
+                return num[0];
+            case 1:
+                return num[1];
+            case 2:
+                return num[2];
+            case 3:
+                return num[3];
+            case 4:
+                return num[4];
+            case 5:
+                return num[5];
+            case 6:
+                return num[6];
+            case 7:
+                return num[7];
+            case 8:
+                return num[8];
+            case 9:
+                return num[9];
         }
-
+        return null;
     }
 
 }
