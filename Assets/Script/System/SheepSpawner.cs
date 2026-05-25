@@ -253,5 +253,21 @@ public class SheepSpawner : MonoBehaviour
         return;
 
     }
+    //プレイヤーが死亡するのが途中の場合
+    public void SheepReset()
+    {
+        foreach (GameObject sheep in sheeps)
+        {
+            PlayerScript player= sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
+            player.loopDie = true;
+            player.isloopSpawn = false;
+            player.num = 0;
+            Debug.Log("ループしたよん");
+            sheep.transform.position = new Vector2(300, 300);
+            Rigidbody2D rb=sheep.GetComponent<Rigidbody2D>();
+            if(rb!=null)rb.linearVelocity=Vector2.zero;
+        }
+    }
 
 }

@@ -199,6 +199,13 @@ public class PlayerScript : MonoBehaviour
     {
         if (this.transform.position.y <= -6.53f)
         {
+            if (!isDie)
+            {
+                sheepSpawner.isNotDieSheep();
+                DieTime = manager.GetGameTimer();
+                manager.GameTimerReset();
+                sheepSpawner.SheepReset();
+            }
             gameObject.tag = "ground";
             nearestCol = null;
             loopDie = true;
@@ -206,7 +213,7 @@ public class PlayerScript : MonoBehaviour
             isCeilingSpr = false;
             rb.linearVelocityY = -10;
             if (DieTime == 0) DieTime = manager.GetGameTimer();
-            if (isRemind == false || isDie == false)
+            if (!isRemind|| !isDie )
             {
                 isDie = true;
                 isRemind = true;
@@ -433,6 +440,7 @@ public class PlayerScript : MonoBehaviour
                     if (dist <= mountRadius && dist < nearestDist)
                     {
 
+                        isCeilingSpr = false;
                         if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
                         if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
@@ -452,7 +460,8 @@ public class PlayerScript : MonoBehaviour
                 return;
             }
             if(nearestCol!=null)
-            { 
+            {
+                isCeilingSpr = false;
                 nearestColScript = nearestCol.GetComponent<PlayerScript>();
                 nearestColScript.SetNearestUpCol(this.gameObject);
             }
@@ -708,7 +717,6 @@ public class PlayerScript : MonoBehaviour
         {
             isGrounded = true;
             isCeilingSpr = false;
-            Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
             rb.linearVelocity = Vector2.zero;
 
