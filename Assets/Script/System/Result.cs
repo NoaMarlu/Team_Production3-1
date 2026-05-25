@@ -23,6 +23,7 @@ public class Result : MonoBehaviour
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
+        sheepCount=PlayerPrefs.GetInt(prefsNameCount);
     }
     void Update()
     {
