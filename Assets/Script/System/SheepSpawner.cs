@@ -62,6 +62,8 @@ public class SheepSpawner : MonoBehaviour
     }
     void Update()
     {
+        isStartAnime = manager.isStartAnimation;
+        if (isStartAnime) return;
 
         if (farstSpawn != true)
         {
@@ -77,8 +79,7 @@ public class SheepSpawner : MonoBehaviour
 
         }
 
-        isStartAnime = manager.isStartAnimation;
-        if (isStartAnime) return;
+
 
         StartFunc();
         MaxTime();

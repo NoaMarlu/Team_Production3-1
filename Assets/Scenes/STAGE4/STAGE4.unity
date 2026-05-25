@@ -975,6 +975,8 @@ MonoBehaviour:
   prefsName: STAGE4_Star
   prefsNameSheepCount: STAGE4_Count
   scoreSheep: 070000000500000003000000
+  symbolON: {fileID: 0}
+  symbolOFF: {fileID: 0}
 --- !u!4 &638362938
 Transform:
   m_ObjectHideFlags: 0
@@ -2149,7 +2151,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 19
   m_MaskInteraction: 0
   m_Sprite: {fileID: 8923511201978515909, guid: c296ad6e7b0358c40a6d5a51b8ee647b, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2170,7 +2172,7 @@ Transform:
   m_GameObject: {fileID: 1345284822}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.89, y: -1.94, z: 0}
+  m_LocalPosition: {x: -5.89, y: -1.895, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -2725,7 +2727,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 1
+  m_SortingOrder: 19
   m_MaskInteraction: 0
   m_Sprite: {fileID: -4672243052434833179, guid: 84a40faa587149a4d87cb57fc4d30073, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -2746,7 +2748,7 @@ Transform:
   m_GameObject: {fileID: 1627488980}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -5.89, y: -1.94, z: 0}
+  m_LocalPosition: {x: -5.89, y: -1.895, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
