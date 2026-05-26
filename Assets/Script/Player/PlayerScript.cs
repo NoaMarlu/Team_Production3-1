@@ -116,6 +116,7 @@ public class PlayerScript : MonoBehaviour
     public bool wasCeiling;
     private bool isCeilingSpr=false;
 
+
     void Start()
     {
         Init();
@@ -199,6 +200,13 @@ public class PlayerScript : MonoBehaviour
     {
         if (this.transform.position.y <= -6.53f)
         {
+            if (!isDie)
+            {
+                sheepSpawner.isNotDieSheep();
+                DieTime = manager.GetGameTimer();
+                manager.GameTimerReset();
+                sheepSpawner.SheepReset();
+            }
             gameObject.tag = "ground";
             nearestCol = null;
             loopDie = true;
@@ -206,7 +214,7 @@ public class PlayerScript : MonoBehaviour
             isCeilingSpr = false;
             rb.linearVelocityY = -10;
             if (DieTime == 0) DieTime = manager.GetGameTimer();
-            if (isRemind == false || isDie == false)
+            if (!isRemind|| !isDie )
             {
                 isDie = true;
                 isRemind = true;
@@ -326,7 +334,8 @@ public class PlayerScript : MonoBehaviour
     void Spawn()
     {
         if (isSpawn) return;
-            if (Input.GetAxis("LT")>0.5f || Input.GetKeyDown(KeyCode.Z))
+
+        if (Input.GetAxis("LT")>0.5f || Input.GetKeyDown(KeyCode.Z))
         {
             if (isDie == false) return;
             gameObject.tag = "ground";
@@ -427,12 +436,13 @@ public class PlayerScript : MonoBehaviour
                     PlayerScript ps = sheep.GetComponent<PlayerScript>();
                     if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
                     if (!ps.isRemind) continue; // ループ羊のみ対象
-                    if (ps.getIsTop() == false) continue;
+                    if (!ps.getIsTop()) continue;
 
                     float dist = Vector2.Distance(transform.position, sheep.transform.position);
                     if (dist <= mountRadius && dist < nearestDist)
                     {
 
+                        isCeilingSpr = false;
                         if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
                         if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
@@ -452,7 +462,8 @@ public class PlayerScript : MonoBehaviour
                 return;
             }
             if(nearestCol!=null)
-            { 
+            {
+                isCeilingSpr = false;
                 nearestColScript = nearestCol.GetComponent<PlayerScript>();
                 nearestColScript.SetNearestUpCol(this.gameObject);
             }
@@ -708,7 +719,6 @@ public class PlayerScript : MonoBehaviour
         {
             isGrounded = true;
             isCeilingSpr = false;
-            Debug.Log("地面とプレイヤーが衝突");
             AddList(4);
             rb.linearVelocity = Vector2.zero;
 
@@ -803,5 +813,14 @@ public class PlayerScript : MonoBehaviour
         liveTimer += Time.deltaTime;
     }
     public float GetLiveTimer() { return liveTimer; }
+    void getDirecion()
+    {
+        //実装の際はPlayerInputのDirection変更処理にif(isMountFunc)returnを足す
+        //getDirection関数はUpdateに入れる
+        if (isMountFunc)
+        {
+            isDirection = nearestColScript.isDirection;
+        }
+    }
 
 }

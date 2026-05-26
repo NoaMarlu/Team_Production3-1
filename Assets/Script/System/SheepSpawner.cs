@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 /// </summary>
 public class SheepSpawner : MonoBehaviour
@@ -52,12 +53,24 @@ public class SheepSpawner : MonoBehaviour
     public string prefsNameSheepCount;
     public int[] scoreSheep;
 
+    /*看板*/
+    public GameObject symbolON;
+    public GameObject symbolOFF;
+
     void Start()
     {
         Init();
     }
     void Update()
     {
+
+        if (sheepCount >= 50)
+        {
+            SceneManager.LoadScene("OneHundredStage");
+        }
+
+        isStartAnime = manager.isStartAnimation;
+        if (isStartAnime) return;
 
         if (farstSpawn != true)
         {
@@ -73,12 +86,26 @@ public class SheepSpawner : MonoBehaviour
 
         }
 
-        isStartAnime = manager.isStartAnimation;
-        if (isStartAnime) return;
+
 
         StartFunc();
         MaxTime();
         manager.SetGameTime(maxTime);
+
+
+        if (symbolOFF != null)
+        {
+            if (isNotDieSheep())
+            {
+                symbolOFF.SetActive(true);
+                symbolON.SetActive(false);
+            }
+            else
+            {
+                symbolOFF.SetActive(false);
+                symbolON.SetActive(true);
+            }
+        }
 
     }
 
@@ -170,6 +197,8 @@ public class SheepSpawner : MonoBehaviour
     //初期化
     void Init()
     {
+        symbolON = GameObject.Find("symbol_ON");
+        symbolOFF = GameObject.Find("symbol_OFF");
         GameObject obj = GameObject.Find("GameManager");
         manager = obj.GetComponent<GameManager>();
         GameObject gaugeObj = GameObject.FindWithTag("gauge");
@@ -252,6 +281,22 @@ public class SheepSpawner : MonoBehaviour
         PlayerPrefs.Save();
         return;
 
+    }
+    //プレイヤーが死亡するのが途中の場合
+    public void SheepReset()
+    {
+        foreach (GameObject sheep in sheeps)
+        {
+            PlayerScript player= sheep.GetComponent<PlayerScript>();
+            if (player == null) continue;
+            player.loopDie = true;
+            player.isloopSpawn = false;
+            player.num = 0;
+            Debug.Log("ループしたよん");
+            sheep.transform.position = new Vector2(300, 300);
+            Rigidbody2D rb=sheep.GetComponent<Rigidbody2D>();
+            if(rb!=null)rb.linearVelocity=Vector2.zero;
+        }
     }
 
 }
