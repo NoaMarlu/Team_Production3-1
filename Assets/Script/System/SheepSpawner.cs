@@ -2,6 +2,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.Collections;
 using Unity.VisualScripting;
+using UnityEngine.SceneManagement;
 
 /// </summary>
 public class SheepSpawner : MonoBehaviour
@@ -62,6 +63,12 @@ public class SheepSpawner : MonoBehaviour
     }
     void Update()
     {
+
+        if (sheepCount >= 50)
+        {
+            SceneManager.LoadScene("OneHundredStage");
+        }
+
         isStartAnime = manager.isStartAnimation;
         if (isStartAnime) return;
 

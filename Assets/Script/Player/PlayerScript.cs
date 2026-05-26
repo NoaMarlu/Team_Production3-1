@@ -436,7 +436,7 @@ public class PlayerScript : MonoBehaviour
                     PlayerScript ps = sheep.GetComponent<PlayerScript>();
                     if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
                     if (!ps.isRemind) continue; // ループ羊のみ対象
-                    if (ps.getIsTop() == false) continue;
+                    if (!ps.getIsTop()) continue;
 
                     float dist = Vector2.Distance(transform.position, sheep.transform.position);
                     if (dist <= mountRadius && dist < nearestDist)

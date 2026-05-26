@@ -25,6 +25,11 @@ public class TitleManager : MonoBehaviour
             audioSource.PlayOneShot(audioClip[0]);
             SceneManager.LoadScene("StageSelect");
         }
+
+        if (Input.GetKey(KeyCode.S) && Input.GetKey(KeyCode.P))
+        {
+            SceneManager.LoadScene("OneHundredStage");
+        }
     }
 
     void Prefs()
