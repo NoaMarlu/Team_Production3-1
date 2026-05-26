@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4823436033848151895}
   - component: {fileID: 4806610332946827960}
   - component: {fileID: 1184611379496677240}
-  - component: {fileID: 6921740881201715455}
+  - component: {fileID: 3150599815782477065}
   m_Layer: 0
   m_Name: Goal
   m_TagString: goal
@@ -158,6 +158,7 @@ MonoBehaviour:
   animationDuration: 2
   nextSceneName: STAGE2
   clip: {fileID: 8300000, guid: 10d4bc328ae9ca44bb30eac2ab63b60b, type: 3}
+  isGoal: 0
 --- !u!82 &1184611379496677240
 AudioSource:
   m_ObjectHideFlags: 0
@@ -255,7 +256,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &6921740881201715455
+--- !u!95 &3150599815782477065
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
@@ -265,7 +266,7 @@ Animator:
   m_GameObject: {fileID: 7642640411547614143}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: 9100000, guid: 26fb97fb334a16d4ba35737e94193087, type: 2}
+  m_Controller: {fileID: 9100000, guid: 2559c5eebb9228644ae3f2b114243771, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
