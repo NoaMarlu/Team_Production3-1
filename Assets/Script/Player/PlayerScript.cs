@@ -83,7 +83,7 @@ public class PlayerScript : MonoBehaviour
     public bool isMountFunc = false;
     public GameObject nearestCol = null;
     public PlayerScript nearestColScript = null;
-    private bool isTop=true;//trueであれば単体または重なっている場合の最上段
+    public bool isTop=true;//trueであれば単体または重なっている場合の最上段
     public GameObject nearestUpCol = null;
 
     /*当たり判定処理*/
@@ -146,6 +146,7 @@ public class PlayerScript : MonoBehaviour
         MountOnNearestLoopSheep();
         LinkForce();
         MoveControler();
+        getDirection();
 
         if (isRemind)
         {
@@ -155,7 +156,7 @@ public class PlayerScript : MonoBehaviour
         else
         {
             SheepIsDie();
-            FindNearSheep();
+            //FindNearSheep();
             PlayerInput();
         }
 
@@ -437,14 +438,13 @@ public class PlayerScript : MonoBehaviour
                     if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
                     if (!ps.isRemind) continue; // ループ羊のみ対象
                     if (!ps.getIsTop()) continue;
+                    if (ps.GetCeiling() == true) continue;
 
                     float dist = Vector2.Distance(transform.position, sheep.transform.position);
                     if (dist <= mountRadius && dist < nearestDist)
                     {
 
                         isCeilingSpr = false;
-                        if (ps.getIsTop() == false) continue;//相手が単体ではない、または最上段ではないなら
-                        if (ps.GetCeiling() == true) continue;
                         nearestCol = sheep;
                         nearestColScript = ps;
                         nearestColScript.SetNearestUpCol(this.gameObject);
@@ -547,11 +547,19 @@ public class PlayerScript : MonoBehaviour
                 }
                 else {  break; }//上に羊がいないならbreak
             }
-            if (nearestCol != upObj) 
+
+            if (nearestCol != upObj) //自分じゃないなら
             {
+                PlayerScript oldScript = nearestCol.GetComponent<PlayerScript>();
+                if (oldScript != null) oldScript.setIsTop(true);
                 nearestCol = upObj;
+
+                PlayerScript newScript = nearestCol.GetComponent<PlayerScript>();
+                if (newScript != null) newScript.setIsTop(false);
+                
                 AddList(3);
             }
+
         }
     }
     //羊が上にいる場合に、力を連動させる
@@ -585,13 +593,14 @@ public class PlayerScript : MonoBehaviour
             PlayerScript ps = sheep.GetComponent<PlayerScript>();
 
             if (ps == null || ps == this.GetComponent<PlayerScript>()) continue;
-
             if (ps==null||!ps.isRemind) continue; // ループ羊のみ対象
+            if (!ps.getIsTop()) continue;
 
             float dist = Vector2.Distance(transform.position, sheep.transform.position);
             if (dist <= mountRadius && dist < nearestDist)
             {
                 nearestDist = dist;
+                nearestCol = sheep;
                 return;
             }
         }
@@ -608,17 +617,21 @@ public class PlayerScript : MonoBehaviour
         if (isDie) return;
 
         //方向転換
-        if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X)) ChangeDirection();
+        if (Input.GetKeyDown(KeyCode.JoystickButton2) || Input.GetKeyDown(KeyCode.X))
+        {
+            if (!isMountFunc)ChangeDirection(); 
+        }
         //ジャンプ
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
         {
             if (isGrounded) isJump = true;
         }
         //羊の乗る
-        if (Input.GetKeyDown(KeyCode.JoystickButton3) || Input.GetKeyDown(KeyCode.C))
+        if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space))
         {
+            if (isGrounded) return;
             isMountFunc = true;
-             isMount = true;
+            isMount = true;
         }
 
     }
@@ -657,6 +670,7 @@ public class PlayerScript : MonoBehaviour
     //初期化
     void Init()
     {
+        isDirection = true;
         boxCol = GetComponent<BoxCollider2D>();
         colW = boxCol.size.x*transform.localScale.x/2.0f;
         colH= boxCol.size.y*transform.localScale.y;
@@ -756,22 +770,6 @@ public class PlayerScript : MonoBehaviour
     
     }
     bool GetCeiling() { return wasCeiling; }
-    void OnDrawGizmosSelected()
-    {
-        Gizmos.color = Color.red;
-        Vector2 pos = (Vector2)transform.position+(Vector2.up*colH/2.0f);
-        Gizmos.DrawWireSphere(transform.position, colW);
-        Gizmos.DrawWireSphere(pos, colW);
-
-        Gizmos.color = Color.yellow;
-        Vector2 boxCollider = new Vector2(
-            boxCol.size.x * 0.9f * transform.localScale.x,
-            boxCol.size.y * 0.1f * transform.localScale.y
-            );
-        Vector2 origin = (Vector2)transform.position + Vector2.up * colH/2;
-        // BoxCastの初期位置
-        Gizmos.DrawWireCube(origin, boxCollider);
-    }
     //天井の衝突判定を取得
     void CeilingCollision()
     {
@@ -813,13 +811,16 @@ public class PlayerScript : MonoBehaviour
         liveTimer += Time.deltaTime;
     }
     public float GetLiveTimer() { return liveTimer; }
-    void getDirecion()
+    void getDirection()
     {
         //実装の際はPlayerInputのDirection変更処理にif(isMountFunc)returnを足す
         //getDirection関数はUpdateに入れる
         if (isMountFunc)
         {
-            isDirection = nearestColScript.isDirection;
+            if(nearestColScript!=null){ 
+                isDirection = nearestColScript.isDirection;
+                spr.flipX = nearestColScript.spr.flipX;
+            }
         }
     }
 
