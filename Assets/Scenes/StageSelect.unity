@@ -1626,7 +1626,7 @@ MonoBehaviour:
   vp: {fileID: 0}
   isReplay: 1
   isAlpha: 0
-  animeTime: 11.5
+  animeTime: 13
   alphaSpeed: 0.5
 --- !u!1 &1180636059
 GameObject:
