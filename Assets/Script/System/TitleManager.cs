@@ -2,13 +2,12 @@ using UnityEngine;
 using UnityEngine.Audio;
 using UnityEngine.SceneManagement;
 using System.Collections;
+using UnityEngine.Video;
 
 public class TitleManager : MonoBehaviour
 {
     private AudioSource audioSource;
     public AudioClip[] audioClip;
-
-
 
     void Start()
     {
