@@ -9,9 +9,11 @@ public class StageSelect : MonoBehaviour
         public GameObject stageObj;
         public SpriteRenderer spriteRenderer;
         public GameObject[] star;
+        public GameObject[] tutorialStar;
         public string sceneName;
         public string prefsName;//êØÇÃêîÇéÊìæ
         public bool hasStar;
+        public bool hasTutorialStar;
      }
     public StageSelectObj[] SS;
 
@@ -97,11 +99,18 @@ public class StageSelect : MonoBehaviour
             SS[i].spriteRenderer=SS[i].stageObj.GetComponent<SpriteRenderer>();
             //êØéÊìæ
             SS[i].star = new GameObject[3];
+            SS[i].tutorialStar = new GameObject[3];
             if (SS[i].hasStar)
             {
                 SS[i].star[0] = SS[i].stageObj.transform.GetChild(0).gameObject;
                 SS[i].star[1] = SS[i].stageObj.transform.GetChild(1).gameObject;
                 SS[i].star[2] = SS[i].stageObj.transform.GetChild(2).gameObject;
+            }
+            if (SS[i].hasTutorialStar)
+            {
+                SS[i].tutorialStar[0] = SS[i].stageObj.transform.GetChild(0).gameObject;
+                SS[i].tutorialStar[1] = SS[i].stageObj.transform.GetChild(1).gameObject;
+                SS[i].tutorialStar[2] = SS[i].stageObj.transform.GetChild(2).gameObject;
             }
         }
 
@@ -163,6 +172,26 @@ public class StageSelect : MonoBehaviour
 
             }
         }
+
+        for (int i = 0; i < SS.Length; i++)
+        {
+            if (SS[i].hasTutorialStar)
+            {
+                if (PlayerPrefs.GetInt(SS[i].prefsName) == 1)
+                {
+                    SS[i].tutorialStar[0].GetComponent<SpriteRenderer>().sprite = onStar;
+                    SS[i].tutorialStar[1].GetComponent<SpriteRenderer>().sprite = onStar;
+                    SS[i].tutorialStar[2].GetComponent<SpriteRenderer>().sprite = onStar;
+                }
+                else
+                {
+                    SS[i].tutorialStar[0].GetComponent<SpriteRenderer>().sprite = offStar;
+                    SS[i].tutorialStar[1].GetComponent<SpriteRenderer>().sprite = offStar;
+                    SS[i].tutorialStar[2].GetComponent<SpriteRenderer>().sprite = offStar;
+                }
+            }
+        }
+
     }
     void LoadScene()
     {

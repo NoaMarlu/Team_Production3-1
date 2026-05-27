@@ -52,6 +52,7 @@ public class SheepSpawner : MonoBehaviour
     public string prefsName;
     public string prefsNameSheepCount;
     public int[] scoreSheep;
+    public bool hasTutorialStar = false;
 
     /*看板*/
     public GameObject symbolON;
@@ -257,6 +258,10 @@ public class SheepSpawner : MonoBehaviour
     public float GetLiveTimer() { return maxLiveTime; }
     public void StarRecord()
     {
+        if (hasTutorialStar)
+        {
+            PlayerPrefs.SetInt(prefsName, 1);
+        }
         if (!hasStar) return;
         PlayerPrefs.SetInt(prefsNameSheepCount,sheepCount);
         if (sheepCount <= scoreSheep[0])

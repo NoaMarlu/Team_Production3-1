@@ -10,6 +10,7 @@ public class VideoLoad : MonoBehaviour
     {
         DontDestroyOnLoad(videoPlayer.gameObject);
         videoPlayer.Prepare();
+        videoPlayer.Pause();
     }
     void Update()
     {

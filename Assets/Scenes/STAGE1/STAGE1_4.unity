@@ -3209,9 +3209,10 @@ MonoBehaviour:
   pControlValue: []
   farstSpawn: 1
   hasStar: 0
-  prefsName: 
+  prefsName: Stage1
   prefsNameSheepCount: 
   scoreSheep: 
+  hasTutorialStar: 1
   symbolON: {fileID: 0}
   symbolOFF: {fileID: 0}
 --- !u!4 &1311407242
