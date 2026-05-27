@@ -5,6 +5,7 @@ public class GameMovie : MonoBehaviour
 {
     public bool isAnimation = true;
     public RawImage RI;
+    public GameObject VideoObj;
     /*アニメーション管理*/
     public bool isReplay = true;
     public bool isAlpha = false;
@@ -13,10 +14,16 @@ public class GameMovie : MonoBehaviour
     public float alphaSpeed;
     void Start()
     {
-
+        if (PlayerPrefs.GetInt("isAnimation") == 1)
+        {
+            isAnimation = false;
+            VideoObj.SetActive(false);
+            return;
+        }
     }
     void Update()
     {
+
         if (!isAnimation) return;
         AnimeReplay();
         AnimeAlpha();
@@ -37,6 +44,8 @@ public class GameMovie : MonoBehaviour
         Color c = RI.color;
         if (c.a <= 0)
         {
+            PlayerPrefs.SetInt("isAnimation", 1);
+            PlayerPrefs.Save();
             isAlpha = false;
             isAnimation = false;
         }

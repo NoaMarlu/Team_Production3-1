@@ -39,6 +39,7 @@ public class TitleManager : MonoBehaviour
         PlayerPrefs.SetInt("STAGE4_Count",0);
         PlayerPrefs.SetInt("STAGE4_Star",0);
         PlayerPrefs.SetInt("CurrentStage", 0);
+        PlayerPrefs.SetInt("isAnimation", 0);
         PlayerPrefs.Save();
     }
 

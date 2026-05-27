@@ -50,11 +50,11 @@ public class StageSelect : MonoBehaviour
     void Update()
     {
         SpriteChanger();
+        ScrollStage();
         if (gameMovie.isAnimation) return;
         SelectStage();
         ChangeStar();
         LoadScene();
-        ScrollStage();
         ChangeCurrent();
     }
     void SelectStage()
