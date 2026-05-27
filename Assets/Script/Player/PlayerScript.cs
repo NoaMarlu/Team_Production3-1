@@ -11,7 +11,7 @@ public class PlayerScript : MonoBehaviour
     public float moveSpeed = 5.0f;//移動スピード
 
     /*ChangeDirection*/
-    private bool isDirection;//方向判定 false=左移動,true=右移動
+    public bool isDirection;//方向判定 false=左移動,true=右移動
 
     /*Jump*/
     public float jumpForce = 5.0f;
@@ -100,6 +100,7 @@ public class PlayerScript : MonoBehaviour
 
     /*初回から死んでいる場合*/
     public bool farstDie = false;
+    public bool fastDieDirection=true;//trueで→
 
     /*Debug*/
     public float VelocityY;
@@ -132,6 +133,7 @@ public class PlayerScript : MonoBehaviour
         {
             MountOnNearestLoopSheep();
             LinkForce();
+            if (!fastDieDirection) isDirection = false;
             return;
         }
 
