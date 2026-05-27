@@ -14,6 +14,7 @@ public class StageSelect : MonoBehaviour
         public string prefsName;//星の数を取得
         public bool hasStar;
         public bool hasTutorialStar;
+        public GameObject SpeechBubble;
      }
     public StageSelectObj[] SS;
 
@@ -128,10 +129,12 @@ public class StageSelect : MonoBehaviour
             if (currentStage == i)//現在選択しているステージなら
             {
                 SS[i].spriteRenderer.sprite = isSelectSpr;
+                SS[i].SpeechBubble.SetActive(true);
             }
             else
             {
                 SS[i].spriteRenderer.sprite = normalSpr;
+                SS[i].SpeechBubble.SetActive(false);
             }
         }
     }
