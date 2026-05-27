@@ -110,3 +110,6 @@ InitTestScene*.unity*
 /Assets/TextMesh Pro/Resources/Fonts & Materials/
 /Assets/TextMesh Pro/Resources/Fonts & Materials/LiberationSans SDF - Fallback.asset
 /Assets/TextMesh Pro/Resources/Fonts/RabbitandFullMoonFree-Regular SDF
+/ProjectSettings/EditorBuildSettings.asset
+/.gitignore
+/.gitignore

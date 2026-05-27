@@ -465,6 +465,7 @@ MonoBehaviour:
   isMountFunc: 0
   nearestCol: {fileID: 0}
   nearestColScript: {fileID: 0}
+  isTop: 1
   nearestUpCol: {fileID: 0}
   isOverRaped: 0
   rayRadius: 0.5
@@ -473,8 +474,7 @@ MonoBehaviour:
   mountOK: 1
   farstDie: 0
   VelocityY: 0
-  moveControl: 0
-  controlValue: []
+  wasCeiling: 0
 --- !u!82 &-8921020831439152454
 AudioSource:
   m_ObjectHideFlags: 0

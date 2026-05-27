@@ -41,6 +41,8 @@ public class StageSelect : MonoBehaviour
     public SpriteRenderer right;
     public SpriteRenderer left;
 
+    public GameMovie gameMovie;
+
     void Start()
     {
         Init();
@@ -48,6 +50,7 @@ public class StageSelect : MonoBehaviour
     void Update()
     {
         SpriteChanger();
+        if (gameMovie.isAnimation) return;
         SelectStage();
         ChangeStar();
         LoadScene();
