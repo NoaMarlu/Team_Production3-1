@@ -1325,7 +1325,7 @@ BoxCollider2D:
     drawMode: 0
     adaptiveTiling: 0
   m_AutoTiling: 0
-  m_Size: {x: 0.14, y: 2.04}
+  m_Size: {x: 0.14, y: 2.12}
   m_EdgeRadius: 0
 --- !u!1001 &669077059
 PrefabInstance:
@@ -2664,7 +2664,7 @@ BoxCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 1.01}
+  m_Offset: {x: 0, y: 0.98}
   m_SpriteTilingProperty:
     border: {x: 0, y: 0, z: 0, w: 0}
     pivot: {x: 0.5, y: 0.5}
@@ -2725,6 +2725,7 @@ MonoBehaviour:
   prefsName: STAGE2_Star
   prefsNameSheepCount: STAGE2_Count
   scoreSheep: 050000000400000003000000
+  hasTutorialStar: 0
   symbolON: {fileID: 0}
   symbolOFF: {fileID: 0}
 --- !u!4 &1311407242

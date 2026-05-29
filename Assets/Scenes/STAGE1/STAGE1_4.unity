@@ -1177,6 +1177,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 2884980039154087744, guid: 7386e95fe256181438719574a7cb90ba, type: 3}
     - target: {fileID: 8253569761280824299, guid: bfcb931e0759d9443a6a0f084f82c582, type: 3}
+      propertyPath: selectSceneName
+      value: Result_S1
+      objectReference: {fileID: 0}
+    - target: {fileID: 8253569761280824299, guid: bfcb931e0759d9443a6a0f084f82c582, type: 3}
       propertyPath: audioClip.Array.size
       value: 2
       objectReference: {fileID: 0}
