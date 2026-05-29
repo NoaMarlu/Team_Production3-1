@@ -1409,11 +1409,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PonPon
-  posY: 1
-  ponPonSpeed: 1
+  posY: 0.1
+  ponPonSpeed: 0.2
   ponPonTime: 1
-  waitTime: 1
-  startWaitTime: 1
+  waitTime: 0
+  startWaitTime: 0
 --- !u!1 &441853913
 GameObject:
   m_ObjectHideFlags: 0
@@ -6783,11 +6783,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PonPon
-  posY: 1
-  ponPonSpeed: 1
+  posY: 0.1
+  ponPonSpeed: 0.2
   ponPonTime: 1
-  waitTime: 1
-  startWaitTime: 1
+  waitTime: 0
+  startWaitTime: 0
 --- !u!1 &1998109027
 GameObject:
   m_ObjectHideFlags: 0
@@ -6899,11 +6899,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PonPon
-  posY: 1
-  ponPonSpeed: 1
+  posY: 0.1
+  ponPonSpeed: 0.2
   ponPonTime: 1
-  waitTime: 1
-  startWaitTime: 1
+  waitTime: 0
+  startWaitTime: 0
 --- !u!1 &2010409646
 GameObject:
   m_ObjectHideFlags: 0
@@ -7288,11 +7288,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PonPon
-  posY: 1
-  ponPonSpeed: 1
+  posY: 0.1
+  ponPonSpeed: 0.2
   ponPonTime: 1
-  waitTime: 1
-  startWaitTime: 1
+  waitTime: 0
+  startWaitTime: 0
 --- !u!1 &2122724848
 GameObject:
   m_ObjectHideFlags: 0
