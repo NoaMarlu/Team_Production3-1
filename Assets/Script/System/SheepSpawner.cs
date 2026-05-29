@@ -65,7 +65,7 @@ public class SheepSpawner : MonoBehaviour
     void Update()
     {
 
-        if (sheepCount >= 50)
+        if (sheepCount >= 30)
         {
             SceneManager.LoadScene("OneHundredStage");
         }
