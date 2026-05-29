@@ -1786,7 +1786,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b4165b1de8f5ff24dba58d9bf04409c6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::SheepSpawner
-  sheepPrefab: {fileID: 4874309050968122548, guid: 1e512d4fde307f64e994fa2c23afc04b, type: 3}
+  sheepPrefab: {fileID: 4874309050968122548, guid: 1eab2223d47d7014c93ad3f6f245cc62, type: 3}
   sheepCount: 0
   speechBubble1: {fileID: 0}
   speechBubble2: {fileID: 0}
@@ -1804,6 +1804,7 @@ MonoBehaviour:
   prefsName: 
   prefsNameSheepCount: 
   scoreSheep: 
+  hasTutorialStar: 0
   symbolON: {fileID: 0}
   symbolOFF: {fileID: 0}
 --- !u!1001 &1106472237
