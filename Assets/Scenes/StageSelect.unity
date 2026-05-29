@@ -1308,6 +1308,7 @@ GameObject:
   m_Component:
   - component: {fileID: 419900112}
   - component: {fileID: 419900111}
+  - component: {fileID: 419900113}
   m_Layer: 0
   m_Name: Stage4Select
   m_TagString: Untagged
@@ -1396,6 +1397,23 @@ Transform:
   - {fileID: 441853914}
   m_Father: {fileID: 798174236}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &419900113
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 419900110}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 1
+  ponPonSpeed: 1
+  ponPonTime: 1
+  waitTime: 1
+  startWaitTime: 1
 --- !u!1 &441853913
 GameObject:
   m_ObjectHideFlags: 0
@@ -6664,6 +6682,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1978895268}
   - component: {fileID: 1978895267}
+  - component: {fileID: 1978895269}
   m_Layer: 0
   m_Name: Stage2Select
   m_TagString: Untagged
@@ -6752,6 +6771,23 @@ Transform:
   - {fileID: 1589858678}
   m_Father: {fileID: 1936004968}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1978895269
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1978895266}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 1
+  ponPonSpeed: 1
+  ponPonTime: 1
+  waitTime: 1
+  startWaitTime: 1
 --- !u!1 &1998109027
 GameObject:
   m_ObjectHideFlags: 0
@@ -6762,6 +6798,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1998109029}
   - component: {fileID: 1998109028}
+  - component: {fileID: 1998109030}
   m_Layer: 0
   m_Name: Stage1Select
   m_TagString: Untagged
@@ -6850,6 +6887,23 @@ Transform:
   - {fileID: 1389935674}
   m_Father: {fileID: 485410978}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1998109030
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1998109027}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 1
+  ponPonSpeed: 1
+  ponPonTime: 1
+  waitTime: 1
+  startWaitTime: 1
 --- !u!1 &2010409646
 GameObject:
   m_ObjectHideFlags: 0
@@ -7133,6 +7187,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2044709969}
   - component: {fileID: 2044709968}
+  - component: {fileID: 2044709970}
   m_Layer: 0
   m_Name: Stage3Select
   m_TagString: Untagged
@@ -7221,6 +7276,23 @@ Transform:
   - {fileID: 884527214}
   m_Father: {fileID: 1759457003}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &2044709970
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2044709967}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 66eb37ec45b9bc548b4ab62f6c3113f6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PonPon
+  posY: 1
+  ponPonSpeed: 1
+  ponPonTime: 1
+  waitTime: 1
+  startWaitTime: 1
 --- !u!1 &2122724848
 GameObject:
   m_ObjectHideFlags: 0
