@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 4823436033848151895}
   - component: {fileID: 4806610332946827960}
   - component: {fileID: 1184611379496677240}
-  - component: {fileID: 3150599815782477065}
+  - component: {fileID: 6460514924978231041}
   m_Layer: 0
   m_Name: Goal
   m_TagString: goal
@@ -93,7 +93,7 @@ SpriteRenderer:
   m_Size: {x: 1.26, y: 1.8}
   m_AdaptiveModeThreshold: 0.5
   m_SpriteTileMode: 0
-  m_WasSpriteAssigned: 1
+  m_WasSpriteAssigned: 0
   m_SpriteSortPoint: 0
 --- !u!61 &4823436033848151895
 BoxCollider2D:
@@ -256,7 +256,7 @@ AudioSource:
     m_PreInfinity: 2
     m_PostInfinity: 2
     m_RotationOrder: 4
---- !u!95 &3150599815782477065
+--- !u!95 &6460514924978231041
 Animator:
   serializedVersion: 7
   m_ObjectHideFlags: 0
