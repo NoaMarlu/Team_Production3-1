@@ -59,6 +59,7 @@ public class StageSelect : MonoBehaviour
     public GameObject s4Sheep2;
     public GameObject s4Sheep3;
 
+
     void Start()
     {
         Init();
@@ -224,6 +225,7 @@ public class StageSelect : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.JoystickButton1))
         {
             audioSource.PlayOneShot(select);
+            BGM.Instance?.StopBGM();
             SceneManager.LoadScene("TITLE");
         }
     }

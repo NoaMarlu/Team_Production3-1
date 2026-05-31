@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.Audio;
 using UnityEngine.UI;
 using UnityEngine.Video;
 public class GameMovie : MonoBehaviour
@@ -13,8 +14,17 @@ public class GameMovie : MonoBehaviour
     private float animeTimer=0;
     public float alphaSpeed;
 
+    public AudioSource audioS;
+    public bool wasFadeOut = false;
+    public bool wasFadeIn = false;
+    public float outTime=10.0f;
+    public float inTime=11.0f;
+    public float outDuration=4.0f;
+    public float inDuration = 4.0f;
+
     void Start()
     {
+        Debug.Log("BGM.Instance = " + BGM.Instance);
         vp = FindAnyObjectByType<VideoPlayer>();
 
         if (PlayerPrefs.GetInt("isAnimation") == 1)
@@ -23,14 +33,18 @@ public class GameMovie : MonoBehaviour
             Color c = RI.color;
             c.a = 0;
             RI.color = c;
+            BGM.Instance?.PlayBGM();
+            audioS.Stop();
             return;
         }
         if(vp!=null){
             vp.Play();
+            BGM.Instance?.StopBGM();
         }
         else
         {
             isAnimation = false;
+            wasFadeOut = false;
         }
 
     }
@@ -45,6 +59,18 @@ public class GameMovie : MonoBehaviour
     {
         if (!isReplay) return;
         animeTimer += Time.deltaTime;
+
+        if (animeTimer >= outTime && !wasFadeOut)
+        {
+            StartCoroutine(FadeOut(0, outDuration));
+            wasFadeOut = true;
+        }
+        if (animeTimer >= inTime && !wasFadeIn)
+        {
+            BGM.Instance?.FadeInVolume(inDuration);
+            wasFadeIn = true;
+        }
+
         if (animeTimer >= animeTime)
         {
             isReplay = false;
@@ -65,5 +91,18 @@ public class GameMovie : MonoBehaviour
         }
         c.a -= alphaSpeed * Time.deltaTime;
         RI.color = c;
+    }
+
+    public System.Collections.IEnumerator FadeOut(float target, float duration)
+    {
+        Debug.Log("FadeRoutineŠJŽn");
+        float start = audioS.volume;
+        for (float t = 0; t < duration; t += Time.deltaTime)
+        {
+            audioS.volume = Mathf.Lerp(start, target, t / duration);
+            yield return null;
+        }
+        audioS.volume = target;
+        Debug.Log("FadeRoutineŠ®—¹ volume=" + audioS.volume);
     }
 }

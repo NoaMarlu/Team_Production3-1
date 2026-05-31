@@ -10,7 +10,6 @@ public class OneHundred : MonoBehaviour
 
     private AudioSource audioSource;
     public AudioClip audioClip;
-    public AudioClip titleClip;
 
 
     void Start()
@@ -40,10 +39,6 @@ public class OneHundred : MonoBehaviour
     {
         if (Input.GetButtonDown("Submit") || Input.GetKeyDown(KeyCode.Space)|| Input.GetKeyDown(KeyCode.JoystickButton1))
         {
-            if (BGM.Instance != null)
-            {
-                BGM.Instance.PlayBGM();
-            }
             SceneManager.LoadScene("Title");
         }
     }

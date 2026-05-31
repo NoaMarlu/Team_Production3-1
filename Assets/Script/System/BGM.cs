@@ -1,4 +1,5 @@
 using UnityEngine;
+using System.Collections;
 
 public class BGM : MonoBehaviour
 {
@@ -43,4 +44,25 @@ public class BGM : MonoBehaviour
             audioSource.Stop();
         }
     }
+
+    public void FadeInVolume(float duration)
+    {
+        Debug.Log("FadeInVolume呼ばれた volume=" + audioSource.volume + " isPlaying=" + audioSource.isPlaying);
+        audioSource.volume = 0f;
+        if (!audioSource.isPlaying) audioSource.Play();
+        StartCoroutine(FadeRoutine(1.0f, duration));
+    }
+    public System.Collections.IEnumerator FadeRoutine(float  target,float duration)
+    {
+        Debug.Log("FadeRoutine開始");
+        float start = audioSource.volume;
+        for(float t = 0; t < duration; t += Time.deltaTime)
+        {
+            audioSource.volume = Mathf.Lerp(start, target, t / duration);
+            yield return null;
+        }
+        audioSource.volume = target;
+        Debug.Log("FadeRoutine完了 volume=" + audioSource.volume);
+    }
+
 }
