@@ -46,6 +46,19 @@ public class StageSelect : MonoBehaviour
 
     public GameMovie gameMovie;
 
+    public GameObject s1Sheep1;
+    public GameObject s1Sheep2;
+    public GameObject s1Sheep3;
+    public GameObject s2Sheep1;
+    public GameObject s2Sheep2;
+    public GameObject s2Sheep3;
+    public GameObject s3Sheep1;
+    public GameObject s3Sheep2;
+    public GameObject s3Sheep3;
+    public GameObject s4Sheep1;
+    public GameObject s4Sheep2;
+    public GameObject s4Sheep3;
+
     void Start()
     {
         Init();
@@ -54,6 +67,7 @@ public class StageSelect : MonoBehaviour
     {
         SpriteChanger();
         ScrollStage();
+        DispSheep();
         if (gameMovie.isAnimation) return;
         SelectStage();
         ChangeStar();
@@ -151,21 +165,25 @@ public class StageSelect : MonoBehaviour
                         SS[i].star[0].GetComponent<SpriteRenderer>().sprite = offStar;
                         SS[i].star[1].GetComponent<SpriteRenderer>().sprite = offStar;
                         SS[i].star[2].GetComponent<SpriteRenderer>().sprite = offStar;
+
                         break;
                     case 1:
                         SS[i].star[0].GetComponent<SpriteRenderer>().sprite = onStar;
                         SS[i].star[1].GetComponent<SpriteRenderer>().sprite = offStar;
                         SS[i].star[2].GetComponent<SpriteRenderer>().sprite = offStar;
+
                         break;
                     case 2:
                         SS[i].star[0].GetComponent<SpriteRenderer>().sprite = onStar;
                         SS[i].star[1].GetComponent<SpriteRenderer>().sprite = onStar;
                         SS[i].star[2].GetComponent<SpriteRenderer>().sprite = offStar;
+
                         break;
                     case 3:
                         SS[i].star[0].GetComponent<SpriteRenderer>().sprite = onStar;
                         SS[i].star[1].GetComponent<SpriteRenderer>().sprite = onStar;
                         SS[i].star[2].GetComponent<SpriteRenderer>().sprite = onStar;
+
                         break;
                     default:
                         Debug.Log("Starの数値が3を上回りました");
@@ -226,5 +244,75 @@ public class StageSelect : MonoBehaviour
         }
     }
     void ChangeCurrent() { PlayerPrefs.SetInt("CurrentStage", currentStage); }
+    //星の数で羊のイラストを追加
+    void DispSheep()
+    {
+
+        //STAGE1
+        if (PlayerPrefs.GetInt("Stage1") == 1) { s1Sheep1.SetActive(true); s1Sheep2.SetActive(true); s1Sheep3.SetActive(true); }
+        else { s1Sheep1.SetActive(false); s1Sheep2.SetActive(false); s1Sheep3.SetActive(false); }
+
+        //STAGE2
+
+        switch (PlayerPrefs.GetInt("STAGE2_Star"))
+        {
+            case 0:
+                s2Sheep1.SetActive(false);
+                s2Sheep2.SetActive(false);
+                s2Sheep3.SetActive(false);
+                break;
+            case 1:
+                s2Sheep1.SetActive(true);
+                s2Sheep2.SetActive(false);
+                s2Sheep3.SetActive(false);
+                break;
+            case 2:
+                s2Sheep1.SetActive(true);
+                s2Sheep2.SetActive(true);
+                s2Sheep3.SetActive(false);
+                break;
+            case 3:
+                s2Sheep1.SetActive(true);
+                s2Sheep2.SetActive(true);
+                s2Sheep3.SetActive(true);
+                break;
+            default:
+                Debug.Log("Starの数値が3を上回りました");
+                break;
+        }
+
+        //STAGE3
+        if (PlayerPrefs.GetInt("Stage3") == 1) { s3Sheep1.SetActive(true); s3Sheep2.SetActive(true); s3Sheep3.SetActive(true); }
+        else { s3Sheep1.SetActive(false); s3Sheep2.SetActive(false); s3Sheep3.SetActive(false); }
+
+        //STAGE4
+        switch (PlayerPrefs.GetInt("STAGE4_Star"))
+        {
+            case 0:
+                s4Sheep1.SetActive(false);
+                s4Sheep2.SetActive(false);
+                s4Sheep3.SetActive(false);
+                break;
+            case 1:
+                s4Sheep1.SetActive(true);
+                s4Sheep2.SetActive(false);
+                s4Sheep3.SetActive(false);
+                break;
+            case 2:
+                s4Sheep1.SetActive(true);
+                s4Sheep2.SetActive(true);
+                s4Sheep3.SetActive(false);
+                break;
+            case 3:
+                s4Sheep1.SetActive(true);
+                s4Sheep2.SetActive(true);
+                s4Sheep3.SetActive(true);
+                break;
+            default:
+                Debug.Log("Starの数値が3を上回りました");
+                break;
+        }
+
+    }
 
 }
