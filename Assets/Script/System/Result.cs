@@ -21,10 +21,14 @@ public class Result : MonoBehaviour
     public int sheepCount;
     public Sprite[] num;
 
+    /*Start‚ÌSE*/
+    public AudioClip resultSE;
+
     void Start()
     {
         audioSource = GetComponent<AudioSource>();
         sheepCount=PlayerPrefs.GetInt(prefsNameCount);
+        audioSource.PlayOneShot(resultSE);
     }
     void Update()
     {

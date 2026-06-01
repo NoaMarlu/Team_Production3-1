@@ -4,10 +4,14 @@ using UnityEngine.SceneManagement;
 public class StageLoad : MonoBehaviour
 {
     public string sceneName;
+
+    private AudioSource audioS;
+    public AudioClip resultSE;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        
+        audioS = GetComponent<AudioSource>();
+        audioS.PlayOneShot(resultSE);
     }
 
     // Update is called once per frame
